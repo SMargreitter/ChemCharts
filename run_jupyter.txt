@@ -1,0 +1,15 @@
+conda activate chemcharts
+
+export PYTHONPATH=/home/nutzer/Dokumente/Projects/chemcharts:$PYTHONPATH
+
+
+# execute entry point:
+
+python chemcharts.py -input_data data/scaffold_memory.csv -output_plot test.png -save_data test.pkl
+
+python chemcharts.py -input_data test.pkl -output_plot test.png 
+
+
+
+
+
