@@ -3,11 +3,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
+from chemcharts.core.plots import BasePlot
 
 
-class ScatterBoxplotPlot:
+class ScatterBoxplotPlot(BasePlot):
     def __init__(self):
-        pass
+        super().__init__()
 
     @staticmethod
     def plot(chemdata: ChemData, path: str):

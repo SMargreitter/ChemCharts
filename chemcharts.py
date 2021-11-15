@@ -52,7 +52,7 @@ if __name__ == "__main__":
         with open(args.input_data, "rb") as dill_file:
             plot_data = dill.load(dill_file)
     else:
-        smiles, scores = load_smiles(args.input_data)
+        smiles, scores, epoch = load_smiles(args.input_data)
 
         # initialize Chemdata and add smiles and fps
         ori_data = ChemData(smiles_obj=smiles, scores=scores)
@@ -73,6 +73,8 @@ if __name__ == "__main__":
 
         clustering_filtered_data = Clustering()
         filtered_clustered_data = clustering_filtered_data.clustering(chemdata=filtered_data, k=args.k)
+
+        # TODO: add binning
 
         # choose whether data is filtered and or clustered
         if args.data == "filtered_data":

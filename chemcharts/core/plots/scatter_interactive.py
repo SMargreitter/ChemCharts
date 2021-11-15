@@ -1,11 +1,12 @@
 import pandas as pd
 import plotly.express as px
 from chemcharts.core.container.chemdata import ChemData
+from chemcharts.core.plots.base_plot import BasePlot
 
 
-class ScatterInteractivePlot:
+class ScatterInteractivePlot(BasePlot):
     def __init__(self):
-        pass
+        super().__init__()
 
     @staticmethod
     def plot(chemdata: ChemData, path: str):

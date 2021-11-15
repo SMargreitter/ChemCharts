@@ -2,11 +2,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
+from chemcharts.core.plots.base_plot import BasePlot
 
 
-class HexagonalPlot:
+class HexagonalPlot(BasePlot):
     def __init__(self):
-        pass
+        super().__init__()
 
     @staticmethod
     def plot(chemdata: ChemData, path: str):

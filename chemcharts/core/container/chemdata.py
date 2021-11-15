@@ -9,6 +9,7 @@ from chemcharts.core.container.smiles import Smiles
 class ChemData:
     def __init__(self, smiles_obj: Smiles,
                  name: str = "",
+                 epoch: list = None,
                  active_inactive_list: list = None,
                  scores: list = [],
                  fingerprints: FingerprintContainer = None,
@@ -16,6 +17,7 @@ class ChemData:
                  ):
 
         self.name = name
+        self.epoch = epoch
         self.active_inactive_list = active_inactive_list
         self.scores = scores
         self.smiles_obj = None
@@ -26,6 +28,7 @@ class ChemData:
 
     def __repr__(self) -> str:
         return f"instance of ChemData with name: {self.name}," \
+               f"epoch: {self.epoch}," \
                f"number scores: {len(self.scores)}," \
                f"smiles: {self.smiles_obj}," \
                f"fingerprint: {self.fingerprints}," \
@@ -39,6 +42,12 @@ class ChemData:
 
     def set_name(self, name: str):
         self.name = name
+
+    def get_epoch(self) -> list:
+        return self.epoch
+
+    def set_epoch(self, epoch: list):
+        self.epoch = epoch
 
     def get_active_inactive_list(self) -> list:
         return self.active_inactive_list
