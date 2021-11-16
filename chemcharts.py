@@ -92,27 +92,24 @@ if __name__ == "__main__":
 
     # generate plots
     if args.plot == "scatter_interactive_plot":
-        scatter_interactive_plot = ScatterInteractivePlot()
-        scatter_interactive_plot.plot(plot_data, args.output_plot)
+        plot_instance = ScatterInteractivePlot()
     elif args.plot == "scatter_boxplot_plot":
-        scatter_boxplot_plot = ScatterBoxplotPlot()
-        scatter_boxplot_plot.plot(plot_data, args.output_plot)
+        plot_instance = ScatterBoxplotPlot()
     elif args.plot == "trisurf_plot":
-        trisurf_plot = TrisurfPlot()
-        trisurf_plot.plot(plot_data, args.output_plot)
+        plot_instance = TrisurfPlot()
     elif args.plot == "scatter_static_plot":
-        scatter_static_plot = ScatterStaticPlot()
-        scatter_static_plot.plot(plot_data, args.output_plot)
+        plot_instance = ScatterStaticPlot()
     elif args.plot == "scatter_density_plot":
-        scatter_density_plot = ScatterDensityPlot
-        scatter_density_plot.plot(plot_data, args.output_plot)
+        plot_instance = ScatterDensityPlot
     elif args.plot == "hexagonal_plot":
-        hex_plot = HexagonalPlot()
-        hex_plot.plot(plot_data, args.output_plot)
+        plot_instance = HexagonalPlot()
     else:
         raise ValueError("Expected keyword (scatter_static_plot/ scatter_boxplot_plot/ scatter_interactive_plot/ "
                          "scatter_density_plot/ trisurf_plot/ hexagonal_plot) but none was given! Not supported: "
                          f"{args.plot}")
+
+    plot_instance.plot(plot_data, args.output_plot)
+    plot_instance.make_movie(...)
 
     sys.exit(0)
 
