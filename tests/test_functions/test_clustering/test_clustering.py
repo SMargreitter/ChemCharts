@@ -16,26 +16,26 @@ class TestClustering(unittest.TestCase):
     def setUpClass(cls) -> None:
         test_chemdata = ChemData(Smiles([""]), name="test_chemdata")
         embedding = Embedding(np.array([[1, 2],
-                                   [2, 2],
-                                   [4, 2],
-                                   [2, 3],
-                                   [2.6, 5],
-                                   [11.2, 2],
-                                   [5, 1.2],
-                                   [4, 5],
-                                   [8, 9],
-                                   [1, 1],
-                                   [15, 1],
-                                   [5, 2],
-                                   [6, 4],
-                                   [6, 1],
-                                   [4, 18],
-                                   [3, 1],
-                                   [1, 9],
-                                   [6, 4],
-                                   [3, 4],
-                                   [7, 8]]))
-        scores = [1,3,4,5,2,1,6,3,5,0,2,1,3,4,1,2,8,6,1,1]
+                                       [2, 2],
+                                       [4, 2],
+                                       [2, 3],
+                                       [2.6, 5],
+                                       [11.2, 2],
+                                       [5, 1.2],
+                                       [4, 5],
+                                       [8, 9],
+                                       [1, 1],
+                                       [15, 1],
+                                       [5, 2],
+                                       [6, 4],
+                                       [6, 1],
+                                       [4, 18],
+                                       [3, 1],
+                                       [1, 9],
+                                       [6, 4],
+                                       [3, 4],
+                                       [7, 8]]))
+        scores = [1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1]
 
         test_chemdata.set_embedding(embedding)
         test_chemdata.set_scores(scores)

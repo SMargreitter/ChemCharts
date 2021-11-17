@@ -3,17 +3,12 @@ import plotly.express as px
 import os
 from chemcharts.core.container.chemdata import ChemData
 from copy import deepcopy
+import numpy as np
+import ffmpeg
 
 from chemcharts.core.container.embedding import Embedding
 from chemcharts.core.container.fingerprint import FingerprintContainer
 from chemcharts.core.container.smiles import Smiles
-
-from chemcharts.core.plots.hexag_plot import HexagonalPlot
-from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
-from chemcharts.core.plots.scatter_density_plot import ScatterDensityPlot
-from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
-from chemcharts.core.plots.scatter_static_plot import ScatterStaticPlot
-from chemcharts.core.plots.trisurf_plot import TrisurfPlot
 
 
 class BasePlot:
@@ -38,40 +33,43 @@ class BasePlot:
         return indices_list
 
     @staticmethod
-    def _filter_epoch(chemcharts: ChemData, idx_value: list) -> ChemData:
-        epoch_chemdata = ChemData(smiles_obj= Smiles(list(chemcharts.get_smiles())[idx_value]))
-        epoch_chemdata.set_name(chemcharts.get_name())
-        epoch_chemdata.set_epoch(chemcharts.get_epoch()[idx_value])
-        epoch_chemdata.set_scores(chemcharts.get_scores()[idx_value])
-        epoch_chemdata.set_fingerprints(chemcharts.get_fingerprints()[idx_value])
-        epoch_chemdata.set_embedding(chemcharts.get_embedding()[idx_value])
+    def _filter_epoch(chemcharts: ChemData, epoch: int, epoch_indices_list: list) -> ChemData:
+        epoch_chemdata = \
+            ChemData(smiles_obj=Smiles([chemcharts.get_smiles()[i] for i in epoch_indices_list]),
+                     name=f"epoch_{epoch}_chemdata",
+                     epoch=[chemcharts.get_epoch()[i] for i in epoch_indices_list],
+                     scores=[chemcharts.get_scores()[i] for i in epoch_indices_list],
+                     fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
+                                                       fingerprint_list=[chemcharts.get_fingerprints()[i] for i in
+                                                                         epoch_indices_list]),
+                     embedding=Embedding(np.vstack([chemcharts.get_embedding()[i] for i in epoch_indices_list])))
         return epoch_chemdata
 
     @staticmethod
-    def _path_update(old_path: str, epoch_id: int) -> str:
-        os.path.split(os.path.abspath('/home/nutzer/Documents/Projects/ChemCharts/run_jupyter.txt'))
-        path = "0000"
-        updated_path = path [:-1] + str(epoch_id) + "_" + old_path + ".png"
+    def _path_update(ori_path: str, epoch_id: int) -> str:
+        path, file_name = os.path.split(os.path.abspath(ori_path))
+        updated_path = f'{path}/{epoch_id:04}_{file_name}'
         return updated_path
-    #fill number with prefix/leading zeros
 
     def make_movie(self, chemcharts: ChemData, path: str):
         chemcharts = deepcopy(chemcharts)
-        epochs = chemcharts.get_epoch()                           # [0,1,1,0,2,1,0]
-        sorted_epochs = self._sort_epoch_list(epochs)              # [0,1,2]
-        indices_list = self._find_indices(epochs, sorted_epochs)  # [[0,3,6], [1,2,5], [4]]
-        for idx in range(len(sorted_epochs)):                                  #idx= #0 #1 #2
-            for idx_value in indices_list[idx]:                                #idx_value= #0 #3 #6 || #1 #2 #5 || #4
-                chemcharts_copy = deepcopy(chemcharts)
-                epoch_chemdata = self._filter_epoch(chemcharts_copy, idx_value)
-                updated_path = self._path_update(path, epoch_id=idx)
+        epochs = chemcharts.get_epoch()                                               # [0,1,1,0,2,1,0]
+        sorted_epochs = self._sort_epoch_list(epochs)                                 # [0,1,2]
+        indices_list = self._find_indices(epochs, sorted_epochs)                      # [[0,3,6], [1,2,5], [4]]
+        updated_path_list = []
+        for idx in range(len(sorted_epochs)):                                         #idx= #0 #1 #2
+            chemcharts_copy = deepcopy(chemcharts)
+            epoch_chemdata = self._filter_epoch(chemcharts=chemcharts_copy, epoch=idx, epoch_indices_list=indices_list[idx])    #indices_list= #[0,3,6] #[1,2,5] #[4]
+            updated_path = self._path_update(ori_path=path, epoch_id=idx)
+            updated_path_list.append(updated_path)
+            self.plot(chemdata=epoch_chemdata, path=updated_path)
 
-                self.plot(...)
-            # find indices for epoch
-            # filter epoch
-            # path update
-            # plot
-        # make movie from paths
+        (
+            ffmpeg
+            .input('/home/nutzer/Documents/Projects/ChemCharts/movie/*.png', pattern_type='glob', framerate=1)
+            .output('/home/nutzer/Documents/Projects/ChemCharts/movie/chemcharts_movie.gif')
+            .run()
+        )
 
     @staticmethod
     def plot(chemdata: ChemData, path: str):
