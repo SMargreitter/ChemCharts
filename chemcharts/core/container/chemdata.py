@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 import numpy as np
 
 from chemcharts.core.container.embedding import Embedding
@@ -43,7 +45,7 @@ class ChemData:
 
     def __init__(self, smiles_obj: Smiles,
                  name: str = "",
-                 epoch: list = None,
+                 epochs: list = None,
                  active_inactive_list: list = None,
                  scores: list = [],
                  fingerprints: FingerprintContainer = None,
@@ -51,7 +53,7 @@ class ChemData:
                  ):
 
         self.name = name
-        self.epoch = epoch
+        self.epochs = epochs
         self.active_inactive_list = active_inactive_list
         self.scores = scores
         self.smiles_obj = None
@@ -62,7 +64,7 @@ class ChemData:
 
     def __repr__(self) -> str:
         return f"instance of ChemData with name: {self.name}," \
-               f"epoch: {self.epoch}," \
+               f"epoch: {self.epochs}," \
                f"number scores: {len(self.scores)}," \
                f"smiles: {self.smiles_obj}," \
                f"fingerprint: {self.fingerprints}," \
@@ -71,17 +73,46 @@ class ChemData:
     def __str__(self):
         return self.__repr__()
 
+    def sort_epoch_list(self) -> list:
+        sorted_epochs = list(set(self.get_epochs()))
+        sorted_epochs.sort()
+        return sorted_epochs
+
+    def find_epoch_indices(self, sorted_epochs: list) -> list:
+        indices_list = []
+        epochs = self.get_epochs()
+        for ep in sorted_epochs:
+            buffer = []
+            for idx in range(len(epochs)):
+                if epochs[idx] == ep:
+                    buffer.append(idx)
+            indices_list.append(buffer)
+        return indices_list
+
+    def filter_epoch(self, epoch: int, epoch_indices_list: list):
+        copy_chemdata = deepcopy(self)
+        epoch_chemdata = \
+            ChemData(smiles_obj=Smiles([copy_chemdata.get_smiles()[i] for i in epoch_indices_list]),
+                     name=f"epoch_{epoch}_chemdata",
+                     epochs=[copy_chemdata.get_epochs()[i] for i in epoch_indices_list],
+                     scores=[copy_chemdata.get_scores()[i] for i in epoch_indices_list],
+                     fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
+                                                       fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in
+                                                                         epoch_indices_list]),
+                     embedding=Embedding(np.vstack([copy_chemdata.get_embedding()[i] for i in epoch_indices_list])))
+        return epoch_chemdata
+
     def get_name(self) -> str:
         return self.name
 
     def set_name(self, name: str):
         self.name = name
 
-    def get_epoch(self) -> list:
-        return self.epoch
+    def get_epochs(self) -> list:
+        return self.epochs
 
-    def set_epoch(self, epoch: list):
-        self.epoch = epoch
+    def set_epochs(self, epochs: list):
+        self.epochs = epochs
 
     def get_active_inactive_list(self) -> list:
         return self.active_inactive_list
