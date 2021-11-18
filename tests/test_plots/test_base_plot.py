@@ -93,6 +93,13 @@ class TestBasePlot(unittest.TestCase):
         self.assertIsInstance(self.test_chemdata.get_embedding(), Embedding)
         self.assertIsInstance(self.test_chemdata.get_fingerprints(), FingerprintContainer)
         self.assertEqual(self.test_chemdata.get_smiles()[1], "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F")
-        self.assertEqual(self.test_chemdata.get_epoch(), [0, 1, 2, 3])
-        ### not epoch chemdata
+        self.assertEqual(self.test_chemdata.get_epoch(), [0, 1, 1, 0, 2, 2, 0, 1, 0, 2, 3, 2, 3, 1, 0, 0, 3, 2, 1, 1])
+
+        # TODO check movie size
+
+    def test_filter_epoch(self):
+        plot = HexagonalPlot()
+        plot._filter_epoch(self.test_chemdata, 0, [0,3,6]) # not done
+        self.assertIsInstance() # not done
+
 

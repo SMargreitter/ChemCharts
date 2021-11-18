@@ -46,12 +46,13 @@ class BasePlot:
         return epoch_chemdata
 
     @staticmethod
-    def _path_update(ori_path: str, epoch_id: int) -> str:
+    def _path_update_snapshot(ori_path: str, epoch_id: int) -> str:
         path, file_name = os.path.split(os.path.abspath(ori_path))
         updated_path = f'{path}/{epoch_id:04}_{file_name}'
+        # TODO replace everthing after the last '.' by ".png"
         return updated_path
 
-    def make_movie(self, chemcharts: ChemData, path: str):
+    def make_movie(self, chemcharts: ChemData, movie_path: str):
         chemcharts = deepcopy(chemcharts)
         epochs = chemcharts.get_epoch()                                               # [0,1,1,0,2,1,0]
         sorted_epochs = self._sort_epoch_list(epochs)                                 # [0,1,2]
@@ -60,14 +61,15 @@ class BasePlot:
         for idx in range(len(sorted_epochs)):                                         #idx= #0 #1 #2
             chemcharts_copy = deepcopy(chemcharts)
             epoch_chemdata = self._filter_epoch(chemcharts=chemcharts_copy, epoch=idx, epoch_indices_list=indices_list[idx])    #indices_list= #[0,3,6] #[1,2,5] #[4]
-            updated_path = self._path_update(ori_path=path, epoch_id=idx)
-            updated_path_list.append(updated_path)
-            self.plot(chemdata=epoch_chemdata, path=updated_path)
+            updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
+            updated_path_list.append(updated_snapshot_path)
+            self.plot(chemdata=epoch_chemdata, path=updated_snapshot_path)
 
+        path, file_name = os.path.split(os.path.abspath(movie_path))
         (
             ffmpeg
-            .input('/home/nutzer/Documents/Projects/ChemCharts/movie/*.png', pattern_type='glob', framerate=1)
-            .output('/home/nutzer/Documents/Projects/ChemCharts/movie/chemcharts_movie.gif')
+            .input(f"{path}/*.png", pattern_type='glob', framerate=1)
+            .output(movie_path)
             .run()
         )
 
