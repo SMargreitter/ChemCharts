@@ -5,12 +5,7 @@ import numpy as np
 from chemcharts.core.container.chemdata import ChemData
 
 
-class TanimotoSimilarity:
-    """
-    RDKit's BulkTanimotoSimilarity() takes a query fingerprint and a list of target fingerprints, and returns a list of
-    scores, one for each target fingerprint.
-    """
-
+class Binning:
     def __init__(self):
         pass
 

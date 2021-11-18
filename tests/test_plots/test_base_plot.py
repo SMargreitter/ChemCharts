@@ -90,11 +90,9 @@ class TestBasePlot(unittest.TestCase):
     def test_set_smile_to_chemdata(self):
         plot = HexagonalPlot()
         plot.make_movie(self.test_chemdata, "/home/nutzer/Documents/Projects/ChemCharts/movie/test_plot.png")
-        #plot._path_update()
-
-
-        #self.assertIsInstance(test_data_set.get_embedding(), Embedding)
-        #self.assertIsInstance(test_data_set.get_fingerprints(), FingerprintContainer)
-        #self.assertEqual(test_data_set.get_smiles()[1], "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F")
-        #self.assertEqual(test_data_set.get_embedding(), [[1., 2., 4., 2., 2.6, 5.], [2., 2., 2., 3., 11.2, 2.]])
+        self.assertIsInstance(self.test_chemdata.get_embedding(), Embedding)
+        self.assertIsInstance(self.test_chemdata.get_fingerprints(), FingerprintContainer)
+        self.assertEqual(self.test_chemdata.get_smiles()[1], "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F")
+        self.assertEqual(self.test_chemdata.get_epoch(), [0, 1, 2, 3])
+        ### not epoch chemdata
 

@@ -6,6 +6,14 @@ from chemcharts.core.container.smiles import Smiles
 
 
 class FingerprintContainer:
+    """ Class object which contains a list of fingerprints and its name.
+        input:
+            list of fingerprints and string which refers to the name of the fingerprints
+        output:
+            __len__method gives back the length of the fingerprint list
+            with indexing items can be returned or deleted
+            __iter__ and __getitem__ the same???
+        """
     def __init__(self, name: str, fingerprint_list: list):
         self.name = name
         self.fingerprint_list = fingerprint_list
@@ -31,8 +39,8 @@ class FingerprintContainer:
 
 
 class FingerprintGenerator:
-    """ I am transforming MolSmiles to fingerprints by using the RDKit fingerprints (standard, Morgan and
-        MACCS) and then add them to the fingerprint_list of an object of the FingerprintContainer class.
+    """ Transforms MolSmiles to fingerprints by using the RDKit fingerprints (standard, Morgan and
+        MACCS) and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
         input:
            list of MolSmiles -- every smile encodes one molecule, the characters represent chemical
            elements
@@ -52,7 +60,7 @@ class FingerprintGenerator:
 
     @staticmethod
     def make_mol_list(column: list) -> list:
-        """ I am transforming smiles to Mol's and add them to the mol_list
+        """ Transforms smiles to Mol's and adds them to the mol_list
             input:
                 list of smiles
             output:
@@ -64,8 +72,8 @@ class FingerprintGenerator:
         return mol_list
 
     def generate_fingerprints(self) -> FingerprintContainer:
-        """ I am transforming internal MolSmiles to fingerprints by using the STANDARD RDKit fingerprint function
-            and then add them to the fingerprint_list of an object of the FingerprintContainer class.
+        """ Transforms internal MolSmiles to fingerprints by using the STANDARD RDKit fingerprint function
+            and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
             output:
                 an object of the FingerprintContainerClass, containing a list of fingerprints
         """
@@ -76,8 +84,8 @@ class FingerprintGenerator:
         return FingerprintContainer(name="standard_fingerprint", fingerprint_list=fingerprint_buffer)
 
     def generate_fingerprints_morgan(self, useFeatures=False) -> FingerprintContainer:
-        """ I am transforming internal MolSmiles to fingerprints by using the MORGAN RDKit fingerprint function
-            and then add them to the fingerprint_list of an object of the FingerprintContainer class.
+        """ Transforms internal MolSmiles to fingerprints by using the MORGAN RDKit fingerprint function
+            and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
             output:
                 an object of the FingerprintContainer class, containing a list of fingerprints
         """
@@ -88,8 +96,8 @@ class FingerprintGenerator:
         return FingerprintContainer(name="morgan_fingerprint", fingerprint_list=fingerprint_buffer)
 
     def generate_fingerprints_maccs(self) -> FingerprintContainer:
-        """ I am transforming internal MolSmiles to fingerprints by using the MACC RDKit fingerprint function
-            and then add them to the fingerprint_list of an object of the FingerprintContainer class.
+        """ Transforms internal MolSmiles to fingerprints by using the MACC RDKit fingerprint function
+            and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
             output:
                 an object of the FingerprintContainer class, containing a list of fingerprints
         """

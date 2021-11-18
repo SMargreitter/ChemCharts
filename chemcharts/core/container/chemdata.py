@@ -1,5 +1,4 @@
 import numpy as np
-import pandas as pd
 
 from chemcharts.core.container.embedding import Embedding
 from chemcharts.core.container.fingerprint import FingerprintContainer
@@ -7,6 +6,41 @@ from chemcharts.core.container.smiles import Smiles
 
 
 class ChemData:
+    """
+        A class to represent information about molecules for generating plots.
+
+        ...
+
+        Attributes (required)
+        ----------
+        smiles_obj : SmilesClass
+            object contains a list of smiles (eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...])
+
+        Attributes (optional)
+        ----------
+        name : str
+            should reflect the input data
+        epoch : list of int
+            referring to the Reinvent runs which generated the data set
+        active_inactive_list : list
+            smiles divided in active and inactive list
+        scores : list of int
+            referring to xxx
+        fingerprints : FingerprintContainerClass
+            object which contains a name a list of fingerprints
+        embedding : EmbeddingClass
+            object which contains an np.array of dimensionally reduced fingerprints
+        tanimoto_similarity : np.array
+            contains scores, one for each target fingerprint
+
+        Methods
+        -------
+        get_<attribute>:
+            returns the attribute
+        set_<attribute>:
+
+        """
+
     def __init__(self, smiles_obj: Smiles,
                  name: str = "",
                  epoch: list = None,

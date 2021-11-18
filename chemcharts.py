@@ -109,7 +109,7 @@ if __name__ == "__main__":
                          f"{args.plot}")
 
     plot_instance.plot(plot_data, args.output_plot)
-    plot_instance.make_movie(...)
+    plot_instance.make_movie(plot_data, args.output_plot)
 
     sys.exit(0)
 
