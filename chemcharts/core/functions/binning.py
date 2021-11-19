@@ -10,15 +10,10 @@ class Binning:
         pass
 
     @staticmethod
-    def simplify(chemdata: ChemData) -> ChemData:
+    def binning(chemdata: ChemData) -> ChemData:
         chemdata = deepcopy(chemdata)
-        fps_list = chemdata.get_fingerprints()
-
-        tan_sim_list = []
-        length_fps_list = len(fps_list)
-        for index in range(length_fps_list-1):
-                tan_sim = DataStructs.BulkTanimotoSimilarity(fps_list[index], fps_list[index + 1:])
-                tan_sim_list.append(tan_sim)
+        np.linspace(start=-2.1, stop=8.0, num=3)
+        np.digitize([1.333, 2.33, -1, -2, -1.3, 7.9], bins=[-2.1, 2.95, 8.]) - 1
 
         def fill_list_with_Nones(tan_sim_list, length_fps_list):
             reversed_list = []

@@ -1,4 +1,3 @@
-from tests.test_plots.test_base_plot import TestBasePlot
 from tests.test_plots.test_hexagonal_plot import TestHexagonalPlot
 from tests.test_plots.test_scatter_boxplot_plot import TestScatterBoxplotPlot
 from tests.test_plots.test_scatter_density_plot import TestScatterDensityPlot
