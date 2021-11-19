@@ -14,8 +14,6 @@ from chemcharts.core.plots.trisurf_plot import TrisurfPlot
 class TestTrisurfPlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        # TODO: remove folders ../junk/trisurf_movie and ../junk/trisurf_test if present
-        # TODO: generate folders ../junk/trisurf_movie and ../junk/trisurf_test
         if os.path.isdir("../junk/trisurf_test"):
             shutil.rmtree("../junk/trisurf_test")
         os.mkdir("../junk/trisurf_test")
@@ -114,10 +112,10 @@ class TestTrisurfPlot(unittest.TestCase):
         test_plot = TrisurfPlot()
         test_plot.plot(self.test_chemdata, "../junk/trisurf_test/plot_unitest.png")
         file_size = os.path.getsize("../junk/trisurf_test/plot_unitest.png")
-        self.assertTrue(82000 <= file_size <= 102000)
+        self.assertTrue(85000 <= file_size <= 100000)
 
     def test_check_movie_size(self):
         test_plot = TrisurfPlot()
         test_plot.make_movie(self.test_chemdata, "../junk/trisurf_movie/test_movie.mp4")
         file_size = os.path.getsize("../junk/trisurf_movie/test_movie.mp4")
-        self.assertTrue(78000 <= file_size <= 80000)
+        self.assertTrue(76000 <= file_size <= 82000)

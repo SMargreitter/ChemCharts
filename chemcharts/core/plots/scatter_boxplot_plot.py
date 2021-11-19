@@ -28,3 +28,4 @@ class ScatterBoxplotPlot(BasePlot):
         plt.suptitle('Scatter Boxplot ChemCharts Plot', fontsize=14)
 
         plt.savefig(path, format='png', dpi=150)
+        plt.close(g)

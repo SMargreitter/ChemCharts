@@ -26,6 +26,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="implements chemcharts entry points")
     parser.add_argument("-input_data", type=str, required=True, help="Path to input csv file.")
     parser.add_argument("-output_plot", type=str, required=True, help="Path to output plot file.")
+    parser.add_argument("-output_movie", type=str, required=False, default=None, help="Path to movie.")
     parser.add_argument("-k", type=int, required=False, default=10, help="Number of clusters for KMeans.")
     parser.add_argument("-plot", type=str, required=False, default="hexagonal_plot",
                         help="Choose a plot: "
@@ -52,13 +53,14 @@ if __name__ == "__main__":
         with open(args.input_data, "rb") as dill_file:
             plot_data = dill.load(dill_file)
     else:
-        smiles, scores, epoch = load_smiles(args.input_data)
+        smiles, scores, epochs = load_smiles(args.input_data)
 
         # initialize Chemdata and add smiles and fps
         ori_data = ChemData(smiles_obj=smiles, scores=scores)
         fps_generator = FingerprintGenerator(ori_data.get_smiles())
         fps = fps_generator.generate_fingerprints_maccs()
         ori_data.set_fingerprints(fps)
+        ori_data.set_epochs(epochs)
 
         # generate embedding (dimensional reduction)
         dimensional_reduction = DimensionalReduction()
@@ -109,7 +111,8 @@ if __name__ == "__main__":
                          f"{args.plot}")
 
     plot_instance.plot(plot_data, args.output_plot)
-    plot_instance.make_movie(plot_data, args.output_plot)
+    if args.output_movie is not None:
+        plot_instance.make_movie(plot_data, args.output_movie)
 
     sys.exit(0)
 

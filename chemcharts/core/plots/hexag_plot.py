@@ -21,3 +21,4 @@ class HexagonalPlot(BasePlot):
         plt.suptitle('Hexagonal ChemCharts Plot', fontsize=14)
 
         plt.savefig(path)
+        plt.close()

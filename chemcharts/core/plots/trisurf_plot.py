@@ -27,5 +27,3 @@ class TrisurfPlot(BasePlot):
 
         fig.show()
         fig.write_image(path)
-
-

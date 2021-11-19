@@ -26,3 +26,4 @@ class ScatterStaticPlot(BasePlot):
         ax.set_zlabel('Scores')
 
         plt.savefig(path)
+        plt.close(fig)

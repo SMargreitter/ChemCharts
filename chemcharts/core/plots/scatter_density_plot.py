@@ -33,7 +33,7 @@ class ScatterDensityPlot(BasePlot):
         plt.suptitle('Scatter Density ChemCharts Plot', fontsize=14)
 
         plt.savefig(path, format='png', dpi=150)
-
+        plt.close()
 
 
 

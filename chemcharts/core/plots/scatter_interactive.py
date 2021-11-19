@@ -1,5 +1,6 @@
 import pandas as pd
 import plotly.express as px
+import matplotlib.pyplot as plt
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
@@ -22,6 +23,7 @@ class ScatterInteractivePlot(BasePlot):
         fig.update_traces(marker_size=1)
         fig.show()
         fig.write_image(path)
+        plt.close(fig)
 
 
 

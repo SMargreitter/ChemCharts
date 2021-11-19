@@ -1,6 +1,7 @@
 import unittest
 import os
 import numpy as np
+import shutil
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.container.embedding import Embedding
@@ -13,6 +14,14 @@ from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
 class TestScatterBoxplotPlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        if os.path.isdir("../junk/scatter_boxplot_test"):
+            shutil.rmtree("../junk/scatter_boxplot_test")
+        os.mkdir("../junk/scatter_boxplot_test")
+
+        if os.path.isdir("../junk/scatter_boxplot_movie"):
+            shutil.rmtree("../junk/scatter_boxplot_movie")
+        os.mkdir("../junk/scatter_boxplot_movie")
+
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
                          "Cc1cc(C)c(S(=O)(=O)N2CCN(C(C)c3nc(C(C)(C)C)no3)CC2)c(C)c1",
@@ -89,12 +98,12 @@ class TestScatterBoxplotPlot(unittest.TestCase):
 
     def test_scatter_boxplot_plot(self):
         test_plot = ScatterBoxplotPlot()
-        test_plot.plot(self.test_chemdata, "../plot_unitest.png")
-        file_size = os.path.getsize("../plot_unitest.png")
-        self.assertTrue(30000 <= file_size <= 35000)
+        test_plot.plot(self.test_chemdata, "../junk/scatter_boxplot_test/plot_unitest.png")
+        file_size = os.path.getsize("../junk/scatter_boxplot_test/plot_unitest.png")
+        self.assertTrue(31000 <= file_size <= 36000)
 
     def test_check_movie_size(self):
         test_plot = ScatterBoxplotPlot()
-        test_plot.make_movie(self.test_chemdata, "/home/nutzer/Documents/Projects/ChemCharts/tests/test_movie.mp4")
-        file_size = os.path.getsize("../test_movie.mp4")
-        self.assertTrue(72000 <= file_size <= 840000)
+        test_plot.make_movie(self.test_chemdata, "../junk/scatter_boxplot_movie/test_movie.mp4")
+        file_size = os.path.getsize("../junk/scatter_boxplot_movie/test_movie.mp4")
+        self.assertTrue(24000 <= file_size <= 29000)
