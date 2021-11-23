@@ -8,6 +8,7 @@ import dill
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.container.fingerprint import *
 
+from chemcharts.core.functions.binning import Binning
 from chemcharts.core.functions.dimensional_reduction import DimensionalReduction
 from chemcharts.core.functions.clustering import Clustering
 from chemcharts.core.functions.filtering import Filtering
@@ -26,7 +27,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="implements chemcharts entry points")
     parser.add_argument("-input_data", type=str, required=True, help="Path to input csv file.")
     parser.add_argument("-output_plot", type=str, required=True, help="Path to output plot file.")
-    parser.add_argument("-output_movie", type=str, required=False, default=None, help="Path to movie.")
+    parser.add_argument("-output_movie", type=str, required=False, default=None, help="Path to output movie.")
+    parser.add_argument("-save_data", type=str, required=False, default=None,
+                        help="Path to output processed ChemData object")
     parser.add_argument("-k", type=int, required=False, default=10, help="Number of clusters for KMeans.")
     parser.add_argument("-plot", type=str, required=False, default="hexagonal_plot",
                         help="Choose a plot: "
@@ -36,15 +39,13 @@ if __name__ == "__main__":
                              "scatter_density_plot" "|"
                              "trisurf_plot" "|" 
                              "hexagonal_plot (default)")
-
     parser.add_argument("-data", type=str, required=False, default="original_data",
                         help="Choose the data set:"
                              "filtered_data,"
                              "clustered_data,"
                              "filtered_clustered_data,"
                              "original_data (default, no filtering or clustering)")
-    parser.add_argument("-save_data", type=str, required=False, default=None,
-                        help="Path to output processed ChemData object")
+    parser.add_argument("-binning", type=int, required=False, default=None, help="Choose the amount of bins")
 
     args, args_unk = parser.parse_known_args()
 
@@ -66,27 +67,19 @@ if __name__ == "__main__":
         dimensional_reduction = DimensionalReduction()
         ori_data = dimensional_reduction.calculate(chemdata=ori_data)
 
-        # filter and cluster data
-        filtering = Filtering()
-        filtered_data = filtering.filter_range(chemdata=ori_data, range_dim1=(-100, 100), range_dim2=(-100, 100))
-
-        clustering = Clustering()
-        clustered_data = clustering.clustering(chemdata=ori_data, k=args.k)
-
-        clustering_filtered_data = Clustering()
-        filtered_clustered_data = clustering_filtered_data.clustering(chemdata=filtered_data, k=args.k)
-
-        # TODO: add binning
-
         # choose whether data is filtered and or clustered
-        if args.data == "filtered_data":
-            plot_data = filtered_data
-        elif args.data == "clustered_data":
-            plot_data = clustered_data
-        elif args.data == "filtered_clustered_data":
-            plot_data = filtered_clustered_data
-        else:
-            plot_data = ori_data
+        plot_data = ori_data
+        if args.data == "filtered_data" or args.data == "filtered_clustered_data":
+            filtering = Filtering()
+            plot_data = filtering.filter_range(chemdata=plot_data, range_dim1=(-100, 100), range_dim2=(-100, 100))
+        if args.data == "clustered_data" or args.data == "filtered_clustered_data":
+            clustering = Clustering()
+            plot_data = clustering.clustering(chemdata=plot_data, k=args.k)
+
+        # binning of scores
+        if args.binning is not None:
+            binning = Binning()
+            plot_data = binning.binning(chemdata=plot_data, num_bins=args.binning)
 
     if args.save_data is not None:
         with open(args.save_data, "wb") as dill_file:
@@ -102,7 +95,7 @@ if __name__ == "__main__":
     elif args.plot == "scatter_static_plot":
         plot_instance = ScatterStaticPlot()
     elif args.plot == "scatter_density_plot":
-        plot_instance = ScatterDensityPlot
+        plot_instance = ScatterDensityPlot()
     elif args.plot == "hexagonal_plot":
         plot_instance = HexagonalPlot()
     else:
@@ -110,7 +103,10 @@ if __name__ == "__main__":
                          "scatter_density_plot/ trisurf_plot/ hexagonal_plot) but none was given! Not supported: "
                          f"{args.plot}")
 
-    plot_instance.plot(plot_data, args.output_plot)
+    #make plot
+    #plot_instance.plot(plot_data, args.output_plot)
+
+    #make movie
     if args.output_movie is not None:
         plot_instance.make_movie(plot_data, args.output_movie)
 

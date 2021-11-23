@@ -50,6 +50,7 @@ Thumbs.db
 *.png
 
 movie
+*.pkl
 
 tests/junk
 notebooks/.ipynb_*

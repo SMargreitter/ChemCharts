@@ -10,11 +10,17 @@ class HexagonalPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None):
+
+        extent = (xlim[0], xlim[1], ylim[0], ylim[1]) if xlim is not None else None
 
         sns.jointplot(x=chemdata.get_embedding().np_array[:, 0],
                       y=chemdata.get_embedding().np_array[:, 1],
+                      xlim=xlim,
+                      ylim=ylim,
+                      joint_kws={"gridsize": 20},
                       kind="hex",
+                      extent=extent,
                       color="#4CB391")
 
         plt.subplots_adjust(top=0.9)

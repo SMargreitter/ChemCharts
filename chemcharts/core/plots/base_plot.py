@@ -18,6 +18,10 @@ class BasePlot:
 
     def make_movie(self, chemcharts: ChemData, movie_path: str):
         chemcharts = deepcopy(chemcharts)
+        xlim = (min(chemcharts.get_embedding().np_array[:, 0]),
+                max(chemcharts.get_embedding().np_array[:, 0]))
+        ylim = (min(chemcharts.get_embedding().np_array[:, 1]),
+                max(chemcharts.get_embedding().np_array[:, 1]))
         sorted_epochs = chemcharts.sort_epoch_list()
         indices_list = chemcharts.find_epoch_indices(sorted_epochs)
         updated_path_list = []
@@ -25,7 +29,10 @@ class BasePlot:
             epoch_chemdata = chemcharts.filter_epoch(epoch=idx, epoch_indices_list=indices_list[idx])
             updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
-            self.plot(chemdata=epoch_chemdata, path=updated_snapshot_path)
+            self.plot(chemdata=epoch_chemdata,
+                      path=updated_snapshot_path,
+                      xlim=xlim,
+                      ylim=ylim)
 
         path, file_name = os.path.split(os.path.abspath(movie_path))
         (
@@ -36,5 +43,5 @@ class BasePlot:
         )
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None):
         raise NotImplemented("This method needs to be overloaded in a child class.")

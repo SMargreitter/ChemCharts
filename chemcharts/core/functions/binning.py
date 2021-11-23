@@ -1,5 +1,4 @@
 from copy import deepcopy
-from rdkit import DataStructs
 import numpy as np
 import statistics
 
@@ -11,7 +10,7 @@ class Binning:
         pass
 
     @staticmethod
-    def _preparation(scores, num_bins):
+    def _preparation(scores: list, num_bins: int) -> tuple:
         bins = list(np.linspace(start=min(scores) - 0.1, stop=max(scores) + 0.1, num=num_bins))
         bin_idx = list(np.digitize(scores, bins=bins) - 1)
         sorted_bin_idx = list(set(bin_idx))
@@ -19,45 +18,45 @@ class Binning:
         return sorted_bin_idx, bin_idx
 
     @staticmethod
-    def _group_scores_bins(scores, sorted_bin_idx, bin_idx):
-        buffer = []
+    def _group_scores_bins(scores: list, sorted_bin_idx: list, bin_idx: list) -> list:
+        grouped_scores_bins = []
         for item in sorted_bin_idx:
-            me = []
+            scores_bin = []
             for idx in range(len(bin_idx)):
                 if item == bin_idx[idx]:
-                    me.append(scores[idx])
-            buffer.append(me)
-        return buffer
+                    scores_bin.append(scores[idx])
+            grouped_scores_bins.append(scores_bin)
+        return grouped_scores_bins
 
     @staticmethod
-    def _calculate_medians(buffer):
-        median_list = []
-        for item in buffer:
+    def _calculate_medians(grouped_scores_bins: list) -> list:
+        median_scores = []
+        for item in grouped_scores_bins:
             if not item:
-                median_list.append(None)
+                median_scores.append(None)
                 continue
-            median_scores = statistics.median(item)
-            median_list.append(median_scores)
-        return median_list
+            median_score = statistics.median(item)
+            median_scores.append(median_score)
+        return median_scores
 
     @staticmethod
-    def _overwrite_scores_medians(bin_idx, median_list):
+    def _overwrite_scores_medians(bin_idx: list, median_scores: list) -> list:
         new_scores = []
         for i_bin in range(len(bin_idx)):
             # get current bin index for observation i_bin
             cur_bin_idx = bin_idx[i_bin]
 
             # append median for current bin index
-            new_scores.append(median_list[cur_bin_idx])
+            new_scores.append(median_scores[cur_bin_idx])
         return new_scores
 
     def binning(self, chemdata: ChemData, num_bins: int) -> ChemData:
         chemdata = deepcopy(chemdata)
         scores = list(chemdata.get_scores())
         sorted_bin_idx, bin_idx = self._preparation(scores, num_bins)
-        buffer = self._group_scores_bins(scores, sorted_bin_idx, bin_idx)
-        median_list = self._calculate_medians(buffer)
-        new_scores = self._overwrite_scores_medians(bin_idx, median_list)
+        grouped_scores_bins = self._group_scores_bins(scores, sorted_bin_idx, bin_idx)
+        median_scores = self._calculate_medians(grouped_scores_bins)
+        new_scores = self._overwrite_scores_medians(bin_idx, median_scores)
 
         chemdata.set_scores(new_scores)
 
