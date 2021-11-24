@@ -16,17 +16,19 @@ class BasePlot:
         updated_path = f'{path}/{epoch_id:04}_{updated_file_name}'
         return updated_path
 
-    def make_movie(self, chemcharts: ChemData, movie_path: str):
+    def make_movie(self, chemcharts: ChemData, movie_path: str, aggregate_epochs: bool = True):
         chemcharts = deepcopy(chemcharts)
         xlim = (min(chemcharts.get_embedding().np_array[:, 0]),
                 max(chemcharts.get_embedding().np_array[:, 0]))
         ylim = (min(chemcharts.get_embedding().np_array[:, 1]),
                 max(chemcharts.get_embedding().np_array[:, 1]))
         sorted_epochs = chemcharts.sort_epoch_list()
-        indices_list = chemcharts.find_epoch_indices(sorted_epochs)
         updated_path_list = []
         for idx in range(len(sorted_epochs)):
-            epoch_chemdata = chemcharts.filter_epoch(epoch=idx, epoch_indices_list=indices_list[idx])
+            if aggregate_epochs:
+                epoch_chemdata = chemcharts.filter_epochs(epochs=[i for i in range(idx + 1)])
+            else:
+                epoch_chemdata = chemcharts.filter_epoch(epoch=idx)
             updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
             self.plot(chemdata=epoch_chemdata,

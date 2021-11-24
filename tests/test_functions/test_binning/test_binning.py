@@ -21,25 +21,33 @@ class TestBinning(unittest.TestCase):
         test_data_set.set_scores(scores)
         cls.test_chemdata = test_data_set
 
-    def test_binning(self):
+    def test_preparation(self):
         binning = Binning()
         test_sorted_bin_idx, test_bin_idx = binning._preparation(scores=[1.333, 2.33, -1, 4.3, 7.9, 9.5, 5.1],
                                                                  num_bins=4)
         self.assertListEqual([0, 1, 2], test_sorted_bin_idx)
         self.assertListEqual([0, 0, 0, 1, 2, 2, 1], test_bin_idx)
 
+    def test_group_scores_bins(self):
+        binning = Binning()
         test_group_scores_bins = binning._group_scores_bins(scores=[1.333, 2.33, -1, 4.3, 7.9, 9.5, 5.1],
                                                             sorted_bin_idx=[0, 1, 2],
                                                             bin_idx=[0, 0, 0, 1, 2, 2, 1])
         self.assertListEqual([1.333, 2.33, -1], test_group_scores_bins[0])
 
+    def test_calculate_medians(self):
+        binning = Binning()
         test_median_scores = binning._calculate_medians(grouped_scores_bins=[[1.333, 2.33, -1], [4.3, 5.1], [7.9, 9.5]])
         self.assertListEqual([1.333, 4.699999999999999, 8.7], test_median_scores)
 
+    def test_overwrite_scores_medians(self):
+        binning = Binning()
         test_new_scores = binning._overwrite_scores_medians(bin_idx=[0, 0, 0, 1, 2, 2, 1],
                                                             median_scores=[1.333, 4.699999999999999, 8.7])
         self.assertListEqual([1.333, 1.333, 1.333, 4.699999999999999, 8.7, 8.7, 4.699999999999999], test_new_scores)
 
+    def test_binning(self):
+        binning = Binning()
         test_binning = binning.binning(self.test_chemdata, 4)
         self.assertListEqual([1.333, 1.333, 1.333, 4.699999999999999, 8.7, 8.7, 4.699999999999999],
                              test_binning.get_scores())

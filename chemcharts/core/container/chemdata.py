@@ -45,22 +45,22 @@ class ChemData:
 
     def __init__(self, smiles_obj: Smiles,
                  name: str = "",
-                 epochs: list = None,
-                 active_inactive_list: list = None,
+                 epochs: list = [],
+                 active_inactive_list: list = [],
                  scores: list = [],
                  fingerprints: FingerprintContainer = None,
-                 embedding: Embedding = None
+                 embedding: Embedding = None,
+                 tanimoto_similarity: np.array = None
                  ):
 
         self.name = name
         self.epochs = epochs
         self.active_inactive_list = active_inactive_list
         self.scores = scores
-        self.smiles_obj = None
-        self.set_smiles(smiles_obj)
+        self.smiles_obj = smiles_obj
         self.fingerprints = fingerprints
         self.embedding = embedding
-        self.tanimoto_similarity = None
+        self.tanimoto_similarity = tanimoto_similarity
 
     def __repr__(self) -> str:
         return f"instance of ChemData with name: {self.name}," \
@@ -73,33 +73,51 @@ class ChemData:
     def __str__(self):
         return self.__repr__()
 
+    def __add__(self, obj):
+        copy_self = deepcopy(self)
+        obj = deepcopy(obj)
+        copy_self.set_name('_'.join([copy_self.name, obj.name]))
+        copy_self.set_epochs(copy_self.epochs + obj.epochs)
+        copy_self.set_active_inactive_list(copy_self.active_inactive_list + obj.active_inactive_list)
+        copy_self.set_scores(copy_self.scores + obj.scores)
+        # TODO add the other parts; make '+' operator for Smiles objects and use here
+        return copy_self
+
     def sort_epoch_list(self) -> list:
         sorted_epochs = list(set(self.get_epochs()))
         sorted_epochs.sort()
         return sorted_epochs
 
     def find_epoch_indices(self, sorted_epochs: list) -> list:
-        indices_list = []
+        epoch_indices_list = []
         epochs = self.get_epochs()
         for ep in sorted_epochs:
             buffer = []
             for idx in range(len(epochs)):
                 if epochs[idx] == ep:
                     buffer.append(idx)
-            indices_list.append(buffer)
-        return indices_list
+            epoch_indices_list.append(buffer)
+        return epoch_indices_list
 
-    def filter_epoch(self, epoch: int, epoch_indices_list: list):
+    def filter_epochs(self, epochs: list):
+        buffer = ChemData(Smiles([]))
+        for idx in epochs:
+            buffer = buffer + self.filter_epoch(epoch=idx)
+        return buffer
+
+    def filter_epoch(self, epoch: int):
         copy_chemdata = deepcopy(self)
+        sorted_epochs = copy_chemdata.sort_epoch_list()
+        epoch_indices = copy_chemdata.find_epoch_indices(sorted_epochs)[epoch]
         epoch_chemdata = \
-            ChemData(smiles_obj=Smiles([copy_chemdata.get_smiles()[i] for i in epoch_indices_list]),
+            ChemData(smiles_obj=Smiles([copy_chemdata.get_smiles()[i] for i in epoch_indices]),
                      name=f"epoch_{epoch}_chemdata",
-                     epochs=[copy_chemdata.get_epochs()[i] for i in epoch_indices_list],
-                     scores=[copy_chemdata.get_scores()[i] for i in epoch_indices_list],
+                     epochs=[copy_chemdata.get_epochs()[i] for i in epoch_indices],
+                     scores=[copy_chemdata.get_scores()[i] for i in epoch_indices],
                      fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
                                                        fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in
-                                                                         epoch_indices_list]),
-                     embedding=Embedding(np.vstack([copy_chemdata.get_embedding()[i] for i in epoch_indices_list])))
+                                                                         epoch_indices]),
+                     embedding=Embedding(np.vstack([copy_chemdata.get_embedding()[i] for i in epoch_indices])))
         return epoch_chemdata
 
     def get_name(self) -> str:

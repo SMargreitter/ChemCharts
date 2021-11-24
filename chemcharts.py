@@ -104,7 +104,7 @@ if __name__ == "__main__":
                          f"{args.plot}")
 
     #make plot
-    #plot_instance.plot(plot_data, args.output_plot)
+    plot_instance.plot(plot_data, args.output_plot)
 
     #make movie
     if args.output_movie is not None:
