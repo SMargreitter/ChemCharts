@@ -9,7 +9,7 @@ from chemcharts.core.container.smiles import Smiles
 
 class ChemData:
     """
-        A class to represent information about molecules for generating plots.
+        This class represents information about molecules for generating plots.
 
         ...
 
@@ -37,30 +37,34 @@ class ChemData:
 
         Methods
         -------
-        get_<attribute>:
-            returns the attribute
-        set_<attribute>:
-
+       sort_epoch_list<attribute>:
+            returns an ascending list of unique epochs
+        find_epoch_indices<attribute>:
+            returns a list of the epoch indices
+        filter_epoch<attribute>:
+            returns a ChemData object with the object belonging to a specific epoch
+        filter_epochs<attribute>:
+            returns a ChemData for a specific epoch
         """
 
-    def __init__(self, smiles_obj: Smiles,
+    def __init__(self, smiles_obj: Smiles = None,
                  name: str = "",
-                 epochs: list = [],
-                 active_inactive_list: list = [],
-                 scores: list = [],
+                 epochs: list = None,
+                 active_inactive_list: list = None,
+                 scores: list = None,
                  fingerprints: FingerprintContainer = None,
                  embedding: Embedding = None,
                  tanimoto_similarity: np.array = None
                  ):
 
         self.name = name
-        self.epochs = epochs
-        self.active_inactive_list = active_inactive_list
-        self.scores = scores
-        self.smiles_obj = smiles_obj
-        self.fingerprints = fingerprints
-        self.embedding = embedding
-        self.tanimoto_similarity = tanimoto_similarity
+        self.epochs = [] if epochs is None else epochs
+        self.active_inactive_list = [] if active_inactive_list is None else active_inactive_list
+        self.scores = [] if scores is None else scores
+        self.smiles_obj = Smiles() if smiles_obj is None else smiles_obj
+        self.fingerprints = FingerprintContainer("") if fingerprints is None else fingerprints
+        self.embedding = Embedding() if embedding is None else embedding
+        self.tanimoto_similarity = np.empty((0, 2), float) if tanimoto_similarity is None else tanimoto_similarity
 
     def __repr__(self) -> str:
         return f"instance of ChemData with name: {self.name}," \
@@ -80,7 +84,10 @@ class ChemData:
         copy_self.set_epochs(copy_self.epochs + obj.epochs)
         copy_self.set_active_inactive_list(copy_self.active_inactive_list + obj.active_inactive_list)
         copy_self.set_scores(copy_self.scores + obj.scores)
-        # TODO add the other parts; make '+' operator for Smiles objects and use here
+        copy_self.set_smiles(copy_self.smiles_obj + obj.smiles_obj)
+        copy_self.set_fingerprints(copy_self.fingerprints + obj.fingerprints)
+        copy_self.set_embedding(copy_self.embedding + obj.embedding)
+        copy_self.set_tanimoto_similarity(np.empty((0, 2), float))
         return copy_self
 
     def sort_epoch_list(self) -> list:
@@ -100,7 +107,7 @@ class ChemData:
         return epoch_indices_list
 
     def filter_epochs(self, epochs: list):
-        buffer = ChemData(Smiles([]))
+        buffer = ChemData()
         for idx in epochs:
             buffer = buffer + self.filter_epoch(epoch=idx)
         return buffer

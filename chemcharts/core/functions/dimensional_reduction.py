@@ -11,11 +11,33 @@ from chemcharts.core.container.embedding import Embedding
 
 
 class DimensionalReduction:
+    """
+    Reduces fingerprints with UMAP function.
+    """
+
     def __init__(self):
         pass
 
     @staticmethod
     def _generating_array_list(chemdata: ChemData) -> list:
+        """
+        Generates an array list.
+
+        Parameters
+        ----------
+        chemdata : ChemData
+            object of ChemData class
+        second :
+            the 2nd param
+        third : {'value', 'other'}, optional
+            the 3rd param, by default 'value'
+
+        Returns
+        -------
+        list
+            an array list
+        """
+
         array_list = []
         for fingerprint in chemdata.fingerprints:
             array = np.array(list(fingerprint))

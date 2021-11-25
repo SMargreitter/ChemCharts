@@ -9,10 +9,37 @@ from chemcharts.core.container.embedding import Embedding
 
 
 class Filtering:
+    """
+    My numpydoc description of a kind
+    of very exhautive numpydoc format docstring.
+
+    Parameters
+    ----------
+    first : array_like
+        the 1st param name `first`
+    second :
+        the 2nd param
+    third : {'value', 'other'}, optional
+        the 3rd param, by default 'value'
+
+    Returns
+    -------
+    string
+        a value in a string
+
+    Raises
+    ------
+    KeyError
+        when a key error
+    OtherError
+        when an other error
+    """
+
     def __init__(self):
         pass
 
-    def filter_range(self, chemdata: ChemData, range_dim1: Tuple[float, float], range_dim2: Tuple[float, float]) -> ChemData:
+    def filter_range(self, chemdata: ChemData, range_dim1: Tuple[float, float], range_dim2: Tuple[float, float]) \
+            -> ChemData:
         chemdata = deepcopy(chemdata)
         embedding_df = pd.DataFrame(
             {"UMAP_1": chemdata.get_embedding().np_array[:, 0],

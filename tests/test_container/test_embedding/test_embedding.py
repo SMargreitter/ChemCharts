@@ -31,3 +31,21 @@ class TestEmbedding(unittest.TestCase):
         test_embedding = Embedding(self.array)
         length = len(test_embedding)
         self.assertEqual(length, 16)
+
+    def test_set_item(self):
+        test_array = Embedding(self.array)
+        test_array[8, 1] = 1   # test_array.__setitem__([8, 1], 1)
+        self.assertListEqual(list([8, 1]), list(test_array[1]))
+
+    def test_add_item(self):
+        test_embedding = Embedding(self.array)
+        array_to_add = np.array([[2, 2],
+                                 [3, 3],
+                                 [2, 2],
+                                 [4, 4],
+                                 [5, 5],
+                                 [11, 11],
+                                 [7, 7],
+                                 [1, 1]])
+        test = test_embedding + Embedding(array_to_add)
+        self.assertIn([1, 1], test.np_array)

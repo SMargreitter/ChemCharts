@@ -21,3 +21,13 @@ class TestSmiles(unittest.TestCase):
         test_smiles = Smiles(self.smiles_list)
         length = len(test_smiles)
         self.assertEqual(length, 3)
+
+    def test_set_item(self):
+        test_smiles = Smiles(self.smiles_list)
+        test_smiles.__setitem__("Fc1ccnc(Cc2cccc3c2-c2ccccc2C3)c1", 1)
+        self.assertEqual("Fc1ccnc(Cc2cccc3c2-c2ccccc2C3)c1", test_smiles.__getitem__(1))
+
+    def test_add_item(self):
+        test_smiles = Smiles(self.smiles_list)
+        concatenated_smiles = test_smiles.__add__(Smiles(["Fc1ccnc(Cc2cccc3c2-c2ccccc2C3)c1"]))
+        self.assertIn("Fc1ccnc(Cc2cccc3c2-c2ccccc2C3)c1", concatenated_smiles.smiles_list)

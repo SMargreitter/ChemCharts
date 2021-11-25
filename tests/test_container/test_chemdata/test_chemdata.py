@@ -109,7 +109,7 @@ class TestChemData(unittest.TestCase):
         self.assertListEqual([10, 12, 16], list(self.test_chemdata.find_epoch_indices(sorted_epochs)[3]))
 
     def test_filter_epoch(self):
-        test_epoch_3_chemdata = self.test_chemdata.filter_epoch(4, [10, 12, 16])
+        test_epoch_3_chemdata = self.test_chemdata.filter_epoch(3)
 
         self.assertIsInstance(test_epoch_3_chemdata.get_smiles(), Smiles)
         self.assertEqual(test_epoch_3_chemdata.get_smiles()[0], "Cc1cc[nH]c(=NC(=O)c2cccc3c2-c2ccccc2C3=O)c1")
@@ -123,7 +123,7 @@ class TestChemData(unittest.TestCase):
 
         self.assertListEqual([3, 3, 3], list(test_epoch_3_chemdata.get_epochs()))
 
-        test_epoch_0_chemdata = self.test_chemdata.filter_epoch(0, [0, 3, 6, 8, 14, 15])
+        test_epoch_0_chemdata = self.test_chemdata.filter_epoch(0)
         self.assertListEqual([0, 0, 0, 0, 0, 0], list(test_epoch_0_chemdata.get_epochs()))
 
         self.assertListEqual([2, 3, 8], list(test_epoch_3_chemdata.get_scores()))

@@ -41,11 +41,7 @@ class TestTrisurfPlot(unittest.TestCase):
                          "C1=C(CN2CCNCC2)c2ccccc2-c2ccccc21",
                          "O=C(N=c1cccc[nH]1)c1cccc2c(C(F)(F)F)nc3ccccc3c12",
                          "Cc1cccc(-c2cc(C(=O)N=c3cc(C)cc(C)[nH]3)c3ccccc3n2)c1",
-                         "O=C(N=c1cncc[nH]1)c1cccc2c1-c1ccccc1C2=O",
-                         "CC1=CCC(=O)c2c3c(c4ccccc4c21)C(=O)CC3",
-                         "O=C(c1ccccc1)c1cc2ccccc2c(-c2ccccc2)cc1=O",
-                         "Cc1ccc(=NC(=O)c2cccc3c2-c2ccccc2C3=O)[nH]c1",
-                         "Cc1ccc(=NC(=O)c2cccc3c2-c2cc(C)ccc2C3=O)[nH]c1"])
+                         "O=C(N=c1cncc[nH]1)c1cccc2c1-c1ccccc1C2=O"])
         embedding_list = Embedding(np.array([[1, 2],
                                              [2, 2],
                                              [4, 2],

@@ -39,8 +39,7 @@ class TestDimensionalReduction(unittest.TestCase):
                                          "NCCNCCNCCn1ccc2ccc(C(NCCc3sc(N)nc3C(=O)NN)c3cccc(CN)c3)cc21",
                                          "[N-]=[N+]=NCc1cc(CN)c(O)c(CNC(CCN)Cc2cccc(CN)c2)c1CN1CCN(Cc2cccc(CN)c2)CC1",
                                          "NC(N)=NCCCC(CNCCc1c[nH]cn1)NC(=O)C(Cc1ccc(-c2cccc(CN3CCCNCC3)c2)cc1)NCC(=O)NCc1ccc2ccccc2c1",
-                                         "CC(C)c1ccc2ccc(C=CC(CCNCCNCCN)=NNc3nc(-c4cc(C(F)(F)F)cc(C(F)(F)F)c4)cs3)c(c1)c2"
-                                         ]),
+                                         "CC(C)c1ccc2ccc(C=CC(CCNCCNCCN)=NNc3nc(-c4cc(C(F)(F)F)cc(C(F)(F)F)c4)cs3)c(c1)c2"]),
                                  name="test_chemdata"
                                  )
         test_fingerprint = FingerprintContainer("test_fingerprint",

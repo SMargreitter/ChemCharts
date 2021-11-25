@@ -4,7 +4,7 @@ import pandas as pd
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.utils.dimensional_reduction import calculate_embedding
 from chemcharts.utils.fp_utils import add_fingerprints
-from chemcharts.core.container.smiles import Smiles
+from chemcharts.core.container.smiles import FingerprintContainer
 from chemcharts.utils.plot_generating import generate_chemcharts_scatter_plot
 
 loaded_data = pd.read_csv("../../data/DEKOIS2_Dataset_selected.csv")
@@ -16,9 +16,9 @@ QPCT_smiles = list(loaded_data['Actives.2'].dropna())+list(loaded_data['Inactive
 active_inactive_list = [True] * 40 + [False] * 1200
 
 # generate an instance of the data_set class and set to COX2_set variable
-COX2_set = ChemData(name="COX2", active_inactive_list=active_inactive_list, smiles_obj=Smiles(COX2_smiles))
-ERBB2_set = ChemData(name="ERBB2", active_inactive_list=active_inactive_list, smiles_obj=Smiles(ERBB2_smiles))
-QPCT_set = ChemData(name="QPCT", active_inactive_list=active_inactive_list, smiles_obj=Smiles(QPCT_smiles))
+COX2_set = ChemData(name="COX2", active_inactive_list=active_inactive_list, smiles_obj=FingerprintContainer(COX2_smiles))
+ERBB2_set = ChemData(name="ERBB2", active_inactive_list=active_inactive_list, smiles_obj=FingerprintContainer(ERBB2_smiles))
+QPCT_set = ChemData(name="QPCT", active_inactive_list=active_inactive_list, smiles_obj=FingerprintContainer(QPCT_smiles))
 #print(COX2_set.smiles_obj.smiles_list)
 
 # call function to add fingerprints to instances of data_set class

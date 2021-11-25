@@ -112,6 +112,7 @@ dependencies:
   - ptyprocess=0.7.0=pyhd3deb0d_0
   - py-boost=1.73.0=py37ha9443f7_11
   - pycparser=2.20=pyh9f0ad1d_2
+  - pydantic
   - pygments=2.7.4=pyhd8ed1ab_0
   - pyopenssl=20.0.1=pyhd8ed1ab_0
   - pyparsing=2.4.7=pyh9f0ad1d_0
