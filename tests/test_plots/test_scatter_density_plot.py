@@ -100,10 +100,10 @@ class TestScatterDensityPlot(unittest.TestCase):
         test_plot = ScatterDensityPlot()
         test_plot.plot(self.test_chemdata, "../junk/scatter_density_test/plot_unitest.png")
         file_size = os.path.getsize("../junk/scatter_density_test/plot_unitest.png")
-        self.assertTrue(45000 <= file_size <= 50000)
+        self.assertTrue(37000 <= file_size <= 57000)
 
     def test_check_movie_size(self):
         test_plot = ScatterDensityPlot()
         test_plot.make_movie(self.test_chemdata, "../junk/scatter_density_movie/test_movie.mp4")
         file_size = os.path.getsize("../junk/scatter_density_movie/test_movie.mp4")
-        self.assertTrue(36000 <= file_size <= 40000)
+        self.assertTrue(21000 <= file_size <= 41000)

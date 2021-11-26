@@ -12,7 +12,7 @@ class TrisurfPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
         x = chemdata.get_embedding().np_array[:, 0]
         y = chemdata.get_embedding().np_array[:, 1]
         z = chemdata.get_scores()
@@ -25,5 +25,13 @@ class TrisurfPlot(BasePlot):
                                 simplices=simplices,
                                 title="Trisurf ChemCharts Plot")
 
-        fig.show()
+        fig.update_layout(
+            scene=dict(
+                xaxis=dict(nticks=4, range=xlim, ),
+                yaxis=dict(nticks=4, range=ylim, ),
+                zaxis=dict(nticks=4, range=scorelim, ), ),
+            width=700,
+            margin=dict(r=20, l=10, b=10, t=10))
+
+  #      fig.show()          ACTIVATE ME VIA JSON!!!!!!!!!!!!!!!!!
         fig.write_image(path)

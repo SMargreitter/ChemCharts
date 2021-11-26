@@ -100,10 +100,10 @@ class TestScatterInteractivePlot(unittest.TestCase):
         test_plot = ScatterInteractivePlot()
         test_plot.plot(self.test_chemdata, "../junk/scatter_interactive_test/plot_unitest.png")
         file_size = os.path.getsize("../junk/scatter_interactive_test/plot_unitest.png")
-        self.assertTrue(43000 <= file_size <= 49000)
+        self.assertTrue(31000 <= file_size <= 51000)
 
     def test_check_movie_size(self):
         test_plot = ScatterInteractivePlot()
         test_plot.make_movie(self.test_chemdata, "../junk/scatter_interactive_movie/test_movie.mp4")
         file_size = os.path.getsize("../junk/scatter_interactive_movie/test_movie.mp4")
-        self.assertTrue(49000 <= file_size <= 55000)
+        self.assertTrue(12000 <= file_size <= 32000)

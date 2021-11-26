@@ -100,10 +100,10 @@ class TestScatterBoxplotPlot(unittest.TestCase):
         test_plot = ScatterBoxplotPlot()
         test_plot.plot(self.test_chemdata, "../junk/scatter_boxplot_test/plot_unitest.png")
         file_size = os.path.getsize("../junk/scatter_boxplot_test/plot_unitest.png")
-        self.assertTrue(31000 <= file_size <= 36000)
+        self.assertTrue(23000 <= file_size <= 43000)
 
     def test_check_movie_size(self):
         test_plot = ScatterBoxplotPlot()
         test_plot.make_movie(self.test_chemdata, "../junk/scatter_boxplot_movie/test_movie.mp4")
         file_size = os.path.getsize("../junk/scatter_boxplot_movie/test_movie.mp4")
-        self.assertTrue(24000 <= file_size <= 29000)
+        self.assertTrue(4000 <= file_size <= 24000)

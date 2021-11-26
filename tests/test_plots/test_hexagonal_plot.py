@@ -100,10 +100,10 @@ class TestHexagonalPlot(unittest.TestCase):
         test_plot = HexagonalPlot()
         test_plot.plot(self.test_chemdata, "../junk/hexagonal_test/plot_unitest.png")
         file_size = os.path.getsize("../junk/hexagonal_test/plot_unitest.png")
-        self.assertTrue(22000 <= file_size <= 276000)
+        self.assertTrue(13000 <= file_size <= 33000)
 
     def test_check_movie_size(self):
         test_plot = HexagonalPlot()
         test_plot.make_movie(self.test_chemdata, "../junk/hexagonal_movie/test_movie.mp4")
         file_size = os.path.getsize("../junk/hexagonal_movie/test_movie.mp4")
-        self.assertTrue(13000 <= file_size <= 20000)
+        self.assertTrue(2000 <= file_size <= 22000)

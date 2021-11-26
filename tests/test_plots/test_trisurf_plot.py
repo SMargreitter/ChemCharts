@@ -108,10 +108,12 @@ class TestTrisurfPlot(unittest.TestCase):
         test_plot = TrisurfPlot()
         test_plot.plot(self.test_chemdata, "../junk/trisurf_test/plot_unitest.png")
         file_size = os.path.getsize("../junk/trisurf_test/plot_unitest.png")
+        print(file_size)
         self.assertTrue(85000 <= file_size <= 100000)
 
     def test_check_movie_size(self):
         test_plot = TrisurfPlot()
         test_plot.make_movie(self.test_chemdata, "../junk/trisurf_movie/test_movie.mp4")
         file_size = os.path.getsize("../junk/trisurf_movie/test_movie.mp4")
+        print(file_size)
         self.assertTrue(76000 <= file_size <= 82000)

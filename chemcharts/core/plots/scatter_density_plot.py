@@ -11,7 +11,9 @@ class ScatterDensityPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str, selection: str = "scores"):
+    #def plot(chemdata: ChemData, path: str, selection: str = "scores"):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None,
+             selection: str = "scores"):
         if selection == "tanimoto_similarity":
             scores_input = chemdata.get_tanimoto_similarity()
             score_name = "Tanimoto Similarity"
@@ -29,11 +31,14 @@ class ScatterDensityPlot(BasePlot):
         plt.figure(figsize=(17, 17))
         sns.displot(scatter_df, x=score_name, kind="kde")
 
+       # plt.xlim(xlim)
+       # plt.ylim(ylim)
+
         plt.subplots_adjust(top=0.9)
         plt.suptitle('Scatter Density ChemCharts Plot', fontsize=14)
 
         plt.savefig(path, format='png', dpi=150)
-        plt.close()
+        plt.close("all")
 
 
 

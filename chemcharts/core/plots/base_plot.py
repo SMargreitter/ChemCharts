@@ -22,6 +22,7 @@ class BasePlot:
                 max(chemcharts.get_embedding().np_array[:, 0]))
         ylim = (min(chemcharts.get_embedding().np_array[:, 1]),
                 max(chemcharts.get_embedding().np_array[:, 1]))
+        scorelim = (min(chemcharts.get_scores()), max(chemcharts.get_scores()))
         sorted_epochs = chemcharts.sort_epoch_list()
         updated_path_list = []
         for idx in range(len(sorted_epochs)):
@@ -34,16 +35,17 @@ class BasePlot:
             self.plot(chemdata=epoch_chemdata,
                       path=updated_snapshot_path,
                       xlim=xlim,
-                      ylim=ylim)
+                      ylim=ylim,
+                      scorelim=scorelim)
 
         path, file_name = os.path.split(os.path.abspath(movie_path))
         (
             ffmpeg
-            .input(f"{path}/*.png", pattern_type='glob', framerate=1)
+            .input(f"{path}/*.png", pattern_type='glob', framerate=3)
             .output(movie_path)
             .run()
         )
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
         raise NotImplemented("This method needs to be overloaded in a child class.")

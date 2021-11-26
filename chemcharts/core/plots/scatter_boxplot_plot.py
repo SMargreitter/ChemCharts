@@ -11,7 +11,7 @@ class ScatterBoxplotPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
         scatter_df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
                                   "UMAP_2": chemdata.get_embedding().np_array[:, 1],
                                    "z": chemdata.get_scores()})
@@ -20,7 +20,10 @@ class ScatterBoxplotPlot(BasePlot):
         plt.figure(figsize=(17, 17))
         g = sns.JointGrid(data=scatter_df,
                           x="UMAP_1",
-                          y="UMAP_2")
+                          y="UMAP_2",
+                          xlim=xlim,
+                          ylim=ylim
+                          )
         g.plot_joint(sns.scatterplot)
         g.plot_marginals(sns.boxplot)
 
@@ -28,4 +31,4 @@ class ScatterBoxplotPlot(BasePlot):
         plt.suptitle('Scatter Boxplot ChemCharts Plot', fontsize=14)
 
         plt.savefig(path, format='png', dpi=150)
-        plt.close(g)
+        plt.close("all")

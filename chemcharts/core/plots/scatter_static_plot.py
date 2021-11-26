@@ -9,7 +9,7 @@ class ScatterStaticPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
         fig = plt.figure()
         ax = fig.add_subplot(projection='3d')
 
