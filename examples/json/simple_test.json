@@ -1,0 +1,54 @@
+{
+  "chemcharts": {
+    "header": {},
+    "execution": [
+      {"task":  "data_loading",
+       "input":  "data/scaffold_memory.csv",
+       "input_type":  "csv",
+       "columns":  {
+                     "smiles_column": "SMILES",
+                     "scores_column": "total_score",
+                     "epochs_column": "Step"
+                    }
+      },
+      {"task":  "generate_fingerprints",
+       "type":  "maccs",
+       "parameters":  {"useFeatures":  true}
+      },
+      {"task":  "dimensional_reduction",
+       "type": "UMAP",
+       "parameters":  {}
+      },
+      {"task":  "filtering_data",
+       "type": "filtering",
+       "parameters":  {"range_dim1": [-100, 100],
+                       "range_dim2": [-100, 100]}
+      },
+      {"task":  "clustering_data",
+       "type": "KMmeans",
+       "parameters":  {"k": 10}
+      },
+      {"task":  "binning_scores",
+       "type": "binning",
+       "parameters":  {"num_bins": 4}
+      },
+      {
+        "task": "write_out",
+        "format": "pkl",
+        "path": "../junk/simple_test.pkl"
+      },
+      {"task":  "generate_plot",
+       "type": "scatter_interactive_plot",
+       "parameters":  {"view":  false}
+      },
+      {"task":  "generate_plot",
+       "type": "hexagonal_plot",
+       "parameters":  {"view":  false}
+      },
+      {"task":  "make_movie",
+       "type": "make_movie",
+       "parameters":  {}
+      }
+    ]
+  }
+}
