@@ -7,29 +7,12 @@ from chemcharts.core.container.chemdata import ChemData
 
 class Binning:
     """
-    My numpydoc description of a kind
-    of very exhautive numpydoc format docstring.
+    The Binning class contains a ChemData with binned median scores.
 
-    Parameters
-    ----------
-    first : array_like
-        the 1st param name `first`
-    second :
-        the 2nd param
-    third : {'value', 'other'}, optional
-        the 3rd param, by default 'value'
-
-    Returns
-    -------
-    string
-        a value in a string
-
-    Raises
-    ------
-    KeyError
-        when a key error
-    OtherError
-        when an other error
+    Methods
+        -------
+       binning <chemdata: ChemData, num_bins: int> -> ChemData:
+            returns an ChemData with binned median scores
     """
 
     def __init__(self):
@@ -77,6 +60,22 @@ class Binning:
         return new_scores
 
     def binning(self, chemdata: ChemData, num_bins: int) -> ChemData:
+        """
+            The binning function accesses scores of a given Chemdata, calculates the binned scores and then
+             returns their median.
+
+            Parameters
+            ----------
+            chemdata: ChemData
+                object of ChemData class
+            num_bins: int
+                the number of desired bins
+
+            Returns
+            -------
+            ChemData
+                an object of ChemData class with binned scores
+            """
         chemdata = deepcopy(chemdata)
         scores = list(chemdata.get_scores())
         sorted_bin_idx, bin_idx = self._preparation(scores, num_bins)

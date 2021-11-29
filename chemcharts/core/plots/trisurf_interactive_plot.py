@@ -1,13 +1,12 @@
-import plotly.figure_factory as ff
-
 import numpy as np
+import plotly.figure_factory as ff
 from scipy.spatial import Delaunay
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
 
-class TrisurfPlot(BasePlot):
+class TrisurfInteractivePlot(BasePlot):
     def __init__(self):
         super().__init__()
 
@@ -23,13 +22,14 @@ class TrisurfPlot(BasePlot):
         fig = ff.create_trisurf(x=x, y=y, z=z,
                                 colormap="Portland",
                                 simplices=simplices,
-                                title="Trisurf ChemCharts Plot")
+                                title="Trisurf ChemCharts Plot"
+                                )
 
         fig.update_layout(
             scene=dict(
-                xaxis=dict(nticks=4, range=xlim, ),
-                yaxis=dict(nticks=4, range=ylim, ),
-                zaxis=dict(nticks=4, range=scorelim, ), ),
+                xaxis={} if xlim is None else dict(nticks=6, range=xlim),
+                yaxis={} if ylim is None else dict(nticks=6, range=ylim),
+                zaxis={} if scorelim is None else dict(nticks=6, range=scorelim)),
             width=700,
             margin=dict(r=20, l=10, b=10, t=10))
 

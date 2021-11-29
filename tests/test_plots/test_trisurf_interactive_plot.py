@@ -8,19 +8,15 @@ from chemcharts.core.container.embedding import Embedding
 from chemcharts.core.container.fingerprint import *
 from chemcharts.core.container.smiles import Smiles
 
-from chemcharts.core.plots.trisurf_plot import TrisurfPlot
+from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlot
 
 
-class TestTrisurfPlot(unittest.TestCase):
+class TestTrisurfInteractivePlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir("../junk/trisurf_test"):
-            shutil.rmtree("../junk/trisurf_test")
-        os.mkdir("../junk/trisurf_test")
-
-        if os.path.isdir("../junk/trisurf_movie"):
-            shutil.rmtree("../junk/trisurf_movie")
-        os.mkdir("../junk/trisurf_movie")
+        if os.path.isdir("../junk/trisurf_interactive_test"):
+            shutil.rmtree("../junk/trisurf_interactive_test")
+        os.mkdir("../junk/trisurf_interactive_test")
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -104,16 +100,11 @@ class TestTrisurfPlot(unittest.TestCase):
     def setUp(self) -> None:
         pass
 
-    def test_trisurf_plot(self):
-        test_plot = TrisurfPlot()
-        test_plot.plot(self.test_chemdata, "../junk/trisurf_test/plot_unitest.png")
-        file_size = os.path.getsize("../junk/trisurf_test/plot_unitest.png")
+    def test_trisurf_interactive_plot(self):
+        test_plot = TrisurfInteractivePlot()
+        test_plot.plot(self.test_chemdata, "../junk/trisurf_interactive_test/plot_unitest.png")
+        file_size = os.path.getsize("../junk/trisurf_interactive_test/plot_unitest.png")
         print(file_size)
         self.assertTrue(85000 <= file_size <= 100000)
 
-    def test_check_movie_size(self):
-        test_plot = TrisurfPlot()
-        test_plot.make_movie(self.test_chemdata, "../junk/trisurf_movie/test_movie.mp4")
-        file_size = os.path.getsize("../junk/trisurf_movie/test_movie.mp4")
-        print(file_size)
-        self.assertTrue(76000 <= file_size <= 82000)
+

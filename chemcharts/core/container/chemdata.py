@@ -37,13 +37,13 @@ class ChemData:
 
         Methods
         -------
-       sort_epoch_list<attribute>:
+       sort_epoch_list:
             returns an ascending list of unique epochs
-        find_epoch_indices<attribute>:
+        find_epoch_indices <sorted_epochs: list>:
             returns a list of the epoch indices
-        filter_epoch<attribute>:
+        filter_epoch <epoch: int>:
             returns a ChemData object with the object belonging to a specific epoch
-        filter_epochs<attribute>:
+        filter_epochs <epochs: list>:
             returns a ChemData for a specific epoch
         """
 

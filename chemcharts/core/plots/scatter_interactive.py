@@ -1,6 +1,8 @@
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
+from copy import deepcopy
+
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
@@ -18,15 +20,16 @@ class ScatterInteractivePlot(BasePlot):
         fig = px.scatter_3d(scatter_df,
                             x="UMAP_1", y="UMAP_2", z="Scores",
                             color='Scores',
-                            color_discrete_sequence=px.colors.qualitative.Plotly
+                            color_discrete_sequence=px.colors.qualitative.Plotly,
+                            range_color=scorelim
                             )
         fig.update_traces(marker_size=1)
 
         fig.update_layout(
             scene=dict(
-                xaxis={} if xlim is None else dict(nticks=4, range=xlim),
-                yaxis={} if ylim is None else dict(nticks=4, range=ylim),
-                zaxis={} if scorelim is None else dict(nticks=4, range=scorelim), ),
+                xaxis={} if xlim is None else dict(nticks=6, range=xlim),
+                yaxis={} if ylim is None else dict(nticks=6, range=ylim),
+                zaxis={} if scorelim is None else dict(nticks=6, range=scorelim)),
             width=700,
             margin=dict(r=20, l=10, b=10, t=10))
      #   fig.show()             ACTIVATE ME VIA JSON!!!!!!!!!!!

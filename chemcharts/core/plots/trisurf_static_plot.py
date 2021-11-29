@@ -1,31 +1,33 @@
 import matplotlib.pyplot as plt
+import numpy as np
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
 
-class ScatterStaticPlot(BasePlot):
+class TrisurfStaticPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
     @staticmethod
     def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
-        fig = plt.figure()
-        ax = fig.add_subplot(projection='3d')
+        fig = plt.figure(figsize=(14, 9))
+        ax = plt.axes(projection='3d')
 
-        plt.gcf().set_size_inches((15, 15))
+        cmap = plt.get_cmap('twilight_shifted')
+        ax.plot_trisurf(chemdata.get_embedding().np_array[:, 0],
+                        chemdata.get_embedding().np_array[:, 1],
+                        chemdata.get_scores(),
+                        cmap=cmap
+                        )
 
-        ax.scatter(chemdata.get_embedding().np_array[:, 0],
-                   chemdata.get_embedding().np_array[:, 1],
-                   zs=chemdata.get_scores(),
-                   s=1)
-
-        ax.set_title("Scatter Static ChemCharts Plot")
+        # Adding labels
+        ax.set_title("Trisurf Static ChemCharts Plot")
         ax.set_xlabel('UMAP 1')
         ax.set_ylabel('UMAP 2')
         ax.set_zlabel('Scores')
 
-        # setting axes ranges
+        # Setting axes ranges
         if xlim is not None:
             plt.xlim(xlim[0], xlim[1])
         if ylim is not None:

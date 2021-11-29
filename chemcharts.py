@@ -16,7 +16,8 @@ from chemcharts.core.functions.filtering import Filtering
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 from chemcharts.core.plots.scatter_static_plot import ScatterStaticPlot
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
-from chemcharts.core.plots.trisurf_plot import TrisurfPlot
+from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
+from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlot
 from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
 from chemcharts.core.plots.scatter_density_plot import ScatterDensityPlot
 
@@ -37,7 +38,8 @@ if __name__ == "__main__":
                              "scatter_boxplot_plot" "|"
                              "scatter_interactive_plot" "|"
                              "scatter_density_plot" "|"
-                             "trisurf_plot" "|" 
+                             "trisurf_static_plot" "|"
+                             "trisurf_interactive_plot (no movie function possible)" "|"
                              "hexagonal_plot (default)")
     parser.add_argument("-data", type=str, required=False, default="original_data",
                         help="Choose the data set:"
@@ -90,8 +92,10 @@ if __name__ == "__main__":
         plot_instance = ScatterInteractivePlot()
     elif args.plot == "scatter_boxplot_plot":
         plot_instance = ScatterBoxplotPlot()
-    elif args.plot == "trisurf_plot":
-        plot_instance = TrisurfPlot()
+    elif args.plot == "trisurf_static_plot":
+        plot_instance = TrisurfStaticPlot()
+    elif args.plot == "trisurf_interactive_plot":
+        plot_instance = TrisurfInteractivePlot()
     elif args.plot == "scatter_static_plot":
         plot_instance = ScatterStaticPlot()
     elif args.plot == "scatter_density_plot":
