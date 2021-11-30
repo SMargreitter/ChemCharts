@@ -11,73 +11,28 @@ from chemcharts.core.container.smiles import Smiles
 
 
 class FingerprintContainer:
-    """ Class object which contains a list of fingerprints and its name.
-        input:
-            list of fingerprints and string which refers to the name of the fingerprints
-        output:
-            __len__method gives back the length of the fingerprint list
-            with indexing items can be returned or deleted
-            __iter__ and __getitem__ the same???
-        """
     """
-      This class currently takes a dimension and a degree of polynomial
-      and builds the Smolyak Sparse grid.  We base this on the work by
-      Judd, Maliar, Maliar, and Valero (2013).
+       Class object which contains a list of fingerprints and its name.
 
-      Parameters
-      ----------
-      d : scalar(int)
-          The number of dimensions in the grid
+        ...
 
-      mu : scalar(int) or array_like(int, ndim=1, length=d)
-          The &quot;density&quot; parameter for the grid
+        Attributes (required)
+        ----------
+        name : str
+            allocated name of the fingerprint
+        fingerprint_list : List[ExplicitBitVect]
+            list of fingerprints
 
-      Attributes
-      ----------
-      d, mu : see Parameters
+        Methods
+        -------
+        __repr__:
+            returns a string with the name, list and the length of the fingerprint
+        __len__:
+            returns the length of the fingerprint_list
+        __add__:
+            returns an object with an added fingerprint_list
+    """
 
-      lb : array_like(float, ndim=2)
-          This is an array of the lower bounds for each dimension
-
-      ub : array_like(float, ndim=2)
-          This is an array of the upper bounds for each dimension
-
-      cube_grid : array_like(float, ndim=2)
-          The Smolyak sparse grid on the domain :math:`[-1, 1]^d`
-
-      grid: : array_like(float, ndim=2)
-          The sparse grid, transformed to the user-specified bounds for
-          the domain
-
-      inds : list(list(int))
-          This is a lists of lists that contains all of the indices
-
-      B : array_like(float, ndim=2)
-          This is the B matrix that is used to do lagrange interpolation
-
-      B_L : array_like(float, ndim=2)
-          Lower triangle matrix of the decomposition of B
-
-      B_U : array_like(float, ndim=2)
-          Upper triangle matrix of the decomposition of B
-
-      Examples
-      --------
-      >>> s = SmolyakGrid(3, 2)
-      >>> s
-      Smolyak Grid:
-          d: 3
-          mu: 2
-          npoints: 25
-          B: 0.65% non-zero
-      >>> ag = SmolyakGrid(3, [1, 2, 3])
-      >>> ag
-      Anisotropic Smolyak Grid:
-          d: 3
-          mu: 1 x 2 x 3
-          npoints: 51
-          B: 0.68% non-zero
-          """
     def __init__(self, name: str, fingerprint_list: List[ExplicitBitVect] = None):
         self.name = name
         self.fingerprint_list = [] if fingerprint_list is None else fingerprint_list
@@ -113,74 +68,32 @@ class FingerprintContainer:
 
 
 class FingerprintGenerator:
-    """ Transforms MolSmiles to fingerprints by using the RDKit fingerprints (standard, Morgan and
+    """
+        Transforms MolSmiles to fingerprints by using the RDKit fingerprints (standard, Morgan and
         MACCS) and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
-        input:
-           list of MolSmiles -- every smile encodes one molecule, the characters represent chemical
-           elements
-        output:
-           object of the FingerprintContainerClass -- fingerprints are represented as bit vectors (lists
-           with 0 and 1 or numbers) and are added to the fingerprint_list
+
+        ...
+
+        Attributes (required)
+        ----------
+        smiles_obj : SmilesClass
+            object contains a list of MolSmiles (every smile encodes one molecule)
+            eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...] -> the characters represent chemical elements
+
+        Methods
+        -------
+        make_mol_list <column: List[str]>:
+            returns a list of MolSmiles
+        generate_fingerprints:
+            transforms MolSmiles to fingerprints by using the RDKit standard fingerprint, adds them to the
+            fingerprint_list of an object of the FingerprintContainerClass and returns it
+        generate_fingerprints_morgan <useFeatures=False>:
+            transforms MolSmiles to fingerprints by using the RDKit Morgan fingerprint, adds them to the
+            fingerprint_list of an object of the FingerprintContainerClass and returns it
+        generate_fingerprints_maccs:
+            transforms MolSmiles to fingerprints by using the RDKit MACCS fingerprint, adds them to the
+            fingerprint_list of an object of the FingerprintContainerClass and returns it
     """
-    """
-          This class currently takes a dimension and a degree of polynomial
-          and builds the Smolyak Sparse grid.  We base this on the work by
-          Judd, Maliar, Maliar, and Valero (2013).
-
-          Parameters
-          ----------
-          d : scalar(int)
-              The number of dimensions in the grid
-
-          mu : scalar(int) or array_like(int, ndim=1, length=d)
-              The &quot;density&quot; parameter for the grid
-
-          Attributes
-          ----------
-          d, mu : see Parameters
-
-          lb : array_like(float, ndim=2)
-              This is an array of the lower bounds for each dimension
-
-          ub : array_like(float, ndim=2)
-              This is an array of the upper bounds for each dimension
-
-          cube_grid : array_like(float, ndim=2)
-              The Smolyak sparse grid on the domain :math:`[-1, 1]^d`
-
-          grid: : array_like(float, ndim=2)
-              The sparse grid, transformed to the user-specified bounds for
-              the domain
-
-          inds : list(list(int))
-              This is a lists of lists that contains all of the indices
-
-          B : array_like(float, ndim=2)
-              This is the B matrix that is used to do lagrange interpolation
-
-          B_L : array_like(float, ndim=2)
-              Lower triangle matrix of the decomposition of B
-
-          B_U : array_like(float, ndim=2)
-              Upper triangle matrix of the decomposition of B
-
-          Examples
-          --------
-          >>> s = SmolyakGrid(3, 2)
-          >>> s
-          Smolyak Grid:
-              d: 3
-              mu: 2
-              npoints: 25
-              B: 0.65% non-zero
-          >>> ag = SmolyakGrid(3, [1, 2, 3])
-          >>> ag
-          Anisotropic Smolyak Grid:
-              d: 3
-              mu: 1 x 2 x 3
-              npoints: 51
-              B: 0.68% non-zero
-              """
 
     def __init__(self, smiles_obj: Smiles):
         self.mol_list = self.make_mol_list(smiles_obj.smiles_list)
@@ -193,23 +106,36 @@ class FingerprintGenerator:
 
     @staticmethod
     def make_mol_list(column: List[str]) -> List[Mol]:
-        """ Transforms smiles to Mol's and adds them to the mol_list
-            input:
-                list of smiles
-            output:
-                list of RDkit molecules
         """
+            Transforms object of SmilesClass to Mol's and adds them to the mol_list.
+
+            Parameters
+            ----------
+            column: List[str]
+                list of objects of SmilesClass
+
+            Returns
+            -------
+            mol_list
+                a list containing MolSmiles
+        """
+
         mol_list = []
         for item in column:
             mol_list.append(Chem.MolFromSmiles(item))
         return mol_list
 
     def generate_fingerprints(self) -> FingerprintContainer:
-        """ Transforms internal MolSmiles to fingerprints by using the STANDARD RDKit fingerprint function
-            and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
-            output:
+        """
+            Transforms internal MolSmiles to fingerprints by using the STANDARD RDKit fingerprint function,
+            adds them to the fingerprint_list of an object of the FingerprintContainerClass and returns it.
+
+            Returns
+            -------
+            FingerprintContainerClass
                 an object of the FingerprintContainerClass, containing a list of fingerprints
         """
+
         fingerprint_buffer = []
         for mol in self.mol_list:
             fingerprint = Chem.RDKFingerprint(mol)
@@ -217,11 +143,21 @@ class FingerprintGenerator:
         return FingerprintContainer(name="standard_fingerprint", fingerprint_list=fingerprint_buffer)
 
     def generate_fingerprints_morgan(self, useFeatures=False) -> FingerprintContainer:
-        """ Transforms internal MolSmiles to fingerprints by using the MORGAN RDKit fingerprint function
-            and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
-            output:
-                an object of the FingerprintContainer class, containing a list of fingerprints
         """
+            Transforms internal MolSmiles to fingerprints by using the MORGAN RDKit fingerprint function,
+            adds them to the fingerprint_list of an object of the FingerprintContainerClass and returns it.
+
+            Parameters
+            ----------
+            useFeatures: Bool
+                default = False
+
+            Returns
+            -------
+            FingerprintContainerClass
+                an object of the FingerprintContainerClass, containing a list of fingerprints
+        """
+
         fingerprint_buffer = []
         for mol in self.mol_list:
             fingerprint = AllChem.GetMorganFingerprintAsBitVect(mol, radius=3, useFeatures=useFeatures)
@@ -229,11 +165,16 @@ class FingerprintGenerator:
         return FingerprintContainer(name="morgan_fingerprint", fingerprint_list=fingerprint_buffer)
 
     def generate_fingerprints_maccs(self) -> FingerprintContainer:
-        """ Transforms internal MolSmiles to fingerprints by using the MACC RDKit fingerprint function
-            and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
-            output:
-                an object of the FingerprintContainer class, containing a list of fingerprints
         """
+            Transforms internal MolSmiles to fingerprints by using the MACC RDKit fingerprint function,
+            adds them to the fingerprint_list of an object of the FingerprintContainerClass and returns it.
+
+            Returns
+            -------
+            FingerprintContainerClass
+                an object of the FingerprintContainerClass, containing a list of fingerprints
+        """
+
         fingerprint_buffer = []
         for mol in self.mol_list:
             fingerprint = MACCSkeys.GenMACCSKeys(mol)

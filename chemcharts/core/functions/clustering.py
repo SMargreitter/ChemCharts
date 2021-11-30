@@ -8,11 +8,36 @@ from chemcharts.core.container.embedding import Embedding
 
 
 class Clustering:
+    """
+        Clusters Embeddings with KMeans.
+
+        Method
+        ----------
+        clustering <chemdata: ChemData, k: int>
+            returns a ChemDataClass object containing a clustered EmbeddingClass object
+    """
+
     def __init__(self):
         pass
 
     @staticmethod
     def clustering(chemdata: ChemData, k: int) -> ChemData:
+        """
+            The clustering function accesses an Embedding of a given ChemData and clusters it with KMeans.
+
+            Parameters
+            ----------
+            chemdata: ChemData
+                object of ChemDataClass
+            k: int
+                the number of desired KMeans clusters
+
+            Returns
+            -------
+            ChemData
+                returns a ChemDataClass object containing a clustered EmbeddingClass object
+        """
+
         chemdata = deepcopy(chemdata)
         assert len(chemdata.get_embedding()) >= k
 

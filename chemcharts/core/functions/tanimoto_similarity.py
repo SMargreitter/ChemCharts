@@ -7,33 +7,12 @@ from chemcharts.core.container.chemdata import ChemData
 
 class TanimotoSimilarity:
     """
-    RDKit's BulkTanimotoSimilarity() takes a query fingerprint and a list of target fingerprints, and returns a list of
-    scores, one for each target fingerprint.
-    """
-    """
-    My numpydoc description of a kind
-    of very exhautive numpydoc format docstring.
+        Simplifies the scores with RDKit's BulkTanimotoSimilarity() function.
 
-    Parameters
-    ----------
-    first : array_like
-        the 1st param name `first`
-    second :
-        the 2nd param
-    third : {'value', 'other'}, optional
-        the 3rd param, by default 'value'
-
-    Returns
-    -------
-    string
-        a value in a string
-
-    Raises
-    ------
-    KeyError
-        when a key error
-    OtherError
-        when an other error
+        Method
+        ----------
+        simplify <chemdata: ChemData>
+            returns a ChemDataClass object containing simplified scores
     """
 
     def __init__(self):
@@ -41,6 +20,21 @@ class TanimotoSimilarity:
 
     @staticmethod
     def simplify(chemdata: ChemData) -> ChemData:
+        """
+            The simplify function simplifies the scores a given ChemData with RDKit's
+            BulkTanimotoSimilarity() function.
+
+            Parameters
+            ----------
+            chemdata: ChemData
+                object of ChemDataClass
+
+            Returns
+            -------
+            ChemData
+                returns a ChemDataClass object containing simplified scores
+        """
+
         chemdata = deepcopy(chemdata)
         fps_list = chemdata.get_fingerprints()
 

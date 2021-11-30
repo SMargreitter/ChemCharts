@@ -6,14 +6,14 @@ from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
 
-class ScatterDensityPlot(BasePlot):
+class HistogramPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
     @staticmethod
     #def plot(chemdata: ChemData, path: str, selection: str = "scores"):
     def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None,
-             selection: str = "scores"):
+             selection: str = "scores", total_number_observations: int = None):
         if selection == "tanimoto_similarity":
             scores_input = chemdata.get_tanimoto_similarity()
             score_name = "Tanimoto Similarity"
@@ -29,20 +29,18 @@ class ScatterDensityPlot(BasePlot):
 
         sns.set_context("talk", font_scale=0.5)
         plt.figure(figsize=(17, 17))
-        sns.displot(scatter_df, x=score_name, kind="kde")
+        sns.histplot(scatter_df[score_name], element="step", bins=20, stat="proportion")
 
         plt.subplots_adjust(top=0.9)
         plt.suptitle('Scatter Density ChemCharts Plot', fontsize=14)
 
         # Setting axes ranges
-        if xlim is not None:
-            plt.xlim(xlim[0], xlim[1])
-        if ylim is not None:
-            plt.ylim(ylim[0], ylim[1])
-        #if scorelim is not None:
-        #    ax.set_zlim(scorelim[0], scorelim[1])
+        if xlim is not None or ylim is not None:
+            print("Scatter density plot does not support setting arbitrary axis limits.")
+        plt.xlim(0, 1)
+        plt.ylim(0, 1)
 
-        plt.savefig(path, format='png', dpi=150)
+        plt.savefig(path, format='png', dpi=300)
         plt.close("all")
 
 

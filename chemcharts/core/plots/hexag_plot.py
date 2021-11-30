@@ -10,7 +10,8 @@ class HexagonalPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None,
+             scorelim: tuple = None, total_number_observations: int = None):
 
         extent = (xlim[0], xlim[1], ylim[0], ylim[1]) if xlim is not None else None
 

@@ -7,12 +7,12 @@ from chemcharts.core.container.chemdata import ChemData
 
 class Binning:
     """
-    The Binning class contains a ChemData with binned median scores.
+        The Binning class contains a ChemData with binned median scores.
 
-    Methods
-        -------
-       binning <chemdata: ChemData, num_bins: int> -> ChemData:
-            returns an ChemData with binned median scores
+        Method
+        ----------
+        binning <chemdata: ChemData, num_bins: int>
+            returns a ChemData object with binned median scores
     """
 
     def __init__(self):
@@ -67,15 +67,16 @@ class Binning:
             Parameters
             ----------
             chemdata: ChemData
-                object of ChemData class
+                object of ChemDataClass
             num_bins: int
                 the number of desired bins
 
             Returns
             -------
             ChemData
-                an object of ChemData class with binned scores
-            """
+                an object of ChemDataClass with binned median scores
+        """
+
         chemdata = deepcopy(chemdata)
         scores = list(chemdata.get_scores())
         sorted_bin_idx, bin_idx = self._preparation(scores, num_bins)

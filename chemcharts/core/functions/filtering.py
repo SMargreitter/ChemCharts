@@ -10,29 +10,12 @@ from chemcharts.core.container.embedding import Embedding
 
 class Filtering:
     """
-    My numpydoc description of a kind
-    of very exhautive numpydoc format docstring.
+        Filters the Embedding and scores according to a user defined range.
 
-    Parameters
-    ----------
-    first : array_like
-        the 1st param name `first`
-    second :
-        the 2nd param
-    third : {'value', 'other'}, optional
-        the 3rd param, by default 'value'
-
-    Returns
-    -------
-    string
-        a value in a string
-
-    Raises
-    ------
-    KeyError
-        when a key error
-    OtherError
-        when an other error
+        Method
+        ----------
+        filter_range<chemdata: ChemData, range_dim1: Tuple[float, float], range_dim2: Tuple[float, float]>
+            returns a ChemDataClass object containing a filtered EmbeddingClass object and filtered scores
     """
 
     def __init__(self):
@@ -40,6 +23,26 @@ class Filtering:
 
     def filter_range(self, chemdata: ChemData, range_dim1: Tuple[float, float], range_dim2: Tuple[float, float]) \
             -> ChemData:
+        """
+            The filter_range function filters the Embedding of a given ChemData according to a user
+            defined range.
+
+            Parameters
+            ----------
+            chemdata: ChemData
+                object of ChemData class
+            range_dim1: Tuple[float, float]
+                setting the filter range for values on x axis
+            range_dim2: Tuple[float, float]
+                setting the filter range for values on y axis
+
+            Returns
+            -------
+            ChemData
+                returns a ChemDataClass object containing a filtered EmbeddingClass object and
+                filtered scores
+        """
+
         chemdata = deepcopy(chemdata)
         embedding_df = pd.DataFrame(
             {"UMAP_1": chemdata.get_embedding().np_array[:, 0],

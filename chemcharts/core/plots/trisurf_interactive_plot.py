@@ -11,7 +11,8 @@ class TrisurfInteractivePlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None,
+             scorelim: tuple = None, total_number_observations: int = None):
         x = chemdata.get_embedding().np_array[:, 0]
         y = chemdata.get_embedding().np_array[:, 1]
         z = chemdata.get_scores()

@@ -1,7 +1,6 @@
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
-from copy import deepcopy
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
@@ -12,7 +11,8 @@ class ScatterInteractivePlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None):
+    def plot(chemdata: ChemData, path: str, xlim: tuple = None,
+             ylim: tuple = None, scorelim: tuple = None, total_number_observations: int = None):
         scatter_df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
                                    "UMAP_2": chemdata.get_embedding().np_array[:, 1],
                                    "Scores": chemdata.get_scores()

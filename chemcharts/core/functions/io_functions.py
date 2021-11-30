@@ -9,29 +9,24 @@ def load_smiles(path: str,
                 scores_column: str = "total_score",
                 epochs_column: str = "Step") -> Tuple[Smiles, list, list]:
     """
-    My numpydoc description of a kind
-    of very exhautive numpydoc format docstring.
+         The load_smiles function loads data from a file and allocates its data to a SmilesClass object
+         and to a score as well as epoch list.
 
-    Parameters
-    ----------
-    first : array_like
-        the 1st param name `first`
-    second :
-        the 2nd param
-    third : {'value', 'other'}, optional
-        the 3rd param, by default 'value'
+         Parameters
+         ----------
+         path: str
+            path to the file containing the data
+         smiles_column: str = "SMILES"
+            the file column containing the smiles
+         scores_column: str = "total_score"
+            the file column containing the total_score
+         epochs_column: str = "Step"
+            the file column containing the epochs
 
-    Returns
-    -------
-    string
-        a value in a string
-
-    Raises
-    ------
-    KeyError
-        when a key error
-    OtherError
-        when an other error
+         Returns
+         -------
+         ChemData
+             returns a Tuple object containing a SmilesClass object as well as score and epoch lists
     """
 
     loaded_data = pd.read_csv(path)

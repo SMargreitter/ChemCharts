@@ -16,7 +16,7 @@ class ChemData:
         Attributes (required)
         ----------
         smiles_obj : SmilesClass
-            object contains a list of smiles (eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...])
+            object contains a list of SmilesClass objects (eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...])
 
         Attributes (optional)
         ----------
@@ -37,15 +37,15 @@ class ChemData:
 
         Methods
         -------
-       sort_epoch_list:
+        sort_epoch_list:
             returns an ascending list of unique epochs
         find_epoch_indices <sorted_epochs: list>:
             returns a list of the epoch indices
         filter_epoch <epoch: int>:
-            returns a ChemData object with the object belonging to a specific epoch
+            returns a ChemDataClass object with the object belonging to a specific epoch
         filter_epochs <epochs: list>:
-            returns a ChemData for a specific epoch
-        """
+            returns a ChemDataClass object for a specific epoch
+    """
 
     def __init__(self, smiles_obj: Smiles = None,
                  name: str = "",

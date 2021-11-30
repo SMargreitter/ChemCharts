@@ -12,7 +12,13 @@ from chemcharts.core.container.embedding import Embedding
 
 class DimensionalReduction:
     """
-    Reduces fingerprints with UMAP function.
+        Reduces fingerprints with UMAP function.
+
+        Method
+        ----------
+        clustering <chemdata: ChemData, k: int>
+            returns a ChemDataClass object containing an EmbeddingClass object (which includes the
+            UMAP clustered fingerprints)
     """
 
     def __init__(self):
@@ -20,24 +26,6 @@ class DimensionalReduction:
 
     @staticmethod
     def _generating_array_list(chemdata: ChemData) -> list:
-        """
-        Generates an array list.
-
-        Parameters
-        ----------
-        chemdata : ChemData
-            object of ChemData class
-        second :
-            the 2nd param
-        third : {'value', 'other'}, optional
-            the 3rd param, by default 'value'
-
-        Returns
-        -------
-        list
-            an array list
-        """
-
         array_list = []
         for fingerprint in chemdata.fingerprints:
             array = np.array(list(fingerprint))
@@ -53,6 +41,22 @@ class DimensionalReduction:
         return embedding
 
     def calculate(self, chemdata: ChemData) -> ChemData:
+        """
+            The calculate function accesses fingerprints of a given ChemData, reduces them with UMAP and
+            adds the clustered fingerprints as Embedding to the ChemData.
+
+            Parameters
+            ----------
+            chemdata: ChemData
+                object of ChemDataClass
+
+            Returns
+            -------
+            ChemData
+                returns a ChemDataClass object containing an EmbeddingClass object (which includes the
+                UMAP clustered fingerprints)
+        """
+
         chemdata = deepcopy(chemdata)
         embedding = self._dimensional_reduction(chemdata)
         chemdata.set_embedding(embedding)

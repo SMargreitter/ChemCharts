@@ -19,7 +19,7 @@ from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
 from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlot
 from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
-from chemcharts.core.plots.scatter_density_plot import ScatterDensityPlot
+from chemcharts.core.plots.scatter_density_plot import HistogramPlot
 
 from chemcharts.core.functions.io_functions import load_smiles
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
                              "scatter_static_plot" "|"
                              "scatter_boxplot_plot" "|"
                              "scatter_interactive_plot" "|"
-                             "scatter_density_plot" "|"
+                             "histogram_plot" "|"
                              "trisurf_static_plot" "|"
                              "trisurf_interactive_plot (no movie function possible)" "|"
                              "hexagonal_plot (default)")
@@ -61,7 +61,7 @@ if __name__ == "__main__":
         # initialize Chemdata and add smiles and fps
         ori_data = ChemData(smiles_obj=smiles, scores=scores)
         fps_generator = FingerprintGenerator(ori_data.get_smiles())
-        fps = fps_generator.generate_fingerprints_maccs()
+        fps = fps_generator.generate_fingerprints()
         ori_data.set_fingerprints(fps)
         ori_data.set_epochs(epochs)
 
@@ -98,8 +98,8 @@ if __name__ == "__main__":
         plot_instance = TrisurfInteractivePlot()
     elif args.plot == "scatter_static_plot":
         plot_instance = ScatterStaticPlot()
-    elif args.plot == "scatter_density_plot":
-        plot_instance = ScatterDensityPlot()
+    elif args.plot == "histogram_plot":
+        plot_instance = HistogramPlot()
     elif args.plot == "hexagonal_plot":
         plot_instance = HexagonalPlot()
     else:
@@ -107,10 +107,10 @@ if __name__ == "__main__":
                          "scatter_density_plot/ trisurf_plot/ hexagonal_plot) but none was given! Not supported: "
                          f"{args.plot}")
 
-    #make plot
+    # make plot
     plot_instance.plot(plot_data, args.output_plot)
 
-    #make movie
+    # make movie
     if args.output_movie is not None:
         plot_instance.make_movie(plot_data, args.output_movie)
 
