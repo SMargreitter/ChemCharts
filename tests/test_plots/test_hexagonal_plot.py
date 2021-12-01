@@ -10,17 +10,20 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 
+path_hexagonal_test = "../junk/hexagonal_test"
+path_hexagonal_movie = "../junk/hexagonal_movie"
+
 
 class TestHexagonalPlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir("../junk/hexagonal_test/"):
-            shutil.rmtree("../junk/hexagonal_test/")
-        os.mkdir("../junk/hexagonal_test/")
+        if os.path.isdir(path_hexagonal_test):
+            shutil.rmtree(path_hexagonal_test)
+        os.mkdir(path_hexagonal_test)
 
-        if os.path.isdir("../junk/hexagonal_movie"):
-            shutil.rmtree("../junk/hexagonal_movie")
-        os.mkdir("../junk/hexagonal_movie")
+        if os.path.isdir(path_hexagonal_movie):
+            shutil.rmtree(path_hexagonal_movie)
+        os.mkdir(path_hexagonal_movie)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -98,12 +101,12 @@ class TestHexagonalPlot(unittest.TestCase):
 
     def test_hexagonal_plot(self):
         test_plot = HexagonalPlot()
-        test_plot.plot(self.test_chemdata, "../junk/hexagonal_test/plot_unitest.png")
-        file_size = os.path.getsize("../junk/hexagonal_test/plot_unitest.png")
+        test_plot.plot(self.test_chemdata, '/'.join([path_hexagonal_test, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([path_hexagonal_test, "plot_unittest.png"]))
         self.assertTrue(13000 <= file_size <= 33000)
 
     def test_check_movie_size(self):
         test_plot = HexagonalPlot()
-        test_plot.make_movie(self.test_chemdata, "../junk/hexagonal_movie/test_movie.mp4")
-        file_size = os.path.getsize("../junk/hexagonal_movie/test_movie.mp4")
+        test_plot.make_movie(self.test_chemdata, '/'.join([path_hexagonal_movie, "test_movie.mp4"]))
+        file_size = os.path.getsize('/'.join([path_hexagonal_movie, "test_movie.mp4"]))
         self.assertTrue(2000 <= file_size <= 22000)

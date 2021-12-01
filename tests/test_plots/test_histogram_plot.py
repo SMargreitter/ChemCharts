@@ -10,7 +10,6 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.histogram_plot import HistogramPlot
 
-
 path_histogram_test = "../junk/histogram_test"
 path_histogram_movie = "../junk/histogram_movie"
 

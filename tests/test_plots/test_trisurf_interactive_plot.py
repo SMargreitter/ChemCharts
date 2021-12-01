@@ -10,13 +10,15 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlot
 
+path_trisurf_interactive_test = "../junk/trisurf_interactive_test"
+
 
 class TestTrisurfInteractivePlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir("../junk/trisurf_interactive_test"):
-            shutil.rmtree("../junk/trisurf_interactive_test")
-        os.mkdir("../junk/trisurf_interactive_test")
+        if os.path.isdir(path_trisurf_interactive_test):
+            shutil.rmtree(path_trisurf_interactive_test)
+        os.mkdir(path_trisurf_interactive_test)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -102,9 +104,6 @@ class TestTrisurfInteractivePlot(unittest.TestCase):
 
     def test_trisurf_interactive_plot(self):
         test_plot = TrisurfInteractivePlot()
-        test_plot.plot(self.test_chemdata, "../junk/trisurf_interactive_test/plot_unitest.png")
-        file_size = os.path.getsize("../junk/trisurf_interactive_test/plot_unitest.png")
-        print(file_size)
-        self.assertTrue(85000 <= file_size <= 100000)
-
-
+        test_plot.plot(self.test_chemdata, '/'.join([path_trisurf_interactive_test, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([path_trisurf_interactive_test, "plot_unittest.png"]))
+        self.assertTrue(90000 <= file_size <= 120000)

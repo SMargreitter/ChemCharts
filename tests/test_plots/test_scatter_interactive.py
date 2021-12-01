@@ -10,17 +10,20 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
 
+path_scatter_interactive_test = "../junk/scatter_interactive_test"
+path_scatter_interactive_movie = "../junk/scatter_interactive_movie"
+
 
 class TestScatterInteractivePlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir("../junk/scatter_interactive_test"):
-            shutil.rmtree("../junk/scatter_interactive_test")
-        os.mkdir("../junk/scatter_interactive_test")
+        if os.path.isdir(path_scatter_interactive_test):
+            shutil.rmtree(path_scatter_interactive_test)
+        os.mkdir(path_scatter_interactive_test)
 
-        if os.path.isdir("../junk/scatter_interactive_movie"):
-            shutil.rmtree("../junk/scatter_interactive_movie")
-        os.mkdir("../junk/scatter_interactive_movie")
+        if os.path.isdir(path_scatter_interactive_movie):
+            shutil.rmtree(path_scatter_interactive_movie)
+        os.mkdir(path_scatter_interactive_movie)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -98,12 +101,12 @@ class TestScatterInteractivePlot(unittest.TestCase):
 
     def test_scatter_interactive_plot(self):
         test_plot = ScatterInteractivePlot()
-        test_plot.plot(self.test_chemdata, "../junk/scatter_interactive_test/plot_unitest.png")
-        file_size = os.path.getsize("../junk/scatter_interactive_test/plot_unitest.png")
-        self.assertTrue(31000 <= file_size <= 51000)
+        test_plot.plot(self.test_chemdata, '/'.join([path_scatter_interactive_test, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([path_scatter_interactive_test, "plot_unittest.png"]))
+        self.assertTrue(45000 <= file_size <= 65000)
 
     def test_check_movie_size(self):
         test_plot = ScatterInteractivePlot()
-        test_plot.make_movie(self.test_chemdata, "../junk/scatter_interactive_movie/test_movie.mp4")
-        file_size = os.path.getsize("../junk/scatter_interactive_movie/test_movie.mp4")
+        test_plot.make_movie(self.test_chemdata, '/'.join([path_scatter_interactive_movie, "test_movie.mp4"]))
+        file_size = os.path.getsize('/'.join([path_scatter_interactive_movie, "test_movie.mp4"]))
         self.assertTrue(12000 <= file_size <= 32000)

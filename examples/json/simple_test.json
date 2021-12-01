@@ -35,19 +35,24 @@
       {
         "task": "write_out",
         "format": "pkl",
-        "path": "../junk/simple_test.pkl"
+        "path": "junk/simple_test.pkl"
       },
       {"task":  "generate_plot",
        "type": "scatter_interactive_plot",
-       "parameters":  {"view":  false}
+       "parameters":  {},
+       "settings": {"path": "../junk/scatter_interactive.png",
+                    "view":  false}
+      },
+      {"task":  "generate_plot",
+       "type": "trisurf_interactive_plot",
+       "parameters":  {},
+       "settings": {"path": "../junk/trisurf_interactive.png",
+                    "view":  false}
       },
       {"task":  "generate_plot",
        "type": "hexagonal_plot",
-       "parameters":  {"view":  false}
-      },
-      {"task":  "make_movie",
-       "type": "make_movie",
-       "parameters":  {}
+       "parameters":  {},
+        "settings": {"path": "../junk/hexagonal.png"}
       }
     ]
   }

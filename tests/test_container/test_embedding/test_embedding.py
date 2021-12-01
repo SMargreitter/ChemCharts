@@ -1,5 +1,4 @@
 import unittest
-
 import numpy as np
 
 from chemcharts.core.container.embedding import Embedding
@@ -9,13 +8,13 @@ class TestEmbedding(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.array = np.array([[1, 2],
-                               [2, 2],
-                               [4, 2],
-                               [2, 3],
-                               [2.6, 5],
-                               [11.2, 2],
-                               [5, 1.2],
-                               [4, 5]])
+                              [2, 2],
+                              [4, 2],
+                              [2, 3],
+                              [2.6, 5],
+                              [11.2, 2],
+                              [5, 1.2],
+                              [4, 5]])
 
     def setUp(self) -> None:
         pass

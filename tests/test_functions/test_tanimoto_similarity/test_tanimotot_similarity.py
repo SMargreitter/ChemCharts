@@ -1,9 +1,7 @@
 import unittest
-import numpy as np
 from rdkit import Chem
 
 from chemcharts.core.container.chemdata import ChemData
-
 from chemcharts.core.container.fingerprint import FingerprintContainer
 from chemcharts.core.container.smiles import Smiles
 from chemcharts.core.functions.tanimoto_similarity import TanimotoSimilarity

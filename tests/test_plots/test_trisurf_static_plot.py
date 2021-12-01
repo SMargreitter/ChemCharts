@@ -10,17 +10,20 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
+path_trisurf_static_test = "../junk/trisurf_static_test"
+path_trisurf_static_movie = "../junk/trisurf_static_movie"
+
 
 class TestTrisurfStaticPlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir("../junk/trisurf_static_test"):
-            shutil.rmtree("../junk/trisurf_static_test")
-        os.mkdir("../junk/trisurf_static_test")
+        if os.path.isdir(path_trisurf_static_test):
+            shutil.rmtree(path_trisurf_static_test)
+        os.mkdir(path_trisurf_static_test)
 
-        if os.path.isdir("../junk/trisurf_static_movie"):
-            shutil.rmtree("../junk/trisurf_static_movie")
-        os.mkdir("../junk/trisurf_static_movie")
+        if os.path.isdir(path_trisurf_static_movie):
+            shutil.rmtree(path_trisurf_static_movie)
+        os.mkdir(path_trisurf_static_movie)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -41,7 +44,11 @@ class TestTrisurfStaticPlot(unittest.TestCase):
                          "C1=C(CN2CCNCC2)c2ccccc2-c2ccccc21",
                          "O=C(N=c1cccc[nH]1)c1cccc2c(C(F)(F)F)nc3ccccc3c12",
                          "Cc1cccc(-c2cc(C(=O)N=c3cc(C)cc(C)[nH]3)c3ccccc3n2)c1",
-                         "O=C(N=c1cncc[nH]1)c1cccc2c1-c1ccccc1C2=O"])
+                         "O=C(N=c1cncc[nH]1)c1cccc2c1-c1ccccc1C2=O",
+                         "COc1ccc(NC(=O)c2cccc(-c3cc(N4CCCC4)nc(-c4cccs4)n3)c2)cc1",
+                         "C(=Nc1ccc(-c2ccc(N=C(c3ccccc3)c3ccccn3)cc2)cc1)c1ccccc1",
+                         "COc1ccc(OC)c(NC(=O)Nc2ccc(-c3cc(OC)c(OC)c(OC)c3)cc2)c1",
+                         "COc1ccc(-n2nc3ccc(NC(=O)c4cccc(Cl)c4Cl)cc3n2)cc1"])
         embedding_list = Embedding(np.array([[1, 2],
                                              [2, 2],
                                              [4, 2],
@@ -106,14 +113,12 @@ class TestTrisurfStaticPlot(unittest.TestCase):
 
     def test_trisurf_static_plot(self):
         test_plot = TrisurfStaticPlot()
-        test_plot.plot(self.test_chemdata, "../junk/trisurf_static_test/plot_unitest.png")
-        file_size = os.path.getsize("../junk/trisurf_static_test/plot_unitest.png")
-        print(file_size)
-        self.assertTrue(85000 <= file_size <= 100000)
+        test_plot.plot(self.test_chemdata, '/'.join([path_trisurf_static_test, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([path_trisurf_static_test, "plot_unittest.png"]))
+        self.assertTrue(120000 <= file_size <= 160000)
 
     def test_check_movie_size(self):
         test_plot = TrisurfStaticPlot()
-        test_plot.make_movie(self.test_chemdata, "../junk/trisurf_static_movie/test_movie.mp4")
-        file_size = os.path.getsize("../junk/trisurf_static_movie/test_movie.mp4")
-        print(file_size)
-        self.assertTrue(76000 <= file_size <= 82000)
+        test_plot.make_movie(self.test_chemdata, '/'.join([path_trisurf_static_movie, "test_movie.mp4"]))
+        file_size = os.path.getsize('/'.join([path_trisurf_static_movie, "test_movie.mp4"]))
+        self.assertTrue(45000 <= file_size <= 65000)

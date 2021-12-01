@@ -1,13 +1,10 @@
 import unittest
-
 import numpy as np
-from sklearn.cluster import KMeans
 
 from chemcharts.core.container.chemdata import ChemData
 
 from chemcharts.core.container.smiles import Smiles
 from chemcharts.core.container.embedding import Embedding
-from chemcharts.core.functions.filtering import Filtering
 from chemcharts.core.functions.clustering import Clustering
 
 

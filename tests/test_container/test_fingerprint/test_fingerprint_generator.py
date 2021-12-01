@@ -1,4 +1,5 @@
 import unittest
+
 from chemcharts.core.container.fingerprint import *
 from chemcharts.core.container.smiles import Smiles
 

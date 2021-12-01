@@ -13,15 +13,41 @@ from chemcharts.core.functions.binning import Binning
 from chemcharts.core.functions.dimensional_reduction import DimensionalReduction
 from chemcharts.core.functions.clustering import Clustering
 from chemcharts.core.functions.filtering import Filtering
+from chemcharts.core.plots import BasePlot
 
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
-from chemcharts.core.plots.scatter_static_plot import ScatterStaticPlot
+from chemcharts.core.plots.histogram_plot import HistogramPlot
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
-from chemcharts.core.plots.trisurf_plot import TrisurfInteractivePlot
 from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
-from chemcharts.core.plots.scatter_density_plot import HistogramPlot
+from chemcharts.core.plots.scatter_static_plot import ScatterStaticPlot
+from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlot
+from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
 from chemcharts.core.functions.io_functions import load_smiles
+
+
+def initialize_plot(plot_type: str) -> BasePlot:
+    if plot_type == "HEXAGONAL_PLOT":
+        plot_instance = HexagonalPlot()
+    elif plot_type == "HISTOGRAM_PLOT":
+        plot_instance = HistogramPlot()
+    elif plot_type == "SCATTER_BOXPLOT_PLOT":
+        plot_instance = ScatterBoxplotPlot()
+    elif plot_type == "SCATTER_INTERACTIVE_PLOT":
+        plot_instance = ScatterInteractivePlot()
+    elif plot_type == "SCATTER_STATIC_PLOTt":
+        plot_instance = ScatterStaticPlot()
+    elif plot_type == "TRISURF_INTERACTIVE_PLOT":
+        plot_instance = TrisurfInteractivePlot()
+    elif plot_type == "TRISURF_STATIC_PLOT":
+        plot_instance = TrisurfStaticPlot()
+    else:
+        raise ValueError("Expected keyword (scatter_static_plot/ scatter_boxplot_plot/ "
+                         "scatter_interactive_plot/ histogram_plot/ trisurf_static_plot/ "
+                         "trisurf_interactive_plot/ hexagonal_plot) but none was given! "
+                         "Not supported: "
+                         f"{plot_type}")
+    return plot_instance
 
 
 if __name__ == "__main__":
@@ -55,6 +81,7 @@ if __name__ == "__main__":
                     data = dill.load(dill_file)
             else:
                 raise ValueError(f"Input type {task['input_type']} not supported (yet).")
+
         elif task["task"] == "generate_fingerprints":
             fp_type = task["type"].upper()
             fps_generator = FingerprintGenerator(data.get_smiles())
@@ -67,88 +94,48 @@ if __name__ == "__main__":
             else:
                 raise ValueError(f"Fingerprint type {fp_type} not supported.")
             data.set_fingerprints(fps)
+
         elif task["task"] == "dimensional_reduction":
-            pass # do dim red
+            dimensional_reduction = DimensionalReduction()
+            data = dimensional_reduction.calculate(chemdata=data)
+
         elif task["task"] == "filtering_data":
-            pass # do filtering
+            filtering = Filtering()
+            data = filtering.filter_range(chemdata=data,
+                                          range_dim1=task["parameters"]["range_dim1"],
+                                          range_dim2=task["parameters"]["range_dim2"])
+
         elif task["task"] == "clustering_data":
-            pass # do clustering
+            clustering = Clustering()
+            data = clustering.clustering(chemdata=data, k=task["parameters"]["k"])
+
         elif task["task"] == "binning_scores":
-            pass # bin the scores
+            binning = Binning()
+            data = binning.binning(chemdata=data, num_bins=task["parameters"]["num_bins"])
+
         elif task["task"] == "write_out":
-            pass # writeout chemdata object
+            with open(task["path"], "wb") as dill_file:
+                dill.dump(data, dill_file)
+
         elif task["task"] == "generate_plot":
-            pass # generate plot
+            plot_type = task["type"].upper()
+            plot_instance = initialize_plot(plot_type)
+            #plot_instance.plot(data, task["settings"]["path"])
+            plot_instance.plot(chemdata=data,
+                               parameters=task["parameters"],
+                               settings=task["settings"])
+
         elif task["task"] == "make_movie":
-            pass # make movie
+            plot_type = task["type"].upper()
+            plot_instance = initialize_plot(plot_type)
+            plot_instance.make_movie(data, task["settings"]["path"])
         else:
             raise ValueError(f"Task definition {task['task']} not supported.")
+        print(f"Task {task['task']} completed.")
 
-    """"# load data
-    if args.input_data[-4:] == ".pkl":
-        with open(args.input_data, "rb") as dill_file:
-            plot_data = dill.load(dill_file)
-    else:
-        smiles, scores, epochs = load_smiles(args.input_data)
-
-        # initialize Chemdata and add smiles and fps
-        ori_data = ChemData(smiles_obj=smiles, scores=scores)
-        fps_generator = FingerprintGenerator(ori_data.get_smiles())
-        fps = fps_generator.generate_fingerprints_maccs()
-        ori_data.set_fingerprints(fps)
-        ori_data.set_epochs(epochs)
-
-        # generate embedding (dimensional reduction)
-        dimensional_reduction = DimensionalReduction()
-        ori_data = dimensional_reduction.calculate(chemdata=ori_data)
-
-        # choose whether data is filtered and or clustered
-        plot_data = ori_data
-        if args.data == "filtered_data" or args.data == "filtered_clustered_data":
-            filtering = Filtering()
-            plot_data = filtering.filter_range(chemdata=plot_data, range_dim1=(-100, 100), range_dim2=(-100, 100))
-        if args.data == "clustered_data" or args.data == "filtered_clustered_data":
-            clustering = Clustering()
-            plot_data = clustering.clustering(chemdata=plot_data, k=args.k)
-
-        # binning of scores
-        if args.binning is not None:
-            binning = Binning()
-            plot_data = binning.binning(chemdata=plot_data, num_bins=args.binning)
-
-    if args.save_data is not None:
-        with open(args.save_data, "wb") as dill_file:
-            dill.dump(plot_data, dill_file)
-
-    # generate plots
-    if args.plot == "scatter_interactive_plot":
-        plot_instance = ScatterInteractivePlot()
-    elif args.plot == "scatter_boxplot_plot":
-        plot_instance = ScatterBoxplotPlot()
-    elif args.plot == "trisurf_plot":
-        plot_instance = TrisurfPlot()
-    elif args.plot == "scatter_static_plot":
-        plot_instance = ScatterStaticPlot()
-    elif args.plot == "scatter_density_plot":
-        plot_instance = ScatterDensityPlot()
-    elif args.plot == "hexagonal_plot":
-        plot_instance = HexagonalPlot()
-    else:
-        raise ValueError("Expected keyword (scatter_static_plot/ scatter_boxplot_plot/ scatter_interactive_plot/ "
-                         "scatter_density_plot/ trisurf_plot/ hexagonal_plot) but none was given! Not supported: "
-                         f"{args.plot}")
-
-    #make plot
-    plot_instance.plot(plot_data, args.output_plot)
-
-    #make movie
-    if args.output_movie is not None:
-        plot_instance.make_movie(plot_data, args.output_movie)
+        # TODO
+        # tanimoto similarity
+        # make movie
+        # view plot
 
     sys.exit(0)
-
-    # JSON:
-    # - tanimoto similarity
-    # - make movie
-"""
-
