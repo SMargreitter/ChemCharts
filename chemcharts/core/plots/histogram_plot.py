@@ -11,9 +11,14 @@ class HistogramPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    #def plot(chemdata: ChemData, path: str, selection: str = "scores"):
-    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None, scorelim: tuple = None,
-             selection: str = "scores", total_number_observations: int = None):
+    def plot(chemdata: ChemData, parameters: dict, settings: dict):
+        xlim = parameters["xlim"]
+        ylim = parameters["ylim"]
+        path = settings["path"]
+        scores_input = chemdata.get_scores() # update me
+        score_name = chemdata.get_name()     # me too
+
+        """      
         if selection == "tanimoto_similarity":
             scores_input = chemdata.get_tanimoto_similarity()
             score_name = "Tanimoto Similarity"
@@ -22,7 +27,7 @@ class HistogramPlot(BasePlot):
             score_name = "Scores"
         else:
             raise ValueError(f"Selection input: {selection} is not as expected.")
-
+        """
         scatter_df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
                                   "UMAP_2": chemdata.get_embedding().np_array[:, 1],
                                    score_name: scores_input})

@@ -113,7 +113,11 @@ class TestTrisurfStaticPlot(unittest.TestCase):
 
     def test_trisurf_static_plot(self):
         test_plot = TrisurfStaticPlot()
-        test_plot.plot(self.test_chemdata, '/'.join([path_trisurf_static_test, "plot_unittest.png"]))
+        settings = {"path": '/'.join([path_trisurf_static_test, "plot_unittest.png"])}
+        parameters = {"xlim": None,
+                      "ylim": None,
+                      "scorelim": None}
+        test_plot.plot(self.test_chemdata, parameters, settings)
         file_size = os.path.getsize('/'.join([path_trisurf_static_test, "plot_unittest.png"]))
         self.assertTrue(120000 <= file_size <= 160000)
 

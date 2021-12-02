@@ -101,7 +101,11 @@ class TestScatterBoxplotPlot(unittest.TestCase):
 
     def test_scatter_boxplot_plot(self):
         test_plot = ScatterBoxplotPlot()
-        test_plot.plot(self.test_chemdata, '/'.join([path_scatter_boxplot_test, "plot_unittest.png"]))
+        settings = {"path": '/'.join([path_scatter_boxplot_test, "plot_unittest.png"])}
+        parameters = {"xlim": None,
+                      "ylim": None,
+                      "scorelim": None}
+        test_plot.plot(self.test_chemdata, parameters, settings)
         file_size = os.path.getsize('/'.join([path_scatter_boxplot_test, "plot_unittest.png"]))
         self.assertTrue(23000 <= file_size <= 43000)
 

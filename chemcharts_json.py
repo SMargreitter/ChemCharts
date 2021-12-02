@@ -120,7 +120,6 @@ if __name__ == "__main__":
         elif task["task"] == "generate_plot":
             plot_type = task["type"].upper()
             plot_instance = initialize_plot(plot_type)
-            #plot_instance.plot(data, task["settings"]["path"])
             plot_instance.plot(chemdata=data,
                                parameters=task["parameters"],
                                settings=task["settings"])
@@ -134,8 +133,9 @@ if __name__ == "__main__":
         print(f"Task {task['task']} completed.")
 
         # TODO
+        # new bee tasks?
         # tanimoto similarity
         # make movie
-        # view plot
+        # view plot (only when one plot
 
     sys.exit(0)

@@ -37,22 +37,42 @@
         "format": "pkl",
         "path": "junk/simple_test.pkl"
       },
-      {"task":  "generate_plot",
+      {"task": "generate_plot",
+       "type": "hexagonal_plot",
+       "parameters":  {},
+        "settings": {"path": "../junk/hexagonal.png"}
+      },
+      {"task": "generate_plot",
+       "type": "histogram_plot",
+       "parameters":  {},
+        "settings": {"path": "../junk/histogram.png"}
+      },
+      {"task": "generate_plot",
+       "type": "scatter_boxplot_plot",
+       "parameters":  {},
+        "settings": {"path": "../junk/scatter_boxplot.png"}
+      },
+      {"task": "generate_plot",
        "type": "scatter_interactive_plot",
        "parameters":  {},
        "settings": {"path": "../junk/scatter_interactive.png",
                     "view":  false}
       },
-      {"task":  "generate_plot",
+      {"task": "generate_plot",
+       "type": "scatter_static_plot",
+       "parameters":  {},
+        "settings": {"path": "../junk/scatter_static.png"}
+      },
+      {"task": "generate_plot",
        "type": "trisurf_interactive_plot",
        "parameters":  {},
        "settings": {"path": "../junk/trisurf_interactive.png",
                     "view":  false}
       },
-      {"task":  "generate_plot",
-       "type": "hexagonal_plot",
+      {"task": "generate_plot",
+       "type": "trisurf_static_plot",
        "parameters":  {},
-        "settings": {"path": "../junk/hexagonal.png"}
+        "settings": {"path": "../junk/trisurf_static.png"}
       }
     ]
   }

@@ -101,12 +101,16 @@ class TestHistogramPlot(unittest.TestCase):
 
     def test_histogram_plot(self):
         test_plot = HistogramPlot()
-        test_plot.plot(self.test_chemdata, '/'.join([path_histogram_test, "plot_unittest.png"]))
+        settings = {"path": '/'.join([path_histogram_test, "plot_unittest.png"])}
+        parameters = {"xlim": None,
+                      "ylim": None,
+                      "scorelim": None}
+        test_plot.plot(self.test_chemdata, parameters, settings)
         file_size = os.path.getsize('/'.join([path_histogram_test, "plot_unittest.png"]))
-        self.assertTrue(159000 <= file_size <= 180000)
+        self.assertTrue(149000 <= file_size <= 180000)
 
     def test_check_movie_size(self):
         test_plot = HistogramPlot()
         test_plot.make_movie(self.test_chemdata, '/'.join([path_histogram_movie, "test_movie.mp4"]))
         file_size = os.path.getsize('/'.join([path_histogram_movie, "test_movie.mp4"]))
-        self.assertTrue(25000 <= file_size <= 30000)
+        self.assertTrue(33000 <= file_size <= 53000)

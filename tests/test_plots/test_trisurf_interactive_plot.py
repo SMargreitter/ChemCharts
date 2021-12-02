@@ -104,6 +104,11 @@ class TestTrisurfInteractivePlot(unittest.TestCase):
 
     def test_trisurf_interactive_plot(self):
         test_plot = TrisurfInteractivePlot()
-        test_plot.plot(self.test_chemdata, '/'.join([path_trisurf_interactive_test, "plot_unittest.png"]))
+        settings = {"path": '/'.join([path_trisurf_interactive_test, "plot_unittest.png"]),
+                    "view": False}
+        parameters = {"xlim": None,
+                      "ylim": None,
+                      "scorelim": None}
+        test_plot.plot(self.test_chemdata, parameters, settings)
         file_size = os.path.getsize('/'.join([path_trisurf_interactive_test, "plot_unittest.png"]))
         self.assertTrue(90000 <= file_size <= 120000)

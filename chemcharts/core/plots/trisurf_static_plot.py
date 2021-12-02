@@ -10,8 +10,12 @@ class TrisurfStaticPlot(BasePlot):
         super().__init__()
 
     @staticmethod
-    def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None,
-             scorelim: tuple = None, total_number_observations: int = None):
+    def plot(chemdata: ChemData, parameters: dict, settings: dict):
+        xlim = parameters["xlim"]
+        ylim = parameters["ylim"]
+        scorelim = parameters["scorelim"]
+        path = settings["path"]
+        
         fig = plt.figure(figsize=(14, 9))
         ax = plt.axes(projection='3d')
 

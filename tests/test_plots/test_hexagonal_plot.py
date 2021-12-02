@@ -101,7 +101,11 @@ class TestHexagonalPlot(unittest.TestCase):
 
     def test_hexagonal_plot(self):
         test_plot = HexagonalPlot()
-        test_plot.plot(self.test_chemdata, '/'.join([path_hexagonal_test, "plot_unittest.png"]))
+        settings = {"path": '/'.join([path_hexagonal_test, "plot_unittest.png"])}
+        parameters = {"xlim": None,
+                      "ylim": None,
+                      "scorelim": None}
+        test_plot.plot(self.test_chemdata, parameters, settings)
         file_size = os.path.getsize('/'.join([path_hexagonal_test, "plot_unittest.png"]))
         self.assertTrue(13000 <= file_size <= 33000)
 

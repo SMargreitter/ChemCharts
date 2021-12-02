@@ -34,13 +34,13 @@ class BasePlot:
             updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
             self.plot(chemdata=epoch_chemdata,
-                      {"parameters" : {"xlim" : xlim,
-                                       "ylim" : ylim,
-                                       "scorelim" : scorelim,
-                                       "total_number_observations" : total_number_observations}},
-                      {"settings" : {"view" : "",
-                                     "path": updated_snapshot_path}})
-
+                      parameters={"xlim": xlim,
+                                  "ylim": ylim,
+                                  "scorelim": scorelim,
+                                  "total_number_observations": total_number_observations},
+                      settings={"view": "",
+                                "path": updated_snapshot_path}
+                      )
 
         path, file_name = os.path.split(os.path.abspath(movie_path))
         (
@@ -49,11 +49,6 @@ class BasePlot:
             .output(movie_path)
             .run()
         )
-
-    #@staticmethod
-    #def plot(chemdata: ChemData, path: str, xlim: tuple = None, ylim: tuple = None,
-    #         scorelim: tuple = None, total_number_observations: int = None):
-    #    raise NotImplemented("This method needs to be overloaded in a child class.")
 
     @staticmethod
     def plot(chemdata: ChemData, parameters: dict, settings: dict):
