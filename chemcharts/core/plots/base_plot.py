@@ -1,7 +1,13 @@
 import os
-from chemcharts.core.container.chemdata import ChemData
-from copy import deepcopy
+import shutil
 import ffmpeg
+from copy import deepcopy
+
+from chemcharts.core.container.chemdata import ChemData
+
+from chemcharts.core.utils.enums import PlottingEnum
+
+_PE = PlottingEnum
 
 
 class BasePlot:
@@ -16,8 +22,15 @@ class BasePlot:
         updated_path = f'{path}/{epoch_id:04}_{updated_file_name}'
         return updated_path
 
+    @staticmethod
+    def _prepare_folder(path: str):
+        path, _ = os.path.split(os.path.abspath(path))
+        if not os.path.isdir(path):
+            os.mkdir(path)
+
     def make_movie(self, chemcharts: ChemData, movie_path: str, aggregate_epochs: bool = True):
         chemcharts = deepcopy(chemcharts)
+        self._prepare_folder(path=movie_path)
         xlim = (min(chemcharts.get_embedding().np_array[:, 0]),
                 max(chemcharts.get_embedding().np_array[:, 0]))
         ylim = (min(chemcharts.get_embedding().np_array[:, 1]),
@@ -34,12 +47,12 @@ class BasePlot:
             updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
             self.plot(chemdata=epoch_chemdata,
-                      parameters={"xlim": xlim,
-                                  "ylim": ylim,
-                                  "scorelim": scorelim,
-                                  "total_number_observations": total_number_observations},
-                      settings={"view": "",
-                                "path": updated_snapshot_path}
+                      parameters={_PE.PARAMETERS_XLIM: xlim,
+                                  _PE.PARAMETERS_YLIM: ylim,
+                                  _PE.PARAMETERS_SCORELIM: scorelim,
+                                  _PE.PARAMETERS_TOTAL_NUMBER_OBSERVATIONS: total_number_observations},
+                      settings={_PE.SETTINGS_VIEW: "",
+                                _PE.SETTINGS_PATH: updated_snapshot_path}
                       )
 
         path, file_name = os.path.split(os.path.abspath(movie_path))
@@ -50,6 +63,5 @@ class BasePlot:
             .run()
         )
 
-    @staticmethod
-    def plot(chemdata: ChemData, parameters: dict, settings: dict):
+    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
         raise NotImplemented("This method needs to be overloaded in a child class.")

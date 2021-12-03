@@ -49,7 +49,7 @@ Thumbs.db
 *.wmv
 *.png
 
-movie
+output
 *.pkl
 
 tests/junk

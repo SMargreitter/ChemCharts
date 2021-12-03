@@ -35,44 +35,74 @@
       {
         "task": "write_out",
         "format": "pkl",
-        "path": "junk/simple_test.pkl"
+        "path": "tests/junk/simple_test.pkl"
       },
       {"task": "generate_plot",
        "type": "hexagonal_plot",
        "parameters":  {},
-        "settings": {"path": "../junk/hexagonal.png"}
+        "settings": {"path": "output/hexagonal_plot/hexagonal_plot.png"}
+      },
+      {"task": "generate_movie",
+       "type": "hexagonal_plot",
+       "parameters":  {},
+        "settings": {"path": "output/hexagonal_movie/hexagonal_movie.mp4"}
       },
       {"task": "generate_plot",
        "type": "histogram_plot",
        "parameters":  {},
-        "settings": {"path": "../junk/histogram.png"}
+        "settings": {"path": "output/histogram_plot/histogram_plot.png"}
+      },
+      {"task": "generate_movie",
+       "type": "histogram_plot",
+       "parameters":  {},
+        "settings": {"path": "output/histogram_movie/histogram_movie.mp4"}
       },
       {"task": "generate_plot",
        "type": "scatter_boxplot_plot",
        "parameters":  {},
-        "settings": {"path": "../junk/scatter_boxplot.png"}
+        "settings": {"path": "output/scatter_boxplot_plot/scatter_boxplot_plot.png"}
+      },
+      {"task": "generate_movie",
+       "type": "scatter_boxplot_plot",
+       "parameters":  {},
+        "settings": {"path": "output/scatter_boxplot_movie/scatter_boxplot_movie.mp4"}
       },
       {"task": "generate_plot",
        "type": "scatter_interactive_plot",
        "parameters":  {},
-       "settings": {"path": "../junk/scatter_interactive.png",
+       "settings": {"path": "output/scatter_interactive_plot/scatter_interactive_plot.png",
                     "view":  false}
+      },
+      {"task": "generate_movie",
+       "type": "scatter_interactive_plot",
+       "parameters":  {},
+        "settings": {"path": "output/scatter_interactive_movie/scatter_interactive_movie.mp4"}
       },
       {"task": "generate_plot",
        "type": "scatter_static_plot",
        "parameters":  {},
-        "settings": {"path": "../junk/scatter_static.png"}
+        "settings": {"path": "output/scatter_static_plot/scatter_static_plot.png"}
+      },
+      {"task": "generate_movie",
+       "type": "scatter_static_plot",
+       "parameters":  {},
+        "settings": {"path": "output/scatter_static_movie/scatter_static_movie.mp4"}
       },
       {"task": "generate_plot",
        "type": "trisurf_interactive_plot",
        "parameters":  {},
-       "settings": {"path": "../junk/trisurf_interactive.png",
+       "settings": {"path": "output/trisurf_interactive_plot/trisurf_interactive_plot.png",
                     "view":  false}
       },
       {"task": "generate_plot",
        "type": "trisurf_static_plot",
        "parameters":  {},
-        "settings": {"path": "../junk/trisurf_static.png"}
+        "settings": {"path": "output/trisurf_static_plot/trisurf_static_plot.png"}
+      },
+      {"task": "generate_movie",
+       "type": "trisurf_static_plot",
+       "parameters":  {},
+        "settings": {"path": "output/trisurf_static_movie/trisurf_static_movie.mp4"}
       }
     ]
   }

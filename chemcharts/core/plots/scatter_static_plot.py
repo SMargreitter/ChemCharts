@@ -8,12 +8,13 @@ class ScatterStaticPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def plot(chemdata: ChemData, parameters: dict, settings: dict):
+    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
         xlim = parameters["xlim"]
         ylim = parameters["ylim"]
         scorelim = parameters["scorelim"]
         path = settings["path"]
+
+        self._prepare_folder(path=path)
 
         fig = plt.figure()
         ax = fig.add_subplot(projection='3d')

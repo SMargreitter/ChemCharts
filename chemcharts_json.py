@@ -25,21 +25,26 @@ from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
 from chemcharts.core.functions.io_functions import load_smiles
 
+from chemcharts.core.utils.enums import GeneratePlotsEnum
+from chemcharts.core.utils.enums import DataFittingEnum
+_GPE = GeneratePlotsEnum
+_DFE = DataFittingEnum
+
 
 def initialize_plot(plot_type: str) -> BasePlot:
-    if plot_type == "HEXAGONAL_PLOT":
+    if plot_type == _GPE.HEXAGONAL_PLOT:
         plot_instance = HexagonalPlot()
-    elif plot_type == "HISTOGRAM_PLOT":
+    elif plot_type == _GPE.HISTOGRAM_PLOT:
         plot_instance = HistogramPlot()
-    elif plot_type == "SCATTER_BOXPLOT_PLOT":
+    elif plot_type == _GPE.SCATTER_BOXPLOT_PLOT:
         plot_instance = ScatterBoxplotPlot()
-    elif plot_type == "SCATTER_INTERACTIVE_PLOT":
+    elif plot_type == _GPE.SCATTER_INTERACTIVE_PLOT:
         plot_instance = ScatterInteractivePlot()
-    elif plot_type == "SCATTER_STATIC_PLOTt":
+    elif plot_type == _GPE.SCATTER_STATIC_PLOT:
         plot_instance = ScatterStaticPlot()
-    elif plot_type == "TRISURF_INTERACTIVE_PLOT":
+    elif plot_type == _GPE.TRISURF_INTERACTIVE_PLOT:
         plot_instance = TrisurfInteractivePlot()
-    elif plot_type == "TRISURF_STATIC_PLOT":
+    elif plot_type == _GPE.TRISURF_STATIC_PLOT:
         plot_instance = TrisurfStaticPlot()
     else:
         raise ValueError("Expected keyword (scatter_static_plot/ scatter_boxplot_plot/ "
@@ -99,13 +104,13 @@ if __name__ == "__main__":
             dimensional_reduction = DimensionalReduction()
             data = dimensional_reduction.calculate(chemdata=data)
 
-        elif task["task"] == "filtering_data":
+        elif task["task"] == _DFE.FILTERED_DATA:
             filtering = Filtering()
             data = filtering.filter_range(chemdata=data,
                                           range_dim1=task["parameters"]["range_dim1"],
                                           range_dim2=task["parameters"]["range_dim2"])
 
-        elif task["task"] == "clustering_data":
+        elif task["task"] == _DFE.CLUSTERED_DATA:
             clustering = Clustering()
             data = clustering.clustering(chemdata=data, k=task["parameters"]["k"])
 
@@ -133,7 +138,6 @@ if __name__ == "__main__":
         print(f"Task {task['task']} completed.")
 
         # TODO
-        # new bee tasks?
         # tanimoto similarity
         # make movie
         # view plot (only when one plot

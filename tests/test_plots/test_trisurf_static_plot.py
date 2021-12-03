@@ -10,20 +10,22 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
-path_trisurf_static_test = "../junk/trisurf_static_test"
-path_trisurf_static_movie = "../junk/trisurf_static_movie"
+from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import TestPathsEnum
+_PE = PlottingEnum()
+_TPE = TestPathsEnum()
 
 
 class TestTrisurfStaticPlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir(path_trisurf_static_test):
-            shutil.rmtree(path_trisurf_static_test)
-        os.mkdir(path_trisurf_static_test)
+        if os.path.isdir(_TPE.PATH_TRISURF_STATIC_TEST):
+            shutil.rmtree(_TPE.PATH_TRISURF_STATIC_TEST)
+        os.mkdir(_TPE.PATH_TRISURF_STATIC_TEST)
 
-        if os.path.isdir(path_trisurf_static_movie):
-            shutil.rmtree(path_trisurf_static_movie)
-        os.mkdir(path_trisurf_static_movie)
+        if os.path.isdir(_TPE.PATH_TRISURF_STATIC_MOVIE):
+            shutil.rmtree(_TPE.PATH_TRISURF_STATIC_MOVIE)
+        os.mkdir(_TPE.PATH_TRISURF_STATIC_MOVIE)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -113,16 +115,16 @@ class TestTrisurfStaticPlot(unittest.TestCase):
 
     def test_trisurf_static_plot(self):
         test_plot = TrisurfStaticPlot()
-        settings = {"path": '/'.join([path_trisurf_static_test, "plot_unittest.png"])}
-        parameters = {"xlim": None,
-                      "ylim": None,
-                      "scorelim": None}
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_TRISURF_STATIC_TEST, "plot_unittest.png"])}
+        parameters = {_PE.PARAMETERS_XLIM: None,
+                      _PE.PARAMETERS_YLIM: None,
+                      _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
-        file_size = os.path.getsize('/'.join([path_trisurf_static_test, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_STATIC_TEST, "plot_unittest.png"]))
         self.assertTrue(120000 <= file_size <= 160000)
 
     def test_check_movie_size(self):
         test_plot = TrisurfStaticPlot()
-        test_plot.make_movie(self.test_chemdata, '/'.join([path_trisurf_static_movie, "test_movie.mp4"]))
-        file_size = os.path.getsize('/'.join([path_trisurf_static_movie, "test_movie.mp4"]))
+        test_plot.make_movie(self.test_chemdata, '/'.join([_TPE.PATH_TRISURF_STATIC_MOVIE, "movie_unittest.mp4"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_STATIC_MOVIE, "movie_unittest.mp4"]))
         self.assertTrue(45000 <= file_size <= 65000)

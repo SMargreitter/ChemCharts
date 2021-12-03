@@ -10,20 +10,22 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
 
-path_scatter_interactive_test = "../junk/scatter_interactive_test"
-path_scatter_interactive_movie = "../junk/scatter_interactive_movie"
+from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import TestPathsEnum
+_PE = PlottingEnum()
+_TPE = TestPathsEnum()
 
 
 class TestScatterInteractivePlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir(path_scatter_interactive_test):
-            shutil.rmtree(path_scatter_interactive_test)
-        os.mkdir(path_scatter_interactive_test)
+        if os.path.isdir(_TPE.PATH_SCATTER_INTERACTIVE_TEST):
+            shutil.rmtree(_TPE.PATH_SCATTER_INTERACTIVE_TEST)
+        os.mkdir(_TPE.PATH_SCATTER_INTERACTIVE_TEST)
 
-        if os.path.isdir(path_scatter_interactive_movie):
-            shutil.rmtree(path_scatter_interactive_movie)
-        os.mkdir(path_scatter_interactive_movie)
+        if os.path.isdir(_TPE.PATH_SCATTER_INTERACTIVE_MOVIE):
+            shutil.rmtree(_TPE.PATH_SCATTER_INTERACTIVE_MOVIE)
+        os.mkdir(_TPE.PATH_SCATTER_INTERACTIVE_MOVIE)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -101,17 +103,17 @@ class TestScatterInteractivePlot(unittest.TestCase):
 
     def test_scatter_interactive_plot(self):
         test_plot = ScatterInteractivePlot()
-        settings = {"path": '/'.join([path_scatter_interactive_test, "plot_unittest.png"]),
-                    "view": False}
-        parameters = {"xlim": None,
-                      "ylim": None,
-                      "scorelim": None}
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_SCATTER_INTERACTIVE_TEST, "plot_unittest.png"]),
+                    _PE.SETTINGS_VIEW: False}
+        parameters = {_PE.PARAMETERS_XLIM: None,
+                      _PE.PARAMETERS_YLIM: None,
+                      _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
-        file_size = os.path.getsize('/'.join([path_scatter_interactive_test, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_INTERACTIVE_TEST, "plot_unittest.png"]))
         self.assertTrue(45000 <= file_size <= 65000)
 
     def test_check_movie_size(self):
         test_plot = ScatterInteractivePlot()
-        test_plot.make_movie(self.test_chemdata, '/'.join([path_scatter_interactive_movie, "test_movie.mp4"]))
-        file_size = os.path.getsize('/'.join([path_scatter_interactive_movie, "test_movie.mp4"]))
+        test_plot.make_movie(self.test_chemdata, '/'.join([_TPE.PATH_SCATTER_INTERACTIVE_MOVIE, "movie_unittest.mp4"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_INTERACTIVE_MOVIE, "movie_unittest.mp4"]))
         self.assertTrue(12000 <= file_size <= 32000)

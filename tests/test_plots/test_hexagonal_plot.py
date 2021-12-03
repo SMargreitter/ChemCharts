@@ -10,20 +10,22 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 
-path_hexagonal_test = "../junk/hexagonal_test"
-path_hexagonal_movie = "../junk/hexagonal_movie"
+from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import TestPathsEnum
+_PE = PlottingEnum()
+_TPE = TestPathsEnum()
 
 
 class TestHexagonalPlot(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        if os.path.isdir(path_hexagonal_test):
-            shutil.rmtree(path_hexagonal_test)
-        os.mkdir(path_hexagonal_test)
+        if os.path.isdir(_TPE.PATH_HEXAGONAL_TEST):
+            shutil.rmtree(_TPE.PATH_HEXAGONAL_TEST)
+        os.mkdir(_TPE.PATH_HEXAGONAL_TEST)
 
-        if os.path.isdir(path_hexagonal_movie):
-            shutil.rmtree(path_hexagonal_movie)
-        os.mkdir(path_hexagonal_movie)
+        if os.path.isdir(_TPE.PATH_HEXAGONAL_MOVIE):
+            shutil.rmtree(_TPE.PATH_HEXAGONAL_MOVIE)
+        os.mkdir(_TPE.PATH_HEXAGONAL_MOVIE)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
@@ -101,16 +103,16 @@ class TestHexagonalPlot(unittest.TestCase):
 
     def test_hexagonal_plot(self):
         test_plot = HexagonalPlot()
-        settings = {"path": '/'.join([path_hexagonal_test, "plot_unittest.png"])}
-        parameters = {"xlim": None,
-                      "ylim": None,
-                      "scorelim": None}
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, "plot_unittest.png"])}
+        parameters = {_PE.PARAMETERS_XLIM: None,
+                      _PE.PARAMETERS_YLIM: None,
+                      _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
-        file_size = os.path.getsize('/'.join([path_hexagonal_test, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, "plot_unittest.png"]))
         self.assertTrue(13000 <= file_size <= 33000)
 
     def test_check_movie_size(self):
         test_plot = HexagonalPlot()
-        test_plot.make_movie(self.test_chemdata, '/'.join([path_hexagonal_movie, "test_movie.mp4"]))
-        file_size = os.path.getsize('/'.join([path_hexagonal_movie, "test_movie.mp4"]))
+        test_plot.make_movie(self.test_chemdata, '/'.join([_TPE.PATH_HEXAGONAL_MOVIE, "movie_unittest.mp4"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_MOVIE, "movie_unittest.mp4"]))
         self.assertTrue(2000 <= file_size <= 22000)

@@ -23,6 +23,13 @@ from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
 from chemcharts.core.functions.io_functions import load_smiles
 
+from chemcharts.core.utils.enums import GeneratePlotsEnum
+from chemcharts.core.utils.enums import DataFittingEnum
+from chemcharts.core.utils.enums import PlottingEnum
+_GPE = GeneratePlotsEnum
+_DFE = DataFittingEnum
+_PE =  PlottingEnum
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="implements chemcharts entry points")
@@ -71,10 +78,12 @@ if __name__ == "__main__":
 
         # choose whether data is filtered and or clustered
         plot_data = ori_data
-        if args.data == "filtered_data" or args.data == "filtered_clustered_data":
+        if args.data == _DFE.FILTERED_DATA or args.data == _DFE.FILTERED_CLUSTERED_DATA:
             filtering = Filtering()
-            plot_data = filtering.filter_range(chemdata=plot_data, range_dim1=(-100, 100), range_dim2=(-100, 100))
-        if args.data == "clustered_data" or args.data == "filtered_clustered_data":
+            plot_data = filtering.filter_range(chemdata=plot_data,
+                                               range_dim1=(-100, 100),
+                                               range_dim2=(-100, 100))
+        if args.data == _DFE.CLUSTERED_DATA or args.data == _DFE.FILTERED_CLUSTERED_DATA:
             clustering = Clustering()
             plot_data = clustering.clustering(chemdata=plot_data, k=args.k)
 
@@ -88,19 +97,19 @@ if __name__ == "__main__":
             dill.dump(plot_data, dill_file)
 
     # generate plots
-    if args.plot == "hexagonal_plot":
+    if args.plot == _GPE.HEXAGONAL_PLOT:
         plot_instance = HexagonalPlot()
-    elif args.plot == "histogram_plot":
+    elif args.plot == _GPE.HISTOGRAM_PLOT:
         plot_instance = HistogramPlot()
-    elif args.plot == "scatter_boxplot_plot":
+    elif args.plot == _GPE.SCATTER_BOXPLOT_PLOT:
         plot_instance = ScatterBoxplotPlot()
-    elif args.plot == "scatter_interactive_plot":
+    elif args.plot == _GPE.SCATTER_INTERACTIVE_PLOT:
         plot_instance = ScatterInteractivePlot()
-    elif args.plot == "scatter_static_plot":
+    elif args.plot == _GPE.SCATTER_STATIC_PLOT:
         plot_instance = ScatterStaticPlot()
-    elif args.plot == "trisurf_interactive_plot":
+    elif args.plot == _GPE.TRISURF_INTERACTIVE_PLOT:
         plot_instance = TrisurfInteractivePlot()
-    elif args.plot == "trisurf_static_plot":
+    elif args.plot == _GPE.TRISURF_STATIC_PLOT:
         plot_instance = TrisurfStaticPlot()
     else:
         raise ValueError("Expected keyword (scatter_static_plot/ scatter_boxplot_plot/ "
@@ -109,8 +118,13 @@ if __name__ == "__main__":
                          f"{args.plot}")
 
     # make plot
-    plot_instance.plot(plot_data, args.output_plot)
-
+    plot_instance.plot(chemdata=plot_data,
+                       parameters={_PE.PARAMETERS_XLIM: None,
+                                   _PE.PARAMETERS_YLIM: None,
+                                   _PE.PARAMETERS_SCORELIM: None,
+                                   _PE.PARAMETERS_TOTAL_NUMBER_OBSERVATIONS: None},
+                       settings={_PE.SETTINGS_VIEW: "",
+                                 _PE.SETTINGS_PATH: args.output_plot})
     # make movie
     if args.output_movie is not None:
         plot_instance.make_movie(plot_data, args.output_movie)

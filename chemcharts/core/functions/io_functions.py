@@ -3,11 +3,14 @@ from typing import Tuple
 import pandas as pd
 from chemcharts.core.container.smiles import Smiles
 
+from chemcharts.core.utils.enums import ReinventEnum
+_RE = ReinventEnum
+
 
 def load_smiles(path: str,
-                smiles_column: str = "SMILES",
-                scores_column: str = "total_score",
-                epochs_column: str = "Step") -> Tuple[Smiles, list, list]:
+                smiles_column: str = _RE.SMILES,
+                scores_column: str = _RE.TOTAL_SCORE,
+                epochs_column: str = _RE.EPOCHS_COLUMN) -> Tuple[Smiles, list, list]:
     """
          The load_smiles function loads data from a file and allocates its data to a SmilesClass object
          and to a score as well as epoch list.

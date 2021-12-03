@@ -1,21 +1,24 @@
 import matplotlib.pyplot as plt
-import numpy as np
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
+
+from chemcharts.core.utils.enums import PlottingEnum
+_PE = PlottingEnum
 
 
 class TrisurfStaticPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def plot(chemdata: ChemData, parameters: dict, settings: dict):
-        xlim = parameters["xlim"]
-        ylim = parameters["ylim"]
-        scorelim = parameters["scorelim"]
-        path = settings["path"]
-        
+    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
+        xlim = parameters[_PE.PARAMETERS_XLIM]
+        ylim = parameters[_PE.PARAMETERS_YLIM]
+        scorelim = parameters[_PE.PARAMETERS_SCORELIM]
+        path = settings[_PE.SETTINGS_PATH]
+
+        self._prepare_folder(path=path)
+
         fig = plt.figure(figsize=(14, 9))
         ax = plt.axes(projection='3d')
 
