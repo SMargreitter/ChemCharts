@@ -1,3 +1,0 @@
-from tests.test_container.test_fingerprint.test_fingerprint_generator import TestFingerprintGenerator
-from tests.test_container.test_fingerprint.test_fingerprint_container import TestFingerprintContainer
-

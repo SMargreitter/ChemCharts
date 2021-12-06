@@ -13,8 +13,8 @@ from chemcharts.core.functions.binning import Binning
 from chemcharts.core.functions.dimensional_reduction import DimensionalReduction
 from chemcharts.core.functions.clustering import Clustering
 from chemcharts.core.functions.filtering import Filtering
-from chemcharts.core.plots import BasePlot
 
+from chemcharts.core.plots.base_plot import BasePlot
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 from chemcharts.core.plots.histogram_plot import HistogramPlot
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
@@ -27,8 +27,14 @@ from chemcharts.core.functions.io_functions import load_smiles
 
 from chemcharts.core.utils.enums import GeneratePlotsEnum
 from chemcharts.core.utils.enums import DataFittingEnum
+from chemcharts.core.utils.enums import FingerprintEnum
+from chemcharts.core.utils.enums import JsonStepsEnum
+from chemcharts.core.utils.enums import JsonEnum
 _GPE = GeneratePlotsEnum
 _DFE = DataFittingEnum
+_FE = FingerprintEnum
+_JSE = JsonStepsEnum
+_JE = JsonEnum
 
 
 def initialize_plot(plot_type: str) -> BasePlot:
@@ -65,77 +71,77 @@ if __name__ == "__main__":
         conf = json.load(conf_file)
 
     # execute the tasks
-    data = ChemData(name="json_execution")
-    tasks = conf["chemcharts"]["execution"]
+    data = ChemData(name=_JE.CHEMDATA_NAME)
+    tasks = conf[_JE.CHEMCHARTS][_JE.EXECUTION]
     for task in tasks:
-        if task["task"] == "data_loading":
-            if task["input_type"].upper() == "CSV":
+        if task[_JE.TASK] == _JSE.DATA_LOADING:
+            if task[_JE.INPUT_TYPE].upper() == "CSV":
                 # get column names
-                smiles_column = task["columns"]["smiles_column"]
-                scores_column = task["columns"]["scores_column"]
-                epochs_column = task["columns"]["epochs_column"]
-                smiles, scores, epochs = load_smiles(task["input"],
+                smiles_column = task[_JE.COLUMNS][_JE.SMILES_COLUMN]
+                scores_column = task[_JE.COLUMNS][_JE.SCORES_COLUMN]
+                epochs_column = task[_JE.COLUMNS][_JE.EPOCHS_COLUMN]
+                smiles, scores, epochs = load_smiles(task[_JE.INPUT],
                                                      smiles_column=smiles_column,
                                                      scores_column=scores_column,
                                                      epochs_column=epochs_column)
                 data.set_scores(scores)
                 data.set_smiles(smiles)
                 data.set_epochs(epochs)
-            elif task["input_type"].upper() == "PKL":
-                with open(task["input"], "rb") as dill_file:
+            elif task[_JE.INPUT_TYPE].upper() == "PKL":
+                with open(task[_JE.INPUT], "rb") as dill_file:
                     data = dill.load(dill_file)
             else:
-                raise ValueError(f"Input type {task['input_type']} not supported (yet).")
+                raise ValueError(f"Input type {task[_JE.INPUT_TYPE]} not supported (yet).")
 
-        elif task["task"] == "generate_fingerprints":
-            fp_type = task["type"].upper()
+        elif task[_JE.TASK] == _JSE.GENERATE_FINGERPRINTS:
+            fp_type = task[_JE.TYPE].upper()
             fps_generator = FingerprintGenerator(data.get_smiles())
-            if fp_type == "MACCS":
+            if fp_type == _FE.MACCS:
                 fps = fps_generator.generate_fingerprints_maccs()
-            elif fp_type == "MORGAN":
+            elif fp_type == _FE.MORGAN:
                 fps = fps_generator.generate_fingerprints_morgan()
-            elif fp_type == "STANDARD":
+            elif fp_type == _FE.STANDARD:
                 fps = fps_generator.generate_fingerprints()
             else:
                 raise ValueError(f"Fingerprint type {fp_type} not supported.")
             data.set_fingerprints(fps)
 
-        elif task["task"] == "dimensional_reduction":
+        elif task[_JE.TASK] == _JSE.DIMENSIONAL_REDUCTION:
             dimensional_reduction = DimensionalReduction()
             data = dimensional_reduction.calculate(chemdata=data)
 
-        elif task["task"] == _DFE.FILTERED_DATA:
+        elif task[_JE.TASK] == _JSE.FILTERING_DATA:
             filtering = Filtering()
             data = filtering.filter_range(chemdata=data,
-                                          range_dim1=task["parameters"]["range_dim1"],
-                                          range_dim2=task["parameters"]["range_dim2"])
+                                          range_dim1=task[_JE.PARAMETERS][_JE.RANGE_DIM1],
+                                          range_dim2=task[_JE.PARAMETERS][_JE.RANGE_DIM2])
 
-        elif task["task"] == _DFE.CLUSTERED_DATA:
+        elif task[_JE.TASK] == _JSE.CLUSTERING_DATA:
             clustering = Clustering()
-            data = clustering.clustering(chemdata=data, k=task["parameters"]["k"])
+            data = clustering.clustering(chemdata=data, k=task[_JE.PARAMETERS][_JE.K])
 
-        elif task["task"] == "binning_scores":
+        elif task[_JE.TASK] == _JSE.BINNING_SCORES:
             binning = Binning()
-            data = binning.binning(chemdata=data, num_bins=task["parameters"]["num_bins"])
+            data = binning.binning(chemdata=data, num_bins=task[_JE.PARAMETERS][_JE.NUM_BINS])
 
-        elif task["task"] == "write_out":
-            with open(task["path"], "wb") as dill_file:
+        elif task[_JE.TASK] == _JSE.WRITE_OUT:
+            with open(task[_JE.PATH], "wb") as dill_file:
                 dill.dump(data, dill_file)
 
-        elif task["task"] == "generate_plot":
-            plot_type = task["type"].upper()
+        elif task[_JE.TASK] == _JSE.GENERATE_PLOT:
+            plot_type = task[_JE.TYPE].lower()
             plot_instance = initialize_plot(plot_type)
             plot_instance.plot(chemdata=data,
-                               parameters=task["parameters"],
-                               settings=task["settings"])
+                               parameters=task[_JE.PARAMETERS],
+                               settings=task[_JE.SETTINGS])
 
-        elif task["task"] == "make_movie":
-            plot_type = task["type"].upper()
+        elif task[_JE.TASK] == _JSE.GENERATE_MOVIE:
+            plot_type = task[_JE.TYPE].lower()
             plot_instance = initialize_plot(plot_type)
-            plot_instance.make_movie(data, task["settings"]["path"])
+            plot_instance.generate_movie(data, task[_JE.SETTINGS][_JE.PATH])
         else:
-            raise ValueError(f"Task definition {task['task']} not supported.")
-        print(f"Task {task['task']} completed.")
+            raise ValueError(f"Task definition {task[_JE.TASK]} not supported.")
+        print(f"Task {task[_JE.TASK]} completed.")
 
         # TODO
         # tanimoto similarity

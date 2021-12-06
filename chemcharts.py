@@ -28,7 +28,7 @@ from chemcharts.core.utils.enums import DataFittingEnum
 from chemcharts.core.utils.enums import PlottingEnum
 _GPE = GeneratePlotsEnum
 _DFE = DataFittingEnum
-_PE =  PlottingEnum
+_PE = PlottingEnum
 
 
 if __name__ == "__main__":
@@ -127,7 +127,7 @@ if __name__ == "__main__":
                                  _PE.SETTINGS_PATH: args.output_plot})
     # make movie
     if args.output_movie is not None:
-        plot_instance.make_movie(plot_data, args.output_movie)
+        plot_instance.generate_movie(plot_data, args.output_movie)
 
     sys.exit(0)
 

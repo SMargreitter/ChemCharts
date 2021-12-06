@@ -28,7 +28,12 @@ class BasePlot:
         if not os.path.isdir(path):
             os.mkdir(path)
 
-    def make_movie(self, chemcharts: ChemData, movie_path: str, aggregate_epochs: bool = True):
+    def generate_movie(self, chemcharts: ChemData, movie_path: str, aggregate_epochs: bool = True):
+        len_epochs = len(chemcharts.get_epochs())
+        len_embedding = len(chemcharts.get_embedding().np_array[:, 0])
+        if len_epochs != len_embedding:
+            raise ValueError(f"Length of epochs ({len_epochs}) not equal embedding length ({len_embedding}), movie generation with clustered data not supported.")
+
         chemcharts = deepcopy(chemcharts)
         self._prepare_folder(path=movie_path)
         xlim = (min(chemcharts.get_embedding().np_array[:, 0]),
@@ -36,6 +41,7 @@ class BasePlot:
         ylim = (min(chemcharts.get_embedding().np_array[:, 1]),
                 max(chemcharts.get_embedding().np_array[:, 1]))
         scorelim = (min(chemcharts.get_scores()), max(chemcharts.get_scores()))
+
         sorted_epochs = chemcharts.sort_epoch_list()
         updated_path_list = []
         total_number_observations = len(chemcharts.get_smiles())

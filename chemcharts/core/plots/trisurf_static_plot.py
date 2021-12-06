@@ -4,7 +4,9 @@ from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
 from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import PlotLabellingEnum
 _PE = PlottingEnum
+_PLE = PlotLabellingEnum
 
 
 class TrisurfStaticPlot(BasePlot):
@@ -12,10 +14,10 @@ class TrisurfStaticPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
-        xlim = parameters[_PE.PARAMETERS_XLIM]
-        ylim = parameters[_PE.PARAMETERS_YLIM]
-        scorelim = parameters[_PE.PARAMETERS_SCORELIM]
-        path = settings[_PE.SETTINGS_PATH]
+        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
+        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+        path = settings.get(_PE.SETTINGS_PATH, None)
+        scorelim = parameters.get(_PE.PARAMETERS_SCORELIM, None)
 
         self._prepare_folder(path=path)
 
@@ -31,9 +33,9 @@ class TrisurfStaticPlot(BasePlot):
 
         # Adding labels
         ax.set_title("Trisurf Static ChemCharts Plot")
-        ax.set_xlabel('UMAP 1')
-        ax.set_ylabel('UMAP 2')
-        ax.set_zlabel('Scores')
+        ax.set_xlabel(_PLE.UMAP_1)
+        ax.set_ylabel(_PLE.UMAP_2)
+        ax.set_zlabel(_PLE.SCORES)
 
         # Setting axes ranges
         if xlim is not None:

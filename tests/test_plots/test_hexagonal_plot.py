@@ -12,8 +12,12 @@ from chemcharts.core.plots.hexag_plot import HexagonalPlot
 
 from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import TestPathsEnum
+from chemcharts.core.utils.enums import TestPlotMovieEnum
+from chemcharts.core.utils.enums import TestNameEnum
 _PE = PlottingEnum()
 _TPE = TestPathsEnum()
+_TPME = TestPlotMovieEnum
+_TNE = TestNameEnum
 
 
 class TestHexagonalPlot(unittest.TestCase):
@@ -67,7 +71,7 @@ class TestHexagonalPlot(unittest.TestCase):
                                              [6, 4],
                                              [3, 4],
                                              [7, 8]]))
-        fingerprint_list = FingerprintContainer("test_fingerprint",
+        fingerprint_list = FingerprintContainer(_TNE.TEST_FINGERPRINT_CONTAINER,
                                                 [[1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
                                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                                  [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -103,16 +107,16 @@ class TestHexagonalPlot(unittest.TestCase):
 
     def test_hexagonal_plot(self):
         test_plot = HexagonalPlot()
-        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, "plot_unittest.png"])}
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
-        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(13000 <= file_size <= 33000)
 
     def test_check_movie_size(self):
         test_plot = HexagonalPlot()
-        test_plot.make_movie(self.test_chemdata, '/'.join([_TPE.PATH_HEXAGONAL_MOVIE, "movie_unittest.mp4"]))
-        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_MOVIE, "movie_unittest.mp4"]))
+        test_plot.generate_movie(self.test_chemdata, '/'.join([_TPE.PATH_HEXAGONAL_MOVIE, _TPME.MOVIE_UNITTEST]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_MOVIE, _TPME.MOVIE_UNITTEST]))
         self.assertTrue(2000 <= file_size <= 22000)

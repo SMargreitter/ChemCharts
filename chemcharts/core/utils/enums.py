@@ -1,11 +1,18 @@
-class PlottingEnum:
-    PARAMETERS_XLIM = "xlim"
-    PARAMETERS_YLIM = "ylim"
-    PARAMETERS_SCORELIM = "scorelim"
-    PARAMETERS_TOTAL_NUMBER_OBSERVATIONS = "total_number_observations"
+class DataFittingEnum:
+    FILTERED_DATA = "filtered_data"
+    CLUSTERED_DATA = "clustered_data"
+    FILTERED_CLUSTERED_DATA = "filtered_clustered_data"
 
-    SETTINGS_VIEW = "view"
-    SETTINGS_PATH = "path"
+
+class FingerprintEnum:
+    AGGREGATED_FINGERPRINT = "aggregated_fingerprint"
+    STANDARD_FINGERPRINT = "standard_fingerprint"
+    MORGAN_FINGERPRINT = "morgan_fingerprint"
+    MACCS_FINGERPRINT = "maccs_fingerprint"
+
+    STANDARD = "STANDARD"
+    MORGAN = "MORGAN"
+    MACCS = "MACCS"
 
 
 class GeneratePlotsEnum:
@@ -16,6 +23,67 @@ class GeneratePlotsEnum:
     SCATTER_STATIC_PLOT = "scatter_static_plot"
     TRISURF_INTERACTIVE_PLOT = "trisurf_interactive_plot"
     TRISURF_STATIC_PLOT = "trisurf_static_plot"
+
+
+class JsonEnum:
+    CHEMDATA_NAME = "json_execution"
+    CHEMCHARTS = "chemcharts"
+    EXECUTION = "execution"
+    TASK = "task"
+    INPUT = "input"
+    INPUT_TYPE = "input_type"
+
+    COLUMNS = "columns"
+    SMILES_COLUMN = "smiles_column"
+    SCORES_COLUMN = "scores_column"
+    EPOCHS_COLUMN = "epochs_column"
+
+    TYPE = "type"
+
+    PARAMETERS = "parameters"
+    USEFEATURES = "useFeatures"
+    RANGE_DIM1 = "range_dim1"
+    RANGE_DIM2 = "range_dim2"
+    K = "k"
+    NUM_BINS = "num_bins"
+
+    SETTINGS = "settings"
+    PATH = "path"
+    VIEW = "view"
+
+
+class JsonStepsEnum:
+    DATA_LOADING = "data_loading"
+    GENERATE_FINGERPRINTS = "generate_fingerprints"
+    DIMENSIONAL_REDUCTION = "dimensional_reduction"
+    FILTERING_DATA = "filtering_data"
+    CLUSTERING_DATA = "clustering_data"
+    BINNING_SCORES = "binning_scores"
+    WRITE_OUT = "write_out"
+    GENERATE_PLOT = "generate_plot"
+    GENERATE_MOVIE = "generate_movie"
+
+
+class PlottingEnum:
+    PARAMETERS_XLIM = "xlim"
+    PARAMETERS_YLIM = "ylim"
+    PARAMETERS_SCORELIM = "scorelim"
+    PARAMETERS_TOTAL_NUMBER_OBSERVATIONS = "total_number_observations"
+
+    SETTINGS_VIEW = "view"
+    SETTINGS_PATH = "path"
+
+
+class PlotLabellingEnum:
+    UMAP_1 = "UMAP_1"
+    UMAP_2 = "UMAP_2"
+    SCORES = "Scores"
+
+
+class ReinventEnum:
+    SMILES = "SMILES"
+    TOTAL_SCORE = "total_score"
+    EPOCHS_COLUMN = "Step"
 
 
 class TestPathsEnum:
@@ -40,13 +108,15 @@ class TestPathsEnum:
     PATH_TRISURF_STATIC_MOVIE = "../junk/trisurf_static_movie"
 
 
-class DataFittingEnum:
-    FILTERED_DATA = "filtered_data"
-    CLUSTERED_DATA = "clustered_data"
-    FILTERED_CLUSTERED_DATA = "filtered_clustered_data"
+class TestPlotMovieEnum:
+    MOVIE_UNITTEST = "movie_unittest.mp4"
+    PLOT_UNITTEST = "plot_unittest.png"
 
 
-class ReinventEnum:
-    SMILES = "SMILES"
-    TOTAL_SCORE = "total_score"
-    EPOCHS_COLUMN = "Step"
+class TestNameEnum:
+    TEST_FINGERPRINT_CONTAINER = "test_fingerprint"
+
+
+
+
+

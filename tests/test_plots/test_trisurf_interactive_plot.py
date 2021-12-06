@@ -12,8 +12,12 @@ from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlo
 
 from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import TestPathsEnum
+from chemcharts.core.utils.enums import TestPlotMovieEnum
+from chemcharts.core.utils.enums import TestNameEnum
 _PE = PlottingEnum()
 _TPE = TestPathsEnum()
+_TPME = TestPlotMovieEnum
+_TNE = TestNameEnum
 
 
 class TestTrisurfInteractivePlot(unittest.TestCase):
@@ -67,7 +71,7 @@ class TestTrisurfInteractivePlot(unittest.TestCase):
                                              [4, 4],
                                              [5, 7],
                                              [6, 2]]))
-        fingerprint_list = FingerprintContainer("test_fingerprint",
+        fingerprint_list = FingerprintContainer(_TNE.TEST_FINGERPRINT_CONTAINER,
                                                 [[1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
                                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                                  [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -107,11 +111,11 @@ class TestTrisurfInteractivePlot(unittest.TestCase):
 
     def test_trisurf_interactive_plot(self):
         test_plot = TrisurfInteractivePlot()
-        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_TRISURF_INTERACTIVE_TEST, "plot_unittest.png"]),
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_TRISURF_INTERACTIVE_TEST, _TPME.PLOT_UNITTEST]),
                     _PE.SETTINGS_VIEW: False}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
-        file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_INTERACTIVE_TEST, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_INTERACTIVE_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(90000 <= file_size <= 120000)

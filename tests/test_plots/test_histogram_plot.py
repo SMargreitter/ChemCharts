@@ -12,8 +12,12 @@ from chemcharts.core.plots.histogram_plot import HistogramPlot
 
 from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import TestPathsEnum
+from chemcharts.core.utils.enums import TestPlotMovieEnum
+from chemcharts.core.utils.enums import TestNameEnum
 _PE = PlottingEnum()
 _TPE = TestPathsEnum()
+_TPME = TestPlotMovieEnum
+_TNE = TestNameEnum
 
 
 class TestHistogramPlot(unittest.TestCase):
@@ -67,7 +71,7 @@ class TestHistogramPlot(unittest.TestCase):
                                              [6, 4],
                                              [3, 4],
                                              [7, 8]]))
-        fingerprint_list = FingerprintContainer("test_fingerprint",
+        fingerprint_list = FingerprintContainer(_TNE.TEST_FINGERPRINT_CONTAINER,
                                                 [[1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
                                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                                  [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -103,16 +107,16 @@ class TestHistogramPlot(unittest.TestCase):
 
     def test_histogram_plot(self):
         test_plot = HistogramPlot()
-        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HISTOGRAM_TEST, "plot_unittest.png"])}
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HISTOGRAM_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
-        file_size = os.path.getsize('/'.join([_TPE.PATH_HISTOGRAM_TEST, "plot_unittest.png"]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HISTOGRAM_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(149000 <= file_size <= 180000)
 
     def test_check_movie_size(self):
         test_plot = HistogramPlot()
-        test_plot.make_movie(self.test_chemdata, '/'.join([_TPE.PATH_HISTOGRAM_MOVIE, "movie_unittest.mp4"]))
-        file_size = os.path.getsize('/'.join([_TPE.PATH_HISTOGRAM_MOVIE, "movie_unittest.mp4"]))
+        test_plot.generate_movie(self.test_chemdata, '/'.join([_TPE.PATH_HISTOGRAM_MOVIE, _TPME.MOVIE_UNITTEST]))
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HISTOGRAM_MOVIE, _TPME.MOVIE_UNITTEST]))
         self.assertTrue(33000 <= file_size <= 53000)

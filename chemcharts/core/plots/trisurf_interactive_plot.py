@@ -14,10 +14,10 @@ class TrisurfInteractivePlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
-        xlim = parameters[_PE.PARAMETERS_XLIM]
-        ylim = parameters[_PE.PARAMETERS_YLIM]
-        scorelim = parameters[_PE.PARAMETERS_SCORELIM]
-        path = settings[_PE.SETTINGS_PATH]
+        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
+        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+        path = settings.get(_PE.SETTINGS_PATH, None)
+        scorelim = parameters.get(_PE.PARAMETERS_SCORELIM, None)
 
         self._prepare_folder(path=path)
 

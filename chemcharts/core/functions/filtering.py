@@ -7,6 +7,9 @@ from copy import deepcopy
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.container.embedding import Embedding
 
+from chemcharts.core.utils.enums import PlotLabellingEnum
+_PLE = PlotLabellingEnum
+
 
 class Filtering:
     """
@@ -45,15 +48,15 @@ class Filtering:
 
         chemdata = deepcopy(chemdata)
         embedding_df = pd.DataFrame(
-            {"UMAP_1": chemdata.get_embedding().np_array[:, 0],
-             "UMAP_2": chemdata.get_embedding().np_array[:, 1],
-             "Scores": chemdata.get_scores()})
+            {_PLE.UMAP_1: chemdata.get_embedding().np_array[:, 0],
+             _PLE.UMAP_2: chemdata.get_embedding().np_array[:, 1],
+             _PLE.SCORES: chemdata.get_scores()})
 
-        df = embedding_df[embedding_df['UMAP_1'].between(range_dim1[0], range_dim1[1])]
-        df = df[df['UMAP_2'].between(range_dim2[0], range_dim2[1])]
-        chemdata.set_scores(list(df["Scores"]))
+        df = embedding_df[embedding_df[_PLE.UMAP_1].between(range_dim1[0], range_dim1[1])]
+        df = df[df[_PLE.UMAP_2].between(range_dim2[0], range_dim2[1])]
+        chemdata.set_scores(list(df[_PLE.SCORES]))
 
-        df.drop("Scores", axis=1, inplace=True)
+        df.drop(_PLE.SCORES, axis=1, inplace=True)
         chemdata.set_embedding(Embedding(df.to_numpy()))
 
         return chemdata

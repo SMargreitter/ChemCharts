@@ -1,5 +1,0 @@
-from tests.test_functions.test_binning import TestBinning
-from tests.test_functions.test_clustering import TestClustering
-from tests.test_functions.test_dimensional_reduction import TestDimensionalReduction
-from tests.test_functions.test_filtering import TestFiltering
-from tests.test_functions.test_tanimoto_similarity import TestTanimotoSimilarity

@@ -6,7 +6,9 @@ from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
 from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import PlotLabellingEnum
 _PE = PlottingEnum
+_PLE = PlotLabellingEnum
 
 
 class HistogramPlot(BasePlot):
@@ -14,9 +16,9 @@ class HistogramPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
-        xlim = parameters[_PE.PARAMETERS_XLIM]
-        ylim = parameters[_PE.PARAMETERS_YLIM]
-        path = settings[_PE.SETTINGS_PATH]
+        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
+        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+        path = settings.get(_PE.SETTINGS_PATH, None)
         scores_input = chemdata.get_scores() # update me
         score_name = chemdata.get_name()     # me too
 
@@ -32,8 +34,8 @@ class HistogramPlot(BasePlot):
         else:
             raise ValueError(f"Selection input: {selection} is not as expected.")
         """
-        scatter_df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
-                                  "UMAP_2": chemdata.get_embedding().np_array[:, 1],
+        scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata.get_embedding().np_array[:, 0],
+                                   _PLE.UMAP_2: chemdata.get_embedding().np_array[:, 1],
                                    score_name: scores_input})
 
         sns.set_context("talk", font_scale=0.5)
@@ -41,16 +43,13 @@ class HistogramPlot(BasePlot):
         sns.histplot(scatter_df[score_name], element="step", bins=20, stat="proportion")
 
         plt.subplots_adjust(top=0.9)
-        plt.suptitle('Scatter Density ChemCharts Plot', fontsize=14)
+        plt.suptitle('Histogram ChemCharts Plot', fontsize=14)
 
         # Setting axes ranges
         if xlim is not None or ylim is not None:
-            print("Scatter density plot does not support setting arbitrary axis limits.")
+            print("Histogram plot does not support setting arbitrary axis limits.")
         plt.xlim(0, 1)
         plt.ylim(0, 1)
 
         plt.savefig(path, format='png', dpi=300)
         plt.close("all")
-
-
-

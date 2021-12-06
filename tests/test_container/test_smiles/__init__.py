@@ -1,1 +1,0 @@
-from tests.test_container.test_smiles.test_smiles import TestSmiles

@@ -1,0 +1,58 @@
+{
+  "chemcharts": {
+    "header": {},
+    "execution": [
+      {"task":  "data_loading",
+       "input":  "data/scaffold_memory.csv",
+       "input_type":  "csv",
+       "columns":  {
+                     "smiles_column": "SMILES",
+                     "scores_column": "total_score",
+                     "epochs_column": "Step"
+                    }
+      },
+      {"task":  "generate_fingerprints",
+       "type":  "maccs",
+       "parameters":  {"useFeatures":  true}
+      },
+      {"task":  "dimensional_reduction",
+       "type": "UMAP",
+       "parameters":  {}
+      },
+      {"task":  "filtering_data",
+       "type": "filtering",
+       "parameters":  {"range_dim1": [-100, 100],
+                       "range_dim2": [-100, 100]}
+      },
+      {"task":  "binning_scores",
+       "type": "binning",
+       "parameters":  {"num_bins": 4}
+      },
+      {
+        "task": "write_out",
+        "format": "pkl",
+        "path": "tests/junk/simple_test.pkl"
+      },
+      {"task": "generate_movie",
+       "type": "hexagonal_plot",
+       "parameters":  {},
+        "settings": {"path": "output/hexagonal_movie/hexagonal_movie.mp4"}
+      },
+      {"task": "generate_movie",
+       "type": "scatter_boxplot_plot",
+       "parameters":  {},
+        "settings": {"path": "output/scatter_boxplot_movie/scatter_boxplot_movie.mp4"}
+      },
+      {"task": "generate_movie",
+       "type": "scatter_static_plot",
+       "parameters":  {},
+        "settings": {"path": "output/scatter_static_movie/scatter_static_movie.mp4"}
+      },
+      {"task": "generate_movie",
+       "type": "trisurf_static_plot",
+       "parameters":  {},
+        "settings": {"path": "output/trisurf_static_movie/trisurf_static_movie.mp4"}
+      }
+    ]
+  }
+}

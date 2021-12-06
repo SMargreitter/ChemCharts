@@ -9,6 +9,9 @@ from copy import deepcopy
 
 from chemcharts.core.container.smiles import Smiles
 
+from chemcharts.core.utils.enums import FingerprintEnum
+_FE = FingerprintEnum
+
 
 class FingerprintContainer:
     """
@@ -62,7 +65,7 @@ class FingerprintContainer:
     def __add__(self, obj):
         copy_self = deepcopy(self)
         obj = deepcopy(obj)
-        copy_self.name = "aggregated_fingerprint"
+        copy_self.name = _FE.AGGREGATED_FINGERPRINT
         copy_self.fingerprint_list.append(obj.fingerprint_list)
         return copy_self
 
@@ -140,7 +143,7 @@ class FingerprintGenerator:
         for mol in self.mol_list:
             fingerprint = Chem.RDKFingerprint(mol)
             fingerprint_buffer.append(fingerprint)
-        return FingerprintContainer(name="standard_fingerprint", fingerprint_list=fingerprint_buffer)
+        return FingerprintContainer(name=_FE.STANDARD_FINGERPRINT, fingerprint_list=fingerprint_buffer)
 
     def generate_fingerprints_morgan(self, useFeatures=False) -> FingerprintContainer:
         """
@@ -162,7 +165,7 @@ class FingerprintGenerator:
         for mol in self.mol_list:
             fingerprint = AllChem.GetMorganFingerprintAsBitVect(mol, radius=3, useFeatures=useFeatures)
             fingerprint_buffer.append(fingerprint)
-        return FingerprintContainer(name="morgan_fingerprint", fingerprint_list=fingerprint_buffer)
+        return FingerprintContainer(name=_FE.MORGAN_FINGERPRINT, fingerprint_list=fingerprint_buffer)
 
     def generate_fingerprints_maccs(self) -> FingerprintContainer:
         """
@@ -179,4 +182,4 @@ class FingerprintGenerator:
         for mol in self.mol_list:
             fingerprint = MACCSkeys.GenMACCSKeys(mol)
             fingerprint_buffer.append(fingerprint)
-        return FingerprintContainer(name="maccs_fingerprint", fingerprint_list=fingerprint_buffer)
+        return FingerprintContainer(name=_FE.MACCS_FINGERPRINT, fingerprint_list=fingerprint_buffer)
