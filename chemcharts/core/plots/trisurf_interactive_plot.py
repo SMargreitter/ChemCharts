@@ -31,7 +31,7 @@ class TrisurfInteractivePlot(BasePlot):
         fig = ff.create_trisurf(x=x, y=y, z=z,
                                 colormap="Portland",
                                 simplices=simplices,
-                                title="Trisurf ChemCharts Plot"
+                                title=parameters.get(_PE.PARAMETERS_TITLE, "Trisurf Interactive ChemCharts Plot")
                                 )
 
         fig.update_layout(
@@ -40,7 +40,8 @@ class TrisurfInteractivePlot(BasePlot):
                 yaxis={} if ylim is None else dict(nticks=6, range=ylim),
                 zaxis={} if scorelim is None else dict(nticks=6, range=scorelim)),
             width=700,
-            margin=dict(r=20, l=10, b=10, t=10))
+            margin=dict(r=50, l=50, b=50, t=100)
+        )
 
         if settings["view"] is True:
             fig.show()

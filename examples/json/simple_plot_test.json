@@ -39,39 +39,39 @@
       },
       {"task": "generate_plot",
        "type": "hexagonal_plot",
-       "parameters":  {},
+       "parameters":  {"title": "Hexagonal ChemCharts Plot"},
         "settings": {"path": "output/hexagonal_plot/hexagonal_plot.png"}
       },
       {"task": "generate_plot",
        "type": "histogram_plot",
-       "parameters":  {},
-        "settings": {"path": "output/histogram_plot/histogram_plot.png"}
+       "parameters":  {"title": "Histogram ChemCharts Plot"},
+       "settings": {"path": "output/histogram_plot/histogram_plot.png"}
       },
       {"task": "generate_plot",
        "type": "scatter_boxplot_plot",
-       "parameters":  {},
+       "parameters":  {"title": "Scatter Boxplot ChemCharts Plot"},
         "settings": {"path": "output/scatter_boxplot_plot/scatter_boxplot_plot.png"}
       },
       {"task": "generate_plot",
        "type": "scatter_interactive_plot",
-       "parameters":  {},
+       "parameters":  {"title": "Scatter Boxplot ChemCharts Plot"},
        "settings": {"path": "output/scatter_interactive_plot/scatter_interactive_plot.png",
                     "view":  false}
       },
       {"task": "generate_plot",
        "type": "scatter_static_plot",
-       "parameters":  {},
+       "parameters":  {"title": "Scatter Static ChemCharts Plot"},
         "settings": {"path": "output/scatter_static_plot/scatter_static_plot.png"}
       },
       {"task": "generate_plot",
        "type": "trisurf_interactive_plot",
-       "parameters":  {},
+       "parameters":  {"title": "Trisurf Interactive ChemCharts Plot"},
        "settings": {"path": "output/trisurf_interactive_plot/trisurf_interactive_plot.png",
-                    "view":  false}
+                    "view":  true}
       },
       {"task": "generate_plot",
        "type": "trisurf_static_plot",
-       "parameters":  {},
+       "parameters":  {"title": "Trisurf Static ChemCharts Plot"},
         "settings": {"path": "output/trisurf_static_plot/trisurf_static_plot.png"}
       }
     ]

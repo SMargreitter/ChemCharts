@@ -31,7 +31,7 @@ class HexagonalPlot(BasePlot):
                       color="#4CB391")
 
         plt.subplots_adjust(top=0.9)
-        plt.suptitle('Hexagonal ChemCharts Plot', fontsize=14)
+        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Hexagonal ChemCharts Plot"), fontsize=14)
 
         plt.savefig(path)
         plt.close()

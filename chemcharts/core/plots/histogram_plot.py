@@ -43,7 +43,7 @@ class HistogramPlot(BasePlot):
         sns.histplot(scatter_df[score_name], element="step", bins=20, stat="proportion")
 
         plt.subplots_adjust(top=0.9)
-        plt.suptitle('Histogram ChemCharts Plot', fontsize=14)
+        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Histogram ChemCharts Plot"), fontsize=14)
 
         # Setting axes ranges
         if xlim is not None or ylim is not None:

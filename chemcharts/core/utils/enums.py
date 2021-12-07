@@ -68,6 +68,7 @@ class PlottingEnum:
     PARAMETERS_XLIM = "xlim"
     PARAMETERS_YLIM = "ylim"
     PARAMETERS_SCORELIM = "scorelim"
+    PARAMETERS_TITLE = "title"
     PARAMETERS_TOTAL_NUMBER_OBSERVATIONS = "total_number_observations"
 
     SETTINGS_VIEW = "view"

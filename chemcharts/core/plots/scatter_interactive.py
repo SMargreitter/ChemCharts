@@ -21,7 +21,6 @@ class ScatterInteractivePlot(BasePlot):
         path = settings.get(_PE.SETTINGS_PATH, None)
         scorelim = parameters.get(_PE.PARAMETERS_SCORELIM, None)
 
-
         self._prepare_folder(path=path)
 
         scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata.get_embedding().np_array[:, 0],
@@ -32,7 +31,8 @@ class ScatterInteractivePlot(BasePlot):
                             x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=_PLE.SCORES,
                             color='Scores',
                             color_discrete_sequence=px.colors.qualitative.Plotly,
-                            range_color=scorelim
+                            range_color=scorelim,
+                            title=parameters.get(_PE.PARAMETERS_TITLE, "Scatter Boxplot ChemCharts Plot")
                             )
         fig.update_traces(marker_size=1)
 

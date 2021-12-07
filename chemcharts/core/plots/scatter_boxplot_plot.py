@@ -38,7 +38,7 @@ class ScatterBoxplotPlot(BasePlot):
         g.plot_marginals(sns.boxplot)
 
         plt.subplots_adjust(top=0.9)
-        plt.suptitle('Scatter Boxplot ChemCharts Plot', fontsize=14)
+        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Scatter Boxplot ChemCharts Plot"), fontsize=14)
 
         plt.savefig(path, format='png', dpi=150)
         plt.close("all")

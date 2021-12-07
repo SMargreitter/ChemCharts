@@ -32,7 +32,7 @@ class TrisurfStaticPlot(BasePlot):
                         )
 
         # Adding labels
-        ax.set_title("Trisurf Static ChemCharts Plot")
+        ax.set_title(parameters.get(_PE.PARAMETERS_TITLE, "Trisurf Static ChemCharts Plot"))
         ax.set_xlabel(_PLE.UMAP_1)
         ax.set_ylabel(_PLE.UMAP_2)
         ax.set_zlabel(_PLE.SCORES)

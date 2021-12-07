@@ -31,7 +31,7 @@ class ScatterStaticPlot(BasePlot):
                    zs=chemdata.get_scores(),
                    s=1)
 
-        ax.set_title("Scatter Static ChemCharts Plot")
+        ax.set_title(parameters.get(_PE.PARAMETERS_TITLE, "Scatter Static ChemCharts Plot"))
         ax.set_xlabel(_PLE.UMAP_1)
         ax.set_ylabel(_PLE.UMAP_2)
         ax.set_zlabel(_PLE.SCORES)
