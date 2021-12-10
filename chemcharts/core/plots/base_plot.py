@@ -45,6 +45,7 @@ class BasePlot:
         sorted_epochs = chemcharts.sort_epoch_list()
         updated_path_list = []
         total_number_observations = len(chemcharts.get_smiles())
+        total_chemcharts = chemcharts
         for idx in range(len(sorted_epochs)):
             if aggregate_epochs:
                 epoch_chemdata = chemcharts.filter_epochs(epochs=[i for i in range(idx + 1)])
@@ -56,7 +57,8 @@ class BasePlot:
                       parameters={_PE.PARAMETERS_XLIM: xlim,
                                   _PE.PARAMETERS_YLIM: ylim,
                                   _PE.PARAMETERS_SCORELIM: scorelim,
-                                  _PE.PARAMETERS_TOTAL_NUMBER_OBSERVATIONS: total_number_observations},
+                                  _PE.PARAMETERS_TOTAL_NUMBER_OBSERVATIONS: total_number_observations,
+                                  _PE.PARAMETERS_TOTAL: total_chemcharts},
                       settings={_PE.SETTINGS_VIEW: "",
                                 _PE.SETTINGS_PATH: updated_snapshot_path}
                       )

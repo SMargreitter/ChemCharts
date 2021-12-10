@@ -70,6 +70,7 @@ class PlottingEnum:
     PARAMETERS_SCORELIM = "scorelim"
     PARAMETERS_TITLE = "title"
     PARAMETERS_TOTAL_NUMBER_OBSERVATIONS = "total_number_observations"
+    PARAMETERS_TOTAL = "total"
 
     SETTINGS_VIEW = "view"
     SETTINGS_PATH = "path"
