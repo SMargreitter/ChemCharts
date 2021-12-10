@@ -125,10 +125,11 @@ class TestTrisurfStaticPlot(unittest.TestCase):
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_STATIC_TEST, _TPME.PLOT_UNITTEST]))
-        self.assertTrue(120000 <= file_size <= 160000)
+        self.assertTrue(330000 <= file_size <= 530000)
 
     def test_check_movie_size(self):
         test_plot = TrisurfStaticPlot()
         test_plot.generate_movie(self.test_chemdata, '/'.join([_TPE.PATH_TRISURF_STATIC_MOVIE, _TPME.MOVIE_UNITTEST]))
         file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_STATIC_MOVIE, _TPME.MOVIE_UNITTEST]))
-        self.assertTrue(45000 <= file_size <= 65000)
+        self.assertTrue(100000 <= file_size <= 200000)
+

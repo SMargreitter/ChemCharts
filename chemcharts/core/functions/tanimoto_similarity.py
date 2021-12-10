@@ -12,7 +12,7 @@ class TanimotoSimilarity:
         Method
         ----------
         simplify <chemdata: ChemData>
-            returns a ChemDataClass object containing simplified scores
+            returns a ChemData object containing simplified scores
     """
 
     def __init__(self):
@@ -27,12 +27,12 @@ class TanimotoSimilarity:
             Parameters
             ----------
             chemdata: ChemData
-                object of ChemDataClass
+                object of ChemData
 
             Returns
             -------
             ChemData
-                returns a ChemDataClass object containing simplified scores
+                returns a ChemData object containing simplified scores
         """
 
         chemdata = deepcopy(chemdata)

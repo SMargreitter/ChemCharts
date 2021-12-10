@@ -32,22 +32,24 @@ class ScatterInteractivePlot(BasePlot):
                             color='Scores',
                             color_discrete_sequence=px.colors.qualitative.Plotly,
                             range_color=scorelim,
-                            title=parameters.get(_PE.PARAMETERS_TITLE, "Scatter Boxplot ChemCharts Plot")
+                            title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Interactive ChemCharts Plot")
                             )
-        fig.update_traces(marker_size=1)
+        fig.update_traces(marker_size=parameters.get(_PE.PARAMETERS_PLOT_MARKER_SIZE, 1))
 
         fig.update_layout(
             scene=dict(
                 xaxis={} if xlim is None else dict(nticks=6, range=xlim),
                 yaxis={} if ylim is None else dict(nticks=6, range=ylim),
                 zaxis={} if scorelim is None else dict(nticks=6, range=scorelim)),
-            width=700,
-            margin=dict(r=20, l=10, b=10, t=10))
+            width=800,
+            margin=dict(r=20, l=10, b=30, t=70))
 
         if _PE.SETTINGS_VIEW is True:
             fig.show()
 
-        fig.write_image(path)
+        fig.write_image(path,
+                        format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'))
+
         plt.close("all")
 
 

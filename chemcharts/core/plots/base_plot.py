@@ -1,5 +1,4 @@
 import os
-import shutil
 import ffmpeg
 from copy import deepcopy
 
@@ -28,37 +27,37 @@ class BasePlot:
         if not os.path.isdir(path):
             os.mkdir(path)
 
-    def generate_movie(self, chemcharts: ChemData, movie_path: str, aggregate_epochs: bool = True):
-        len_epochs = len(chemcharts.get_epochs())
-        len_embedding = len(chemcharts.get_embedding().np_array[:, 0])
+    def generate_movie(self, chemdata: ChemData, movie_path: str, aggregate_epochs: bool = True):
+        len_epochs = len(chemdata.get_epochs())
+        len_embedding = len(chemdata.get_embedding().np_array[:, 0])
         if len_epochs != len_embedding:
-            raise ValueError(f"Length of epochs ({len_epochs}) not equal embedding length ({len_embedding}), movie generation with clustered data not supported.")
+            raise ValueError(f"Length of epochs ({len_epochs}) not equal embedding length ({len_embedding}),"
+                             f"movie generation with clustered data not supported.")
 
-        chemcharts = deepcopy(chemcharts)
+        chemdata = deepcopy(chemdata)
         self._prepare_folder(path=movie_path)
-        xlim = (min(chemcharts.get_embedding().np_array[:, 0]),
-                max(chemcharts.get_embedding().np_array[:, 0]))
-        ylim = (min(chemcharts.get_embedding().np_array[:, 1]),
-                max(chemcharts.get_embedding().np_array[:, 1]))
-        scorelim = (min(chemcharts.get_scores()), max(chemcharts.get_scores()))
+        xlim = (min(chemdata.get_embedding().np_array[:, 0]),
+                max(chemdata.get_embedding().np_array[:, 0]))
+        ylim = (min(chemdata.get_embedding().np_array[:, 1]),
+                max(chemdata.get_embedding().np_array[:, 1]))
+        scorelim = (min(chemdata.get_scores()), max(chemdata.get_scores()))
 
-        sorted_epochs = chemcharts.sort_epoch_list()
+        sorted_epochs = chemdata.sort_epoch_list()
         updated_path_list = []
-        total_number_observations = len(chemcharts.get_smiles())
-        total_chemcharts = chemcharts
+        total_number_observations = len(chemdata.get_smiles())
+        total_chemdata = chemdata
         for idx in range(len(sorted_epochs)):
             if aggregate_epochs:
-                epoch_chemdata = chemcharts.filter_epochs(epochs=[i for i in range(idx + 1)])
+                epoch_chemdata = chemdata.filter_epochs(epochs=[i for i in range(idx + 1)])
             else:
-                epoch_chemdata = chemcharts.filter_epoch(epoch=idx)
+                epoch_chemdata = chemdata.filter_epoch(epoch=idx)
             updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
             self.plot(chemdata=epoch_chemdata,
                       parameters={_PE.PARAMETERS_XLIM: xlim,
                                   _PE.PARAMETERS_YLIM: ylim,
                                   _PE.PARAMETERS_SCORELIM: scorelim,
-                                  _PE.PARAMETERS_TOTAL_NUMBER_OBSERVATIONS: total_number_observations,
-                                  _PE.PARAMETERS_TOTAL: total_chemcharts},
+                                  _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
                       settings={_PE.SETTINGS_VIEW: "",
                                 _PE.SETTINGS_PATH: updated_snapshot_path}
                       )

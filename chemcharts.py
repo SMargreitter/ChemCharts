@@ -117,12 +117,13 @@ if __name__ == "__main__":
                          "trisurf_interactive_plot/ hexagonal_plot) but none was given! Not supported: "
                          f"{args.plot}")
 
+    total_chemdata = plot_data
     # make plot
     plot_instance.plot(chemdata=plot_data,
                        parameters={_PE.PARAMETERS_XLIM: None,
                                    _PE.PARAMETERS_YLIM: None,
                                    _PE.PARAMETERS_SCORELIM: None,
-                                   _PE.PARAMETERS_TOTAL_NUMBER_OBSERVATIONS: None},
+                                   _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
                        settings={_PE.SETTINGS_VIEW: "",
                                  _PE.SETTINGS_PATH: args.output_plot})
     # make movie

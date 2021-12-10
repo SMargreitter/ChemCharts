@@ -21,18 +21,17 @@ class TrisurfStaticPlot(BasePlot):
 
         self._prepare_folder(path=path)
 
-        fig = plt.figure(figsize=(14, 9))
+        fig = plt.figure(settings.get(_PE.SETTINGS_FIG_SIZE, (9, 9)))
         ax = plt.axes(projection='3d')
 
-        cmap = plt.get_cmap('twilight_shifted')
         ax.plot_trisurf(chemdata.get_embedding().np_array[:, 0],
                         chemdata.get_embedding().np_array[:, 1],
                         chemdata.get_scores(),
-                        cmap=cmap
+                        cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, plt.get_cmap('twilight_shifted'))
                         )
 
         # Adding labels
-        ax.set_title(parameters.get(_PE.PARAMETERS_TITLE, "Trisurf Static ChemCharts Plot"))
+        ax.set_title(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Trisurf Static ChemCharts Plot"))
         ax.set_xlabel(_PLE.UMAP_1)
         ax.set_ylabel(_PLE.UMAP_2)
         ax.set_zlabel(_PLE.SCORES)
@@ -45,5 +44,8 @@ class TrisurfStaticPlot(BasePlot):
         if scorelim is not None:
             ax.set_zlim(scorelim[0], scorelim[1])
 
-        plt.savefig(path)
+        plt.savefig(path,
+                    format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 250))
+
         plt.close(fig)

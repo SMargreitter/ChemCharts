@@ -29,9 +29,9 @@ class TrisurfInteractivePlot(BasePlot):
         simplices = tri.simplices
 
         fig = ff.create_trisurf(x=x, y=y, z=z,
-                                colormap="Portland",
+                                colormap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "Portland"),
                                 simplices=simplices,
-                                title=parameters.get(_PE.PARAMETERS_TITLE, "Trisurf Interactive ChemCharts Plot")
+                                title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Trisurf Interactive ChemCharts Plot")
                                 )
 
         fig.update_layout(
@@ -46,4 +46,5 @@ class TrisurfInteractivePlot(BasePlot):
         if settings["view"] is True:
             fig.show()
 
-        fig.write_image(path)
+        fig.write_image(path,
+                        format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'))

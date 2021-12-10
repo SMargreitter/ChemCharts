@@ -18,96 +18,42 @@ class HexagonalPlot(BasePlot):
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
-        total = parameters.get(_PE.PARAMETERS_TOTAL, chemdata)
+        total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata)
+        gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
 
         self._prepare_folder(path=path)
 
         extent = (xlim[0], xlim[1], ylim[0], ylim[1]) if xlim is not None else None
 
-    #    x_bins = min(_freedman_diaconis_bins(grid.x), 50)
-    #    y_bins = min(_freedman_diaconis_bins(grid.y), 50)
-    #    gridsize = int(np.mean([x_bins, y_bins]))
+        if gridsize is None:
+            x_bins = int(min(_freedman_diaconis_bins(total_chemdata.get_embedding().np_array[:, 0]), 50))
+            y_bins = int(min(_freedman_diaconis_bins(total_chemdata.get_embedding().np_array[:, 1]), 50))
+            gridsize = int(np.mean([x_bins, y_bins]))
 
-        hb = plt.hexbin(x=total.get_embedding().np_array[:, 0],
-                        y=total.get_embedding().np_array[:, 1],
-                        color="#4CB391")
+        hb = plt.hexbin(x=total_chemdata.get_embedding().np_array[:, 0],
+                        y=total_chemdata.get_embedding().np_array[:, 1],
+                        color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
+                        gridsize=gridsize)
 
         sns.jointplot(x=chemdata.get_embedding().np_array[:, 0],
                       y=chemdata.get_embedding().np_array[:, 1],
                       xlim=xlim,
                       ylim=ylim,
-                      joint_kws={"gridsize": 20,
-                                 "C": np.ones_like(chemdata.get_embedding().np_array[:, 1], dtype=np.float) /
-                                      hb.get_array().max(),
-                                 "reduce_C_function": np.sum},
+                      joint_kws={"gridsize": gridsize,
+                                 "vmin": 0,
+                                 "vmax": hb.get_array().max()},
                       kind="hex",
                       extent=extent,
-                      color="#4CB391"
+                      color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
                       )
 
-        plt.subplots_adjust(top=0.9)
-        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Hexagonal ChemCharts Plot"), fontsize=14)
+        plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
 
-        plt.savefig(path)
+        plt.suptitle(t=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Hexagonal ChemCharts Plot"),
+                     fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 14))
+
+        plt.savefig(path,
+                    format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 100))
+
         plt.close()
-
-"""
-    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
-        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
-        path = settings.get(_PE.SETTINGS_PATH, None)
-        total = parameters.get(_PE.PARAMETERS_TOTAL, chemdata)
-#        if xlim and ylim is not None:
-#            print("x:", xlim[0])
-#            print("x:", xlim[1])
-#            print("y:", ylim[0])
-#            print("y:", ylim[1])
-
-        self._prepare_folder(path=path)
-
-        plt.subplot(111)
-        hb = plt.hexbin(x=total.get_embedding().np_array[:, 0],
-                        y=total.get_embedding().np_array[:, 1],
-                        cmap=plt.cm.YlOrRd_r)
-
-        plt.cla()
-        plt.hexbin(x=chemdata.get_embedding().np_array[:, 0],
-                   y=chemdata.get_embedding().np_array[:, 1],
-                   C=np.ones_like(chemdata.get_embedding().np_array[:, 1], dtype=np.float) / hb.get_array().max(),
-                   cmap=plt.cm.YlOrRd_r,
-                   reduce_C_function=np.sum)
-
-        plt.axis([xlim[0], xlim[1], ylim[0], ylim[1]]) if xlim is not None else None
-        cb = plt.colorbar()
-
-        plt.subplots_adjust(top=0.9)
-        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Hexagonal ChemCharts Plot"), fontsize=14)
-
-        plt.savefig(path)
-        plt.close()
-"""
-"""
-    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
-        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
-        path = settings.get(_PE.SETTINGS_PATH, None)
-
-        self._prepare_folder(path=path)
-
-        extent = (xlim[0], xlim[1], ylim[0], ylim[1]) if xlim is not None else None
-
-        sns.jointplot(x=chemdata.get_embedding().np_array[:, 0],
-                      y=chemdata.get_embedding().np_array[:, 1],
-                      xlim=xlim,
-                      ylim=ylim,
-                      joint_kws={"gridsize": 20},
-                      kind="hex",
-                      extent=extent,
-                      color="#4CB391")
-
-        plt.subplots_adjust(top=0.9)
-        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Hexagonal ChemCharts Plot"), fontsize=14)
-
-        plt.savefig(path)
-        plt.close()
-"""

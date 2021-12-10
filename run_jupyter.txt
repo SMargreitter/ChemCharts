@@ -15,7 +15,7 @@ python chemcharts.py -input_data test.pkl -output_plot test.png -output_movie /h
 
 
 
-python chemcharts_json.py -conf examples/json/simple_test.json
+python chemcharts_json.py -conf examples/json/simple_plot_test.json
 
 
 

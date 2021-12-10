@@ -38,18 +38,30 @@ class HistogramPlot(BasePlot):
                                    _PLE.UMAP_2: chemdata.get_embedding().np_array[:, 1],
                                    score_name: scores_input})
 
-        sns.set_context("talk", font_scale=0.5)
-        plt.figure(figsize=(17, 17))
-        sns.histplot(scatter_df[score_name], element="step", bins=20, stat="proportion")
+        sns.set_context("talk",
+                        font_scale=0.5)
 
-        plt.subplots_adjust(top=0.9)
-        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Histogram ChemCharts Plot"), fontsize=14)
+        plt.figure(settings.get(_PE.SETTINGS_FIG_SIZE, (17, 17)))
+
+        sns.histplot(scatter_df[score_name],
+                     element="step",
+                     bins=parameters.get(_PE.PARAMETERS_BINS, 20),
+                     stat="proportion",
+                     color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#d11d80"))
+
+        plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
+
+        plt.suptitle(t=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Histogram ChemCharts Plot"),
+                     fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 18))
 
         # Setting axes ranges
         if xlim is not None or ylim is not None:
             print("Histogram plot does not support setting arbitrary axis limits.")
-        plt.xlim(0, 1)
-        plt.ylim(0, 1)
+            plt.xlim(0, 1)      #TODO check me
+            plt.ylim(0, 1)
 
-        plt.savefig(path, format='png', dpi=300)
+        plt.savefig(path,
+                    format=parameters.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                    dpi=parameters.get(_PE.SETTINGS_FIG_DPI, 300))
+
         plt.close("all")

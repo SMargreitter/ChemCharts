@@ -118,4 +118,5 @@ class TestTrisurfInteractivePlot(unittest.TestCase):
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot(self.test_chemdata, parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_INTERACTIVE_TEST, _TPME.PLOT_UNITTEST]))
+        print(file_size)
         self.assertTrue(90000 <= file_size <= 120000)

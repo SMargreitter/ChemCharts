@@ -25,13 +25,15 @@ class ScatterStaticPlot(BasePlot):
         ax = fig.add_subplot(projection='3d')
 
         plt.gcf().set_size_inches((15, 15))
+      #  plt.gcf().set_size_inches(tuple(settings.get(_PE.SETTINGS_FIG_SIZE, (15,15))))
 
         ax.scatter(chemdata.get_embedding().np_array[:, 0],
                    chemdata.get_embedding().np_array[:, 1],
                    zs=chemdata.get_scores(),
-                   s=1)
+                   s=parameters.get(_PE.PARAMETERS_PLOT_S, 1),
+                   color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#0000ff"))
 
-        ax.set_title(parameters.get(_PE.PARAMETERS_TITLE, "Scatter Static ChemCharts Plot"))
+        ax.set_title(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Static ChemCharts Plot"))
         ax.set_xlabel(_PLE.UMAP_1)
         ax.set_ylabel(_PLE.UMAP_2)
         ax.set_zlabel(_PLE.SCORES)
@@ -44,5 +46,8 @@ class ScatterStaticPlot(BasePlot):
         if scorelim is not None:
             ax.set_zlim(scorelim[0], scorelim[1])
 
-        plt.savefig(path)
+        plt.savefig(path,
+                    format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 100))
+
         plt.close(fig)

@@ -14,7 +14,7 @@ class Clustering:
         Method
         ----------
         clustering <chemdata: ChemData, k: int>
-            returns a ChemDataClass object containing a clustered EmbeddingClass object
+            returns a ChemData object containing a clustered Embedding object
     """
 
     def __init__(self):
@@ -28,7 +28,7 @@ class Clustering:
             Parameters
             ----------
             chemdata: ChemData
-                object of ChemDataClass
+                object of ChemData
             k: int
                 the number of desired KMeans clusters
 

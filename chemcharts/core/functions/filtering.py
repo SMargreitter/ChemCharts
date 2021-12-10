@@ -18,7 +18,7 @@ class Filtering:
         Method
         ----------
         filter_range<chemdata: ChemData, range_dim1: Tuple[float, float], range_dim2: Tuple[float, float]>
-            returns a ChemDataClass object containing a filtered EmbeddingClass object and filtered scores
+            returns a ChemData object containing a filtered Embedding object and filtered scores
     """
 
     def __init__(self):
@@ -33,7 +33,7 @@ class Filtering:
             Parameters
             ----------
             chemdata: ChemData
-                object of ChemData class
+                object of ChemData
             range_dim1: Tuple[float, float]
                 setting the filter range for values on x axis
             range_dim2: Tuple[float, float]
@@ -42,7 +42,7 @@ class Filtering:
             Returns
             -------
             ChemData
-                returns a ChemDataClass object containing a filtered EmbeddingClass object and
+                returns a ChemData object containing a filtered Embedding object and
                 filtered scores
         """
 

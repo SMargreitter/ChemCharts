@@ -3,7 +3,7 @@ from copy import deepcopy
 
 
 class Smiles:
-    """The SmilesClass contains a list of smiles (eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...],
+    """The Smiles contains a list of smiles (eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...],
        default is None."""
 
     def __init__(self, smiles_list: List[str] = None):

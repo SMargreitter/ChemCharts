@@ -17,7 +17,7 @@ class DimensionalReduction:
         Method
         ----------
         clustering <chemdata: ChemData, k: int>
-            returns a ChemDataClass object containing an EmbeddingClass object (which includes the
+            returns a ChemData object containing an Embedding object (which includes the
             UMAP clustered fingerprints)
     """
 
@@ -48,12 +48,12 @@ class DimensionalReduction:
             Parameters
             ----------
             chemdata: ChemData
-                object of ChemDataClass
+                object of ChemData
 
             Returns
             -------
             ChemData
-                returns a ChemDataClass object containing an EmbeddingClass object (which includes the
+                returns a ChemData object containing an Embedding object (which includes the
                 UMAP clustered fingerprints)
         """
 

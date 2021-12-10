@@ -12,7 +12,7 @@ def load_smiles(path: str,
                 scores_column: str = _RE.TOTAL_SCORE,
                 epochs_column: str = _RE.EPOCHS_COLUMN) -> Tuple[Smiles, list, list]:
     """
-         The load_smiles function loads data from a file and allocates its data to a SmilesClass object
+         The load_smiles function loads data from a file and allocates its data to a Smiles object
          and to a score as well as epoch list.
 
          Parameters
@@ -29,7 +29,7 @@ def load_smiles(path: str,
          Returns
          -------
          ChemData
-             returns a Tuple object containing a SmilesClass object as well as score and epoch lists
+             returns a Tuple object containing a Smiles object as well as score and epoch lists
     """
 
     loaded_data = pd.read_csv(path)

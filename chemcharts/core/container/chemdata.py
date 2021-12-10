@@ -15,8 +15,8 @@ class ChemData:
 
         Attributes (required)
         ----------
-        smiles_obj : SmilesClass
-            object contains a list of SmilesClass objects (eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...])
+        smiles_obj : Smiles
+            object contains a list of Smiles objects (eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...])
 
         Attributes (optional)
         ----------
@@ -28,9 +28,9 @@ class ChemData:
             smiles divided in active and inactive list
         scores : list of int
             referring to xxx
-        fingerprints : FingerprintContainerClass
+        fingerprints : FingerprintContainer
             object which contains a name a list of fingerprints
-        embedding : EmbeddingClass
+        embedding : Embedding
             object which contains an np.array of dimensionally reduced fingerprints
         tanimoto_similarity : np.array
             contains scores, one for each target fingerprint
@@ -42,9 +42,9 @@ class ChemData:
         find_epoch_indices <sorted_epochs: list>:
             returns a list of the epoch indices
         filter_epoch <epoch: int>:
-            returns a ChemDataClass object with the object belonging to a specific epoch
+            returns a ChemData object with the object belonging to a specific epoch
         filter_epochs <epochs: list>:
-            returns a ChemDataClass object for a specific epoch
+            returns a ChemData object for a specific epoch
     """
 
     def __init__(self, smiles_obj: Smiles = None,

@@ -3,7 +3,7 @@ from copy import deepcopy
 
 
 class Embedding:
-    """The EmbeddingClass contains dimensionally reduced fingerprints in np-array format."""
+    """The Embedding contains dimensionally reduced fingerprints in np-array format."""
 
     def __init__(self, np_array: np.ndarray = None):
         self.np_array = np.empty((0, 2), float) if np_array is None else np_array

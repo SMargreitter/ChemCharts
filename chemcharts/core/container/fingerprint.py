@@ -73,13 +73,13 @@ class FingerprintContainer:
 class FingerprintGenerator:
     """
         Transforms MolSmiles to fingerprints by using the RDKit fingerprints (standard, Morgan and
-        MACCS) and then adds them to the fingerprint_list of an object of the FingerprintContainer class.
+        MACCS) and then adds them to the fingerprint_list of an object of the FingerprintContainer.
 
         ...
 
         Attributes (required)
         ----------
-        smiles_obj : SmilesClass
+        smiles_obj : Smiles
             object contains a list of MolSmiles (every smile encodes one molecule)
             eg [O=C1c2ccccc2C(=O)N1CCC1=Cc2ccccc2CCC1, ...] -> the characters represent chemical elements
 
@@ -89,13 +89,13 @@ class FingerprintGenerator:
             returns a list of MolSmiles
         generate_fingerprints:
             transforms MolSmiles to fingerprints by using the RDKit standard fingerprint, adds them to the
-            fingerprint_list of an object of the FingerprintContainerClass and returns it
+            fingerprint_list of an object of the FingerprintContainer and returns it
         generate_fingerprints_morgan <useFeatures=False>:
             transforms MolSmiles to fingerprints by using the RDKit Morgan fingerprint, adds them to the
-            fingerprint_list of an object of the FingerprintContainerClass and returns it
+            fingerprint_list of an object of the FingerprintContainer and returns it
         generate_fingerprints_maccs:
             transforms MolSmiles to fingerprints by using the RDKit MACCS fingerprint, adds them to the
-            fingerprint_list of an object of the FingerprintContainerClass and returns it
+            fingerprint_list of an object of the FingerprintContainer and returns it
     """
 
     def __init__(self, smiles_obj: Smiles):
@@ -110,12 +110,12 @@ class FingerprintGenerator:
     @staticmethod
     def make_mol_list(column: List[str]) -> List[Mol]:
         """
-            Transforms object of SmilesClass to Mol's and adds them to the mol_list.
+            Transforms object of Smiles to Mol's and adds them to the mol_list.
 
             Parameters
             ----------
             column: List[str]
-                list of objects of SmilesClass
+                list of objects of Smiles
 
             Returns
             -------
@@ -131,12 +131,12 @@ class FingerprintGenerator:
     def generate_fingerprints(self) -> FingerprintContainer:
         """
             Transforms internal MolSmiles to fingerprints by using the STANDARD RDKit fingerprint function,
-            adds them to the fingerprint_list of an object of the FingerprintContainerClass and returns it.
+            adds them to the fingerprint_list of an object of the FingerprintContainer and returns it.
 
             Returns
             -------
-            FingerprintContainerClass
-                an object of the FingerprintContainerClass, containing a list of fingerprints
+            FingerprintContainer
+                an object of the FingerprintContainer, containing a list of fingerprints
         """
 
         fingerprint_buffer = []
@@ -148,7 +148,7 @@ class FingerprintGenerator:
     def generate_fingerprints_morgan(self, useFeatures=False) -> FingerprintContainer:
         """
             Transforms internal MolSmiles to fingerprints by using the MORGAN RDKit fingerprint function,
-            adds them to the fingerprint_list of an object of the FingerprintContainerClass and returns it.
+            adds them to the fingerprint_list of an object of the FingerprintContainer and returns it.
 
             Parameters
             ----------
@@ -157,8 +157,8 @@ class FingerprintGenerator:
 
             Returns
             -------
-            FingerprintContainerClass
-                an object of the FingerprintContainerClass, containing a list of fingerprints
+            FingerprintContainer
+                an object of the FingerprintContainer, containing a list of fingerprints
         """
 
         fingerprint_buffer = []
@@ -170,12 +170,12 @@ class FingerprintGenerator:
     def generate_fingerprints_maccs(self) -> FingerprintContainer:
         """
             Transforms internal MolSmiles to fingerprints by using the MACC RDKit fingerprint function,
-            adds them to the fingerprint_list of an object of the FingerprintContainerClass and returns it.
+            adds them to the fingerprint_list of an object of the FingerprintContainer and returns it.
 
             Returns
             -------
-            FingerprintContainerClass
-                an object of the FingerprintContainerClass, containing a list of fingerprints
+            FingerprintContainer
+                an object of the FingerprintContainer, containing a list of fingerprints
         """
 
         fingerprint_buffer = []

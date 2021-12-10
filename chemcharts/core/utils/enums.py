@@ -65,12 +65,25 @@ class JsonStepsEnum:
 
 
 class PlottingEnum:
-    PARAMETERS_XLIM = "xlim"
-    PARAMETERS_YLIM = "ylim"
+    PARAMETERS_GRIDSIZE = "gridsize"
+    PARAMETERS_BINS = "bins"
+
+    PARAMETERS_PLOT_TITLE = "title"
+    PARAMETERS_PLOT_TITLE_FONTSIZE = "fontsize"
+    PARAMETERS_PLOT_ADJUST_TOP = "top"
+    PARAMETERS_PLOT_COLOR = "color"
+    PARAMETERS_PLOT_S = "s"                      #3d scatter plot ball size
+    PARAMETERS_PLOT_MARKER_SIZE = "marker_size"
+
     PARAMETERS_SCORELIM = "scorelim"
-    PARAMETERS_TITLE = "title"
-    PARAMETERS_TOTAL_NUMBER_OBSERVATIONS = "total_number_observations"
-    PARAMETERS_TOTAL = "total"
+    PARAMETERS_YLIM = "ylim"
+    PARAMETERS_XLIM = "xlim"
+
+    PARAMETERS_TOTAL_CHEMDATA = "total_chemdata"
+
+    SETTINGS_FIG_FORMAT = "format"
+    SETTINGS_FIG_DPI = "dpi"
+    SETTINGS_FIG_SIZE = "figsize"
 
     SETTINGS_VIEW = "view"
     SETTINGS_PATH = "path"
@@ -117,8 +130,3 @@ class TestPlotMovieEnum:
 
 class TestNameEnum:
     TEST_FINGERPRINT_CONTAINER = "test_fingerprint"
-
-
-
-
-

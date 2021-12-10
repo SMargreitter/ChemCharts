@@ -27,7 +27,7 @@ class ScatterBoxplotPlot(BasePlot):
                                    "z": chemdata.get_scores()})
 
         sns.set_context("talk", font_scale=0.5)
-        plt.figure(figsize=(17, 17))
+        plt.figure(settings.get(_PE.SETTINGS_FIG_SIZE, (17, 17)))
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
@@ -37,8 +37,13 @@ class ScatterBoxplotPlot(BasePlot):
         g.plot_joint(sns.scatterplot)
         g.plot_marginals(sns.boxplot)
 
-        plt.subplots_adjust(top=0.9)
-        plt.suptitle(parameters.get(_PE.PARAMETERS_TITLE, "Scatter Boxplot ChemCharts Plot"), fontsize=14)
+        plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
 
-        plt.savefig(path, format='png', dpi=150)
+        plt.suptitle(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Boxplot ChemCharts Plot"),
+                     fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 14))
+
+        plt.savefig(path,
+                    format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 150))
+
         plt.close("all")
