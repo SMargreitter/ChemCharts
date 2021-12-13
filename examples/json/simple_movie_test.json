@@ -34,9 +34,9 @@
         "path": "tests/junk/simple_test.pkl"
       },
       {"task": "generate_movie",
-       "type": "hexagonal_plot",
+       "type": "trisurf_static_plot",
        "parameters":  {},
-        "settings": {"path": "output/hexagonal_movie/hexagonal_movie.mp4"}
+        "settings": {"path": "output/trisurf_static_movie/trisurf_static_movie.mp4"}
       },
       {"task": "generate_movie",
        "type": "scatter_boxplot_plot",
@@ -49,9 +49,9 @@
         "settings": {"path": "output/scatter_static_movie/scatter_static_movie.mp4"}
       },
       {"task": "generate_movie",
-       "type": "trisurf_static_plot",
+       "type": "hexagonal_plot",
        "parameters":  {},
-        "settings": {"path": "output/trisurf_static_movie/trisurf_static_movie.mp4"}
+        "settings": {"path": "output/hexagonal_movie/hexagonal_movie.mp4"}
       }
     ]
   }

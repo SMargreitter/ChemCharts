@@ -1,3 +1,5 @@
+from typing import List
+
 import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
@@ -13,7 +15,11 @@ class TrisurfStaticPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
+    def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        if isinstance(chemdata_list, list):
+            print("Function does not support multiple input objects (yet).")
+            chemdata_list = chemdata_list[0]
+
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
@@ -21,12 +27,14 @@ class TrisurfStaticPlot(BasePlot):
 
         self._prepare_folder(path=path)
 
-        fig = plt.figure(settings.get(_PE.SETTINGS_FIG_SIZE, (9, 9)))
+#        fig = plt.figure(settings.get(_PE.SETTINGS_FIG_SIZE, (9, 9)))
+        fig = plt.figure(figsize=(9, 9))
+
         ax = plt.axes(projection='3d')
 
-        ax.plot_trisurf(chemdata.get_embedding().np_array[:, 0],
-                        chemdata.get_embedding().np_array[:, 1],
-                        chemdata.get_scores(),
+        ax.plot_trisurf(chemdata_list.get_embedding().np_array[:, 0],
+                        chemdata_list.get_embedding().np_array[:, 1],
+                        chemdata_list.get_scores(),
                         cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, plt.get_cmap('twilight_shifted'))
                         )
 

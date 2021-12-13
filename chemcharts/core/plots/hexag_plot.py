@@ -1,3 +1,5 @@
+from typing import List
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,11 +16,15 @@ class HexagonalPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
+    def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        if isinstance(chemdata_list, list):
+            print("Function does not support multiple input objects (yet).")
+            chemdata_list = chemdata_list[0]
+
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
-        total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata)
+        total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list)
         gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
 
         self._prepare_folder(path=path)
@@ -35,8 +41,8 @@ class HexagonalPlot(BasePlot):
                         color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
                         gridsize=gridsize)
 
-        sns.jointplot(x=chemdata.get_embedding().np_array[:, 0],
-                      y=chemdata.get_embedding().np_array[:, 1],
+        sns.jointplot(x=chemdata_list.get_embedding().np_array[:, 0],
+                      y=chemdata_list.get_embedding().np_array[:, 1],
                       xlim=xlim,
                       ylim=ylim,
                       joint_kws={"gridsize": gridsize,

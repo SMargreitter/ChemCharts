@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 import plotly.figure_factory as ff
 from scipy.spatial import Delaunay
@@ -13,7 +15,11 @@ class TrisurfInteractivePlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
+    def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        if isinstance(chemdata_list, list):
+            print("Function does not support multiple input objects (yet).")
+            chemdata_list = chemdata_list[0]
+
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
@@ -21,9 +27,9 @@ class TrisurfInteractivePlot(BasePlot):
 
         self._prepare_folder(path=path)
 
-        x = chemdata.get_embedding().np_array[:, 0]
-        y = chemdata.get_embedding().np_array[:, 1]
-        z = chemdata.get_scores()
+        x = chemdata_list.get_embedding().np_array[:, 0]
+        y = chemdata_list.get_embedding().np_array[:, 1]
+        z = chemdata_list.get_scores()
 
         tri = Delaunay(np.array([x, y]).T)
         simplices = tri.simplices

@@ -36,7 +36,7 @@ class FingerprintContainer:
             returns an object with an added fingerprint_list
     """
 
-    def __init__(self, name: str, fingerprint_list: List[ExplicitBitVect] = None):
+    def __init__(self, name: str = "", fingerprint_list: List[ExplicitBitVect] = None):
         self.name = name
         self.fingerprint_list = [] if fingerprint_list is None else fingerprint_list
 

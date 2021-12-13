@@ -1,3 +1,5 @@
+from typing import List
+
 import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
@@ -13,7 +15,11 @@ class ScatterStaticPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
+    def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        if isinstance(chemdata_list, list):
+            print("Function does not support multiple input objects (yet).")
+            chemdata_list = chemdata_list[0]
+
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
@@ -27,9 +33,9 @@ class ScatterStaticPlot(BasePlot):
         plt.gcf().set_size_inches((15, 15))
       #  plt.gcf().set_size_inches(tuple(settings.get(_PE.SETTINGS_FIG_SIZE, (15,15))))
 
-        ax.scatter(chemdata.get_embedding().np_array[:, 0],
-                   chemdata.get_embedding().np_array[:, 1],
-                   zs=chemdata.get_scores(),
+        ax.scatter(chemdata_list.get_embedding().np_array[:, 0],
+                   chemdata_list.get_embedding().np_array[:, 1],
+                   zs=chemdata_list.get_scores(),
                    s=parameters.get(_PE.PARAMETERS_PLOT_S, 1),
                    color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#0000ff"))
 

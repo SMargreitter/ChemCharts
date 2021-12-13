@@ -71,81 +71,86 @@ if __name__ == "__main__":
         conf = json.load(conf_file)
 
     # execute the tasks
-    data = ChemData(name=_JE.CHEMDATA_NAME)
+    chemdata_list = []
     tasks = conf[_JE.CHEMCHARTS][_JE.EXECUTION]
     for task in tasks:
         if task[_JE.TASK] == _JSE.DATA_LOADING:
+            if not isinstance(task[_JE.INPUT], list):
+                task[_JE.INPUT] = list(task[_JE.INPUT])
             if task[_JE.INPUT_TYPE].upper() == "CSV":
                 # get column names
                 smiles_column = task[_JE.COLUMNS][_JE.SMILES_COLUMN]
                 scores_column = task[_JE.COLUMNS][_JE.SCORES_COLUMN]
                 epochs_column = task[_JE.COLUMNS][_JE.EPOCHS_COLUMN]
-                smiles, scores, epochs = load_smiles(task[_JE.INPUT],
-                                                     smiles_column=smiles_column,
-                                                     scores_column=scores_column,
-                                                     epochs_column=epochs_column)
-                data.set_scores(scores)
-                data.set_smiles(smiles)
-                data.set_epochs(epochs)
+
+                for inp in task[_JE.INPUT]:
+                    smiles, scores, epochs = load_smiles(task[_JE.INPUT],
+                                                         smiles_column=smiles_column,
+                                                         scores_column=scores_column,
+                                                         epochs_column=epochs_column)
+                    next_chemdata = ChemData(name=_JE.CHEMDATA_NAME)
+                    next_chemdata.set_scores(scores)
+                    next_chemdata.set_smiles(smiles)
+                    next_chemdata.set_epochs(epochs)
+                    chemdata_list.append(next_chemdata)
             elif task[_JE.INPUT_TYPE].upper() == "PKL":
-                with open(task[_JE.INPUT], "rb") as dill_file:
-                    data = dill.load(dill_file)
+                with open(task[_JE.INPUT][0], "rb") as dill_file:
+                    chemdata_list = dill.load(dill_file)
             else:
                 raise ValueError(f"Input type {task[_JE.INPUT_TYPE]} not supported (yet).")
 
         elif task[_JE.TASK] == _JSE.GENERATE_FINGERPRINTS:
             fp_type = task[_JE.TYPE].upper()
-            fps_generator = FingerprintGenerator(data.get_smiles())
-            if fp_type == _FE.MACCS:
-                fps = fps_generator.generate_fingerprints_maccs()
-            elif fp_type == _FE.MORGAN:
-                fps = fps_generator.generate_fingerprints_morgan()
-            elif fp_type == _FE.STANDARD:
-                fps = fps_generator.generate_fingerprints()
-            else:
-                raise ValueError(f"Fingerprint type {fp_type} not supported.")
-            data.set_fingerprints(fps)
+            for chemdata in chemdata_list:
+                fps_generator = FingerprintGenerator(chemdata.get_smiles())
+                if fp_type == _FE.MACCS:
+                    fps = fps_generator.generate_fingerprints_maccs()
+                elif fp_type == _FE.MORGAN:
+                    fps = fps_generator.generate_fingerprints_morgan()
+                elif fp_type == _FE.STANDARD:
+                    fps = fps_generator.generate_fingerprints()
+                else:
+                    raise ValueError(f"Fingerprint type {fp_type} not supported.")
+                chemdata.set_fingerprints(fps)
 
         elif task[_JE.TASK] == _JSE.DIMENSIONAL_REDUCTION:
             dimensional_reduction = DimensionalReduction()
-            data = dimensional_reduction.calculate(chemdata=data)
+            chemdata_list = dimensional_reduction.calculate(chemdata_list=chemdata_list)
 
         elif task[_JE.TASK] == _JSE.FILTERING_DATA:
             filtering = Filtering()
-            data = filtering.filter_range(chemdata=data,
-                                          range_dim1=task[_JE.PARAMETERS][_JE.RANGE_DIM1],
-                                          range_dim2=task[_JE.PARAMETERS][_JE.RANGE_DIM2])
+            for chemdata in chemdata_list:
+                chemdata = filtering.filter_range(chemdata=chemdata,
+                                                  range_dim1=task[_JE.PARAMETERS][_JE.RANGE_DIM1],
+                                                  range_dim2=task[_JE.PARAMETERS][_JE.RANGE_DIM2])
 
         elif task[_JE.TASK] == _JSE.CLUSTERING_DATA:
             clustering = Clustering()
-            data = clustering.clustering(chemdata=data, k=task[_JE.PARAMETERS][_JE.K])
+            for chemdata in chemdata_list:
+                chemdata = clustering.clustering(chemdata=chemdata, k=task[_JE.PARAMETERS][_JE.K])
 
         elif task[_JE.TASK] == _JSE.BINNING_SCORES:
             binning = Binning()
-            data = binning.binning(chemdata=data, num_bins=task[_JE.PARAMETERS][_JE.NUM_BINS])
+            for chemdata in chemdata_list:
+                chemdata = binning.binning(chemdata=chemdata, num_bins=task[_JE.PARAMETERS][_JE.NUM_BINS])
 
         elif task[_JE.TASK] == _JSE.WRITE_OUT:
             with open(task[_JE.PATH], "wb") as dill_file:
-                dill.dump(data, dill_file)
+                dill.dump(chemdata_list, dill_file)
 
         elif task[_JE.TASK] == _JSE.GENERATE_PLOT:
             plot_type = task[_JE.TYPE].lower()
             plot_instance = initialize_plot(plot_type)
-            plot_instance.plot(chemdata=data,
+            plot_instance.plot(chemdata_list=chemdata_list,
                                parameters=task[_JE.PARAMETERS],
                                settings=task[_JE.SETTINGS])
 
         elif task[_JE.TASK] == _JSE.GENERATE_MOVIE:
             plot_type = task[_JE.TYPE].lower()
             plot_instance = initialize_plot(plot_type)
-            plot_instance.generate_movie(data, task[_JE.SETTINGS][_JE.PATH])
+            plot_instance.generate_movie(chemdata_list, task[_JE.SETTINGS][_JE.PATH])
         else:
             raise ValueError(f"Task definition {task[_JE.TASK]} not supported.")
         print(f"Task {task[_JE.TASK]} completed.")
-
-        # TODO
-        # tanimoto similarity
-        # make movie
-        # view plot (only when one plot
 
     sys.exit(0)

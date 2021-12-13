@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
@@ -15,7 +17,11 @@ class ScatterInteractivePlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    def plot(self, chemdata: ChemData, parameters: dict, settings: dict):
+    def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        if isinstance(chemdata_list, list):
+            print("Function does not support multiple input objects (yet).")
+            chemdata_list = chemdata_list[0]
+
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
@@ -23,9 +29,9 @@ class ScatterInteractivePlot(BasePlot):
 
         self._prepare_folder(path=path)
 
-        scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata.get_embedding().np_array[:, 0],
-                                   _PLE.UMAP_2: chemdata.get_embedding().np_array[:, 1],
-                                   _PLE.SCORES: chemdata.get_scores()
+        scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list.get_embedding().np_array[:, 0],
+                                   _PLE.UMAP_2: chemdata_list.get_embedding().np_array[:, 1],
+                                   _PLE.SCORES: chemdata_list.get_scores()
                                    })
         fig = px.scatter_3d(scatter_df,
                             x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=_PLE.SCORES,

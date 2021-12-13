@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
         # generate embedding (dimensional reduction)
         dimensional_reduction = DimensionalReduction()
-        ori_data = dimensional_reduction.calculate(chemdata=ori_data)
+        ori_data = dimensional_reduction.calculate(chemdata_list=ori_data)
 
         # choose whether data is filtered and or clustered
         plot_data = ori_data
@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     total_chemdata = plot_data
     # make plot
-    plot_instance.plot(chemdata=plot_data,
+    plot_instance.plot(chemdata_list=plot_data,
                        parameters={_PE.PARAMETERS_XLIM: None,
                                    _PE.PARAMETERS_YLIM: None,
                                    _PE.PARAMETERS_SCORELIM: None,
