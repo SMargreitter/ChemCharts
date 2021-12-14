@@ -78,8 +78,6 @@ class ChemData:
     def __str__(self):
         return self.__repr__()
 
-
-
     def __add__(self, obj):
         copy_self = deepcopy(self)
         obj = deepcopy(obj)

@@ -1,5 +1,7 @@
 from typing import List
 
+import matplotlib
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -18,21 +20,25 @@ class HistogramPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
-  #      if isinstance(chemdata_list, list):
-  #          print("Function does not support multiple input objects (yet).")
-  #          chemdata_list = chemdata_list[0]
-
-        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
+        self._prepare_folder(path=path)
 
-        fig, axes = plt.subplots(len(chemdata_list), sharex=True, sharey=True)
+        # fig settings
+        max_columns = 3
+        len_chemdata = len(chemdata_list)
+        n_rows = int((len_chemdata - 1) / max_columns) + 1
+        n_cols = min(len_chemdata, max_columns)
+        figsize = settings.get(_PE.SETTINGS_FIG_SIZE, (17*n_cols, 17*n_rows))
+
+        # create fig
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=figsize)
         fig.suptitle('Vertically stacked subplots')
         for idx in range(len(chemdata_list)):
+            xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
+            ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+
             scores_input = chemdata_list[idx].get_scores()
             score_name = chemdata_list[idx].get_name()
-
-            self._prepare_folder(path=path)
 
             """      
             if selection == "tanimoto_similarity":
@@ -52,29 +58,31 @@ class HistogramPlot(BasePlot):
             sns.set_context("talk",
                             font_scale=0.5)
 
-            plt.figure(figsize=settings.get(_PE.SETTINGS_FIG_SIZE, (17, 17)))
+            # deal with axes (array if multiple input, otherwise not) issue
+            if isinstance(axes, np.ndarray):
+                selected_axis = axes[int(idx / max_columns), idx % max_columns]
+            else:
+                selected_axis = axes
 
             sns.histplot(scatter_df[score_name],
                          element="step",
                          bins=parameters.get(_PE.PARAMETERS_BINS, 20),
                          stat="proportion",
+                         kde=True,
                          color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#d11d80"),
-                         ax=axes[idx])
+                         ax=selected_axis)
 
-
-
+            # Setting axes ranges
+            # For this plot only x and y axis ranges from 0 to 1 make sense
+            if xlim is not None or ylim is not None:
+                print("Histogram plot does not support setting arbitrary axis limits.")
+            plt.xlim(0, 1)
+            plt.ylim(0, 1)
 
         plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
 
         plt.suptitle(t=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Histogram ChemCharts Plot"),
                      fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 18))
-
-        # Setting axes ranges
-        # For this plot only x and y axis ranges from 0 to 1 make sense
-        if xlim is not None or ylim is not None:
-            print("Histogram plot does not support setting arbitrary axis limits.")
-        plt.xlim(0, 1)
-        plt.ylim(0, 1)
 
         plt.savefig(path,
                     format=parameters.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
