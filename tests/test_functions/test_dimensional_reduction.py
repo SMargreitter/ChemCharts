@@ -76,24 +76,25 @@ class TestDimensionalReduction(unittest.TestCase):
                                                  ])
         test_chemdata.set_fingerprints(test_fingerprint)
         cls.test_chemdata = test_chemdata
+        cls.test_chemdata_list = [test_chemdata]
 
     def setUp(self) -> None:
         pass
 
     def test_array_list(self):
         test_dim_red = DimensionalReduction()
-        test_array_list = test_dim_red._generating_array_list(self.test_chemdata)
+        test_array_list = test_dim_red._generating_array_list(self.test_chemdata.get_fingerprints())
         self.assertListEqual([1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0], list(test_array_list[0]))
 
     def test_dimensional_reduction(self):
         test_dim_red = DimensionalReduction()
-        test_embedding = test_dim_red._dimensional_reduction(self.test_chemdata)
+        test_embedding = test_dim_red._dimensional_reduction(self.test_chemdata.get_fingerprints())
         self.assertListEqual([-3, 11], [int(x) for x in list(test_embedding[0])])
 
     def test_embedding_added_to_chemdata(self):
         test_dim_red = DimensionalReduction()
-        test_calculation = test_dim_red.calculate(self.test_chemdata)
-        self.assertEqual(30, len(test_calculation.get_smiles()))
-        self.assertEqual(30, len(test_calculation.get_fingerprints()))
-        self.assertListEqual([-3, 11], [int(x) for x in list(test_calculation.get_embedding()[0])])
+        test_calculation = test_dim_red.calculate(self.test_chemdata_list)
+        self.assertEqual(30, len(test_calculation[0].get_smiles()))
+        self.assertEqual(30, len(test_calculation[0].get_fingerprints()))
+        self.assertListEqual([-3, 11], [int(x) for x in list(test_calculation[0].get_embedding()[0])])
 

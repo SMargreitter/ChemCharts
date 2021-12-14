@@ -24,6 +24,7 @@ class HexagonalPlot(BasePlot):
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
+        current_chemdata = parameters.get(_PE.PARAMETERS_CURRENT_CHEMDATA, None)
         total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list)
         gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
 
@@ -41,12 +42,32 @@ class HexagonalPlot(BasePlot):
                         color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
                         gridsize=gridsize)
 
+        # TODO: implement the "glow" to indicate current additions
+        #       see 2nd solution: https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
+        if current_chemdata is not None:
+            print("GOFORIT")
+            sns.jointplot(x=current_chemdata.get_embedding().np_array[:, 0],
+                          y=current_chemdata.get_embedding().np_array[:, 1],
+                          xlim=xlim,
+                          ylim=ylim,
+                          joint_kws={"gridsize": gridsize,
+                                     "zorder": -2,
+                                     "lw": 5,
+                                     "vmin": 0,
+                                     "vmax": hb.get_array().max()},
+                          kind="hex",
+                          extent=extent,
+                          color="black"
+                          )
+
         sns.jointplot(x=chemdata_list.get_embedding().np_array[:, 0],
                       y=chemdata_list.get_embedding().np_array[:, 1],
                       xlim=xlim,
                       ylim=ylim,
                       joint_kws={"gridsize": gridsize,
                                  "vmin": 0,
+                                 "zorder": -1,
+                                 "lw": 2,
                                  "vmax": hb.get_array().max()},
                       kind="hex",
                       extent=extent,

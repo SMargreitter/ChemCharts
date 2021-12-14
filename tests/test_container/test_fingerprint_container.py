@@ -6,6 +6,7 @@ from chemcharts.core.container.fingerprint import *
 class TestFingerprintContainer(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        # Note: This is not really the right datatype (list of lists), but serves in lieu of BitVectors from rdkit
         cls.fingerprint_list = [[1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
                                 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                                 [1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -56,8 +57,6 @@ class TestFingerprintContainer(unittest.TestCase):
 
     def test_add_item(self):
         test_fingerprints = FingerprintContainer(name="test_fingerprint", fingerprint_list=self.fingerprint_list)
-        concatenated_fps = \
-            test_fingerprints.__add__(FingerprintContainer(
-                                         name="test_fingerprint_add",
-                                         fingerprint_list=[0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]))
-        self.assertIn([0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], concatenated_fps.fingerprint_list)
+        test_fingerprints += FingerprintContainer(name="test_fingerprint_add",
+                                                  fingerprint_list=[[0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+        self.assertIn([0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], test_fingerprints.fingerprint_list)

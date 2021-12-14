@@ -1,4 +1,5 @@
 from copy import deepcopy
+from typing import List
 
 import numpy as np
 
@@ -77,6 +78,8 @@ class ChemData:
     def __str__(self):
         return self.__repr__()
 
+
+
     def __add__(self, obj):
         copy_self = deepcopy(self)
         obj = deepcopy(obj)
@@ -90,12 +93,13 @@ class ChemData:
         copy_self.set_tanimoto_similarity(np.empty((0, 2), float))
         return copy_self
 
-    def sort_epoch_list(self) -> list:
+    def sort_epoch_list(self) -> List[int]:
         sorted_epochs = list(set(self.get_epochs()))
         sorted_epochs.sort()
+        sorted_epochs = [int(e) for e in sorted_epochs]
         return sorted_epochs
 
-    def find_epoch_indices(self, sorted_epochs: list) -> list:
+    def find_epoch_indices(self, sorted_epochs: List[int]) -> List[List[int]]:
         epoch_indices_list = []
         epochs = self.get_epochs()
         for ep in sorted_epochs:

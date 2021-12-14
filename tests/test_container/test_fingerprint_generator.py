@@ -16,26 +16,25 @@ class TestFingerprintGenerator(unittest.TestCase):
 
     def test_standard(self):
         fp_generator = FingerprintGenerator(self.smiles)
-        standard_fp = fp_generator.generate_fingerprints()
-        print(standard_fp.fingerprint_list)
+        standard_fp_container = fp_generator.generate_fingerprints()
         self.assertListEqual([1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
-                             list(standard_fp.fingerprint_list[0])[:20])
+                             list(standard_fp_container.fingerprint_list[0])[:20])
 
     def test_morgan(self):
         fp_generator = FingerprintGenerator(self.smiles)
 
         # testing with useFeatures False
-        morgan_fp = fp_generator.generate_fingerprints_morgan(False)
+        morgan_fp_container = fp_generator.generate_fingerprints_morgan(False)
         self.assertListEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             morgan_fp.fingerprint_list[0][:20])
+                             list(morgan_fp_container.fingerprint_list[0])[:20])
 
         # testing with useFeatures True
-        morgan_fp = fp_generator.generate_fingerprints_morgan(True)
+        morgan_fp_container = fp_generator.generate_fingerprints_morgan(True)
         self.assertListEqual([1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             morgan_fp.fingerprint_list[0][:20])
+                             list(morgan_fp_container.fingerprint_list[0])[:20])
 
     def test_maccs(self):
         fp_generator = FingerprintGenerator(self.smiles)
-        maccs_fp = fp_generator.generate_fingerprints_maccs()
+        maccs_fp_container = fp_generator.generate_fingerprints_maccs()
         self.assertListEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                             maccs_fp.fingerprint_list[0][:20])
+                             list(maccs_fp_container.fingerprint_list[0])[:20])

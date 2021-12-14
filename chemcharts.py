@@ -66,11 +66,11 @@ if __name__ == "__main__":
         smiles, scores, epochs = load_smiles(args.input_data)
 
         # initialize Chemdata and add smiles and fps
-        ori_data = ChemData(smiles_obj=smiles, scores=scores)
-        fps_generator = FingerprintGenerator(ori_data.get_smiles())
+        ori_data = [ChemData(smiles_obj=smiles, scores=scores)]
+        fps_generator = FingerprintGenerator(ori_data[0].get_smiles())
         fps = fps_generator.generate_fingerprints()
-        ori_data.set_fingerprints(fps)
-        ori_data.set_epochs(epochs)
+        ori_data[0].set_fingerprints(fps)
+        ori_data[0].set_epochs(epochs)
 
         # generate embedding (dimensional reduction)
         dimensional_reduction = DimensionalReduction()
@@ -80,17 +80,17 @@ if __name__ == "__main__":
         plot_data = ori_data
         if args.data == _DFE.FILTERED_DATA or args.data == _DFE.FILTERED_CLUSTERED_DATA:
             filtering = Filtering()
-            plot_data = filtering.filter_range(chemdata=plot_data,
-                                               range_dim1=(-100, 100),
-                                               range_dim2=(-100, 100))
+            plot_data[0] = filtering.filter_range(chemdata=plot_data[0],
+                                                  range_dim1=(-100, 100),
+                                                  range_dim2=(-100, 100))
         if args.data == _DFE.CLUSTERED_DATA or args.data == _DFE.FILTERED_CLUSTERED_DATA:
             clustering = Clustering()
-            plot_data = clustering.clustering(chemdata=plot_data, k=args.k)
+            plot_data[0] = clustering.clustering(chemdata=plot_data[0], k=args.k)
 
         # binning of scores
         if args.binning is not None:
             binning = Binning()
-            plot_data = binning.binning(chemdata=plot_data, num_bins=args.binning)
+            plot_data[0] = binning.binning(chemdata=plot_data[0], num_bins=args.binning)
 
     if args.save_data is not None:
         with open(args.save_data, "wb") as dill_file:
@@ -117,13 +117,12 @@ if __name__ == "__main__":
                          "trisurf_interactive_plot/ hexagonal_plot) but none was given! Not supported: "
                          f"{args.plot}")
 
-    total_chemdata = plot_data
     # make plot
     plot_instance.plot(chemdata_list=plot_data,
                        parameters={_PE.PARAMETERS_XLIM: None,
                                    _PE.PARAMETERS_YLIM: None,
                                    _PE.PARAMETERS_SCORELIM: None,
-                                   _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
+                                   _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0]},
                        settings={_PE.SETTINGS_VIEW: "",
                                  _PE.SETTINGS_PATH: args.output_plot})
     # make movie

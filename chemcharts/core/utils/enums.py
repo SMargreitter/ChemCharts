@@ -79,6 +79,7 @@ class PlottingEnum:
     PARAMETERS_YLIM = "ylim"
     PARAMETERS_XLIM = "xlim"
 
+    PARAMETERS_CURRENT_CHEMDATA = "current_chemdata"
     PARAMETERS_TOTAL_CHEMDATA = "total_chemdata"
 
     SETTINGS_FIG_FORMAT = "format"

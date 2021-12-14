@@ -50,6 +50,7 @@ class BasePlot:
 
         sorted_epochs = chemdata_list.sort_epoch_list()
         updated_path_list = []
+        current_chemdata = chemdata_list.filter_epoch(max(sorted_epochs))
         total_chemdata = chemdata_list
         for idx in range(len(sorted_epochs)):
             if aggregate_epochs:
@@ -62,6 +63,7 @@ class BasePlot:
                       parameters={_PE.PARAMETERS_XLIM: xlim,
                                   _PE.PARAMETERS_YLIM: ylim,
                                   _PE.PARAMETERS_SCORELIM: scorelim,
+                                  _PE.PARAMETERS_CURRENT_CHEMDATA: current_chemdata,
                                   _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
                       settings={_PE.SETTINGS_VIEW: "",
                                 _PE.SETTINGS_PATH: updated_snapshot_path}

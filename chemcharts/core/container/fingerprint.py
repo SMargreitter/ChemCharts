@@ -41,7 +41,7 @@ class FingerprintContainer:
         self.fingerprint_list = [] if fingerprint_list is None else fingerprint_list
 
     def __repr__(self) -> str:
-        return f"Name: {self.name}, first fp: {self.fingerprint_list[0]}" \
+        return f"Name: {self.name}/ first fp: {self.fingerprint_list[0]}/" \
                f"length: {len(self.fingerprint_list)}"
 
     def __str__(self):
@@ -66,7 +66,7 @@ class FingerprintContainer:
         copy_self = deepcopy(self)
         obj = deepcopy(obj)
         copy_self.name = _FE.AGGREGATED_FINGERPRINT
-        copy_self.fingerprint_list.append(obj.fingerprint_list)
+        copy_self.fingerprint_list += obj.fingerprint_list
         return copy_self
 
 
