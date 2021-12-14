@@ -54,3 +54,4 @@ output
 
 tests/junk
 notebooks/.ipynb_*
+.idea
