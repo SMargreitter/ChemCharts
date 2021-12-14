@@ -50,13 +50,13 @@ class BasePlot:
 
         sorted_epochs = chemdata_list.sort_epoch_list()
         updated_path_list = []
-        current_chemdata = chemdata_list.filter_epoch(max(sorted_epochs))
         total_chemdata = chemdata_list
         for idx in range(len(sorted_epochs)):
             if aggregate_epochs:
                 epoch_chemdata = chemdata_list.filter_epochs(epochs=[i for i in range(idx + 1)])
             else:
                 epoch_chemdata = chemdata_list.filter_epoch(epoch=idx)
+            current_chemdata = chemdata_list.filter_epoch(epoch=idx)
             updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
             self.plot(chemdata_list=epoch_chemdata,
