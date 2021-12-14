@@ -14,6 +14,7 @@ from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import TestPathsEnum
 from chemcharts.core.utils.enums import TestPlotMovieEnum
 from chemcharts.core.utils.enums import TestNameEnum
+
 _PE = PlottingEnum()
 _TPE = TestPathsEnum()
 _TPME = TestPlotMovieEnum

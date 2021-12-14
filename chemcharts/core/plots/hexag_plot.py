@@ -12,6 +12,23 @@ from chemcharts.core.utils.enums import PlottingEnum
 _PE = PlottingEnum
 
 
+def hexLines(a=None,i=None,off=[0,0]):
+    '''regular hexagon segment lines as `(xy1,xy2)` in clockwise
+    order with points in line sorted top to bottom
+    for irregular hexagon pass both `a` (vertical) and `i` (horizontal)'''
+    if a is None: a = 2 / np.sqrt(3) * i;
+    if i is None: i = np.sqrt(3) / 2 * a;
+    h  = a / 2
+    xy = np.array([ [ [ 0, a], [ i, h] ],
+                    [ [ i, h], [ i,-h] ],
+                    [ [ i,-h], [ 0,-a] ],
+                    [ [-i,-h], [ 0,-a] ], #flipped
+                    [ [-i, h], [-i,-h] ], #flipped
+                    [ [ 0, a], [-i, h] ]  #flipped
+                  ])
+    return xy+off
+
+
 class HexagonalPlot(BasePlot):
     def __init__(self):
         super().__init__()
@@ -37,28 +54,21 @@ class HexagonalPlot(BasePlot):
             y_bins = int(min(_freedman_diaconis_bins(total_chemdata.get_embedding().np_array[:, 1]), 50))
             gridsize = int(np.mean([x_bins, y_bins]))
 
+        if current_chemdata is not None:
+            hb_current = plt.hexbin(x=current_chemdata.get_embedding().np_array[:, 0],
+                                    y=current_chemdata.get_embedding().np_array[:, 1],
+                                    color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
+                                    gridsize=gridsize,
+                                    extent=extent)
+
         hb = plt.hexbin(x=total_chemdata.get_embedding().np_array[:, 0],
                         y=total_chemdata.get_embedding().np_array[:, 1],
                         color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
-                        gridsize=gridsize)
+                        gridsize=gridsize,
+                        extent=extent)
 
-        # TODO: implement the "glow" to indicate current additions
-        #       see 2nd solution: https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
-        if current_chemdata is not None:
-            print("GOFORIT")
-            sns.jointplot(x=current_chemdata.get_embedding().np_array[:, 0],
-                          y=current_chemdata.get_embedding().np_array[:, 1],
-                          xlim=xlim,
-                          ylim=ylim,
-                          joint_kws={"gridsize": gridsize,
-                                     "zorder": -2,
-                                     "lw": 5,
-                                     "vmin": 0,
-                                     "vmax": hb.get_array().max()},
-                          kind="hex",
-                          extent=extent,
-                          color="black"
-                          )
+        # inspired by 2nd solution from here:
+        # https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
 
         sns.jointplot(x=chemdata_list.get_embedding().np_array[:, 0],
                       y=chemdata_list.get_embedding().np_array[:, 1],
@@ -66,21 +76,36 @@ class HexagonalPlot(BasePlot):
                       ylim=ylim,
                       joint_kws={"gridsize": gridsize,
                                  "vmin": 0,
-                                 "zorder": -1,
-                                 "lw": 2,
+                                 "lw": 1,
                                  "vmax": hb.get_array().max()},
                       kind="hex",
                       extent=extent,
                       color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
                       )
+        if current_chemdata is not None:
+            # get hexagon centers that should be highlighted
+            verts = hb_current.get_offsets()
+            cnts = hb_current.get_array()
+            highl = verts[cnts > 0 * cnts.max()]
+
+            # create hexagon lines
+            a = ((verts[0, 1] - verts[1, 1]) / 3).round(6)
+            i = ((verts[1:, 0] - verts[:-1, 0]) / 2).round(6)
+            i = i[i > 0][0]
+            lines = np.concatenate([hexLines(a, i, off) for off in highl])
+
+            # select contour lines and draw
+            uls, c = np.unique(lines.round(4), axis=0, return_counts=True)
+            for l in uls[c == 1]:
+                data = l.transpose()
+                sns.lineplot(x=data[0], y=data[1], lw=2, scalex=False, scaley=False, color="black")
 
         plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
-
         plt.suptitle(t=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Hexagonal ChemCharts Plot"),
                      fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 14))
 
         plt.savefig(path,
                     format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
-                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 100))
+                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 300))
 
         plt.close()

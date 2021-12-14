@@ -1,3 +1,6 @@
+from chemcharts.core.utils.files_paths import attach_root_path
+
+
 class DataFittingEnum:
     FILTERED_DATA = "filtered_data"
     CLUSTERED_DATA = "clustered_data"
@@ -103,25 +106,25 @@ class ReinventEnum:
 
 
 class TestPathsEnum:
-    PATH_HEXAGONAL_TEST = "../junk/hexagonal_plot"
-    PATH_HEXAGONAL_MOVIE = "../junk/hexagonal_movie"
+    PATH_HEXAGONAL_TEST = attach_root_path("tests/junk/hexagonal_plot")
+    PATH_HEXAGONAL_MOVIE = attach_root_path("tests/junk/hexagonal_movie")
 
-    PATH_HISTOGRAM_TEST = "../junk/histogram_plot"
-    PATH_HISTOGRAM_MOVIE = "../junk/histogram_movie"
+    PATH_HISTOGRAM_TEST = attach_root_path("tests/junk/histogram_plot")
+    PATH_HISTOGRAM_MOVIE = attach_root_path("tests/junk/histogram_movie")
 
-    PATH_SCATTER_BOXPLOT_TEST = "../junk/scatter_boxplot_plot"
-    PATH_SCATTER_BOXPLOT_MOVIE = "../junk/scatter_boxplot_movie"
+    PATH_SCATTER_BOXPLOT_TEST = attach_root_path("tests/junk/scatter_boxplot_plot")
+    PATH_SCATTER_BOXPLOT_MOVIE = attach_root_path("tests/junk/scatter_boxplot_movie")
 
-    PATH_SCATTER_INTERACTIVE_TEST = "../junk/scatter_interactive_plot"
-    PATH_SCATTER_INTERACTIVE_MOVIE = "../junk/scatter_interactive_movie"
+    PATH_SCATTER_INTERACTIVE_TEST = attach_root_path("tests/junk/scatter_interactive_plot")
+    PATH_SCATTER_INTERACTIVE_MOVIE = attach_root_path("tests/junk/scatter_interactive_movie")
 
-    PATH_SCATTER_STATIC_TEST = "../junk/scatter_static_plot"
-    PATH_SCATTER_STATIC_MOVIE = "../junk/scatter_static_movie"
+    PATH_SCATTER_STATIC_TEST = attach_root_path("tests/junk/scatter_static_plot")
+    PATH_SCATTER_STATIC_MOVIE = attach_root_path("tests/junk/scatter_static_movie")
 
-    PATH_TRISURF_INTERACTIVE_TEST = "../junk/trisurf_interactive_plot"
+    PATH_TRISURF_INTERACTIVE_TEST = attach_root_path("tests/junk/trisurf_interactive_plot")
 
-    PATH_TRISURF_STATIC_TEST = "../junk/trisurf_static_plot"
-    PATH_TRISURF_STATIC_MOVIE = "../junk/trisurf_static_movie"
+    PATH_TRISURF_STATIC_TEST = attach_root_path("tests/junk/trisurf_static_plot")
+    PATH_TRISURF_STATIC_MOVIE = attach_root_path("tests/junk/trisurf_static_movie")
 
 
 class TestPlotMovieEnum:
