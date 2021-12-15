@@ -20,10 +20,15 @@ class Binning:
 
     @staticmethod
     def _preparation(scores: list, num_bins: int) -> tuple:
+        # returns number spaces evenly w.r.t interval
         bins = list(np.linspace(start=min(scores) - 0.1, stop=max(scores) + 0.1, num=num_bins))
+
+        # get the indices of the bins to which the each value belongs
         bin_idx = list(np.digitize(scores, bins=bins) - 1)
+
         sorted_bin_idx = list(set(bin_idx))
         sorted_bin_idx.sort()
+
         return sorted_bin_idx, bin_idx
 
     @staticmethod
@@ -52,11 +57,9 @@ class Binning:
     def _overwrite_scores_medians(bin_idx: list, median_scores: list) -> list:
         new_scores = []
         for i_bin in range(len(bin_idx)):
-            # get current bin index for observation i_bin
-            cur_bin_idx = bin_idx[i_bin]
+            cur_bin_idx = bin_idx[i_bin]                        # get current bin index for observation i_bin
 
-            # append median for current bin index
-            new_scores.append(median_scores[cur_bin_idx])
+            new_scores.append(median_scores[cur_bin_idx])       # append median for current bin index
         return new_scores
 
     def binning(self, chemdata: ChemData, num_bins: int) -> ChemData:

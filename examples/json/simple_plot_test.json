@@ -12,8 +12,8 @@
                     }
       },
       {"task":  "generate_fingerprints",
-       "type":  "maccs",
-       "parameters":  {"useFeatures":  true}
+       "type":  "standard",
+       "parameters":  {}
       },
       {"task":  "dimensional_reduction",
        "type": "UMAP",
@@ -58,7 +58,7 @@
        "settings": {"path": "output/plots/histogram_plot.png",
                     "format": "png",
                     "dpi": 300,
-                    "figsize": "(17,17)"}
+                    "figsize": [17, 17]}
       },
       {"task": "generate_plot",
        "type": "scatter_boxplot_plot",
@@ -68,7 +68,7 @@
         "settings": {"path": "output/plots/scatter_boxplot_plot.png",
                      "format": "png",
                      "dpi": 150,
-                     "figsize": "(17,17)"}
+                     "figsize": [17, 17]}
       },
       {"task": "generate_plot",
        "type": "scatter_interactive_plot",
@@ -86,7 +86,7 @@
         "settings": {"path": "output/plots/scatter_static_plot.png",
                      "format": "png",
                      "dpi": 150,
-                     "figsize": "(17,17)"}
+                     "figsize": [17, 17]}
       },
       {"task": "generate_plot",
        "type": "trisurf_interactive_plot",
@@ -103,7 +103,7 @@
         "settings": {"path": "output/plots/trisurf_static_plot.png",
                      "format": "png",
                      "dpi": 150,
-                     "figsize": "(9,9)"}
+                     "figsize": [9, 9]}
       }
     ]
   }

@@ -12,21 +12,24 @@ from chemcharts.core.utils.enums import PlottingEnum
 _PE = PlottingEnum
 
 
-def hexLines(a=None,i=None,off=[0,0]):
-    '''regular hexagon segment lines as `(xy1,xy2)` in clockwise
-    order with points in line sorted top to bottom
-    for irregular hexagon pass both `a` (vertical) and `i` (horizontal)'''
-    if a is None: a = 2 / np.sqrt(3) * i;
-    if i is None: i = np.sqrt(3) / 2 * a;
-    h  = a / 2
-    xy = np.array([ [ [ 0, a], [ i, h] ],
-                    [ [ i, h], [ i,-h] ],
-                    [ [ i,-h], [ 0,-a] ],
-                    [ [-i,-h], [ 0,-a] ], #flipped
-                    [ [-i, h], [-i,-h] ], #flipped
-                    [ [ 0, a], [-i, h] ]  #flipped
-                  ])
-    return xy+off
+def hex_lines(a=None, i=None, off=None):
+    if off is None:
+        off = [0, 0]
+    if a is None:
+        a = 2 / np.sqrt(3) * i
+    if i is None:
+        i = np.sqrt(3) / 2 * a
+
+    h = a / 2
+
+    xy = np.array([[[0, a], [i, h]],
+                   [[i, h], [i, -h]],
+                   [[i, -h], [0, -a]],
+                   [[-i, -h], [0, -a]],       # flipped
+                   [[-i, h], [-i, -h]],       # flipped
+                   [[0, a], [-i, h]]          # flipped
+                   ])
+    return xy + off
 
 
 class HexagonalPlot(BasePlot):
@@ -35,9 +38,10 @@ class HexagonalPlot(BasePlot):
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
         if isinstance(chemdata_list, list):
-            print("Function does not support multiple input objects (yet).")
+            print("Function does not (yet) support multiple input objects.")
             chemdata_list = chemdata_list[0]
 
+        # set parameters and settings
         xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
         ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
         path = settings.get(_PE.SETTINGS_PATH, None)
@@ -49,11 +53,14 @@ class HexagonalPlot(BasePlot):
 
         extent = (xlim[0], xlim[1], ylim[0], ylim[1]) if xlim is not None else None
 
+        # generate fixed gridsize for all following plots to make them equally spaced
         if gridsize is None:
             x_bins = int(min(_freedman_diaconis_bins(total_chemdata.get_embedding().np_array[:, 0]), 50))
             y_bins = int(min(_freedman_diaconis_bins(total_chemdata.get_embedding().np_array[:, 1]), 50))
             gridsize = int(np.mean([x_bins, y_bins]))
 
+        # if current contours are to be plotted we need to generate the appropriate counts (for hexbin
+        # identification) here, in order to not override the plotting settings later
         if current_chemdata is not None:
             hb_current = plt.hexbin(x=current_chemdata.get_embedding().np_array[:, 0],
                                     y=current_chemdata.get_embedding().np_array[:, 1],
@@ -61,6 +68,7 @@ class HexagonalPlot(BasePlot):
                                     gridsize=gridsize,
                                     extent=extent)
 
+        # generate the counts for the actual plotting
         hb = plt.hexbin(x=total_chemdata.get_embedding().np_array[:, 0],
                         y=total_chemdata.get_embedding().np_array[:, 1],
                         color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
@@ -70,6 +78,7 @@ class HexagonalPlot(BasePlot):
         # inspired by 2nd solution from here:
         # https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
 
+        # generate seaborn jointplot with hexbin background colors
         sns.jointplot(x=chemdata_list.get_embedding().np_array[:, 0],
                       y=chemdata_list.get_embedding().np_array[:, 1],
                       xlim=xlim,
@@ -82,6 +91,8 @@ class HexagonalPlot(BasePlot):
                       extent=extent,
                       color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
                       )
+
+        # if selected generate contours for current hexbins
         if current_chemdata is not None:
             # get hexagon centers that should be highlighted
             verts = hb_current.get_offsets()
@@ -92,7 +103,7 @@ class HexagonalPlot(BasePlot):
             a = ((verts[0, 1] - verts[1, 1]) / 3).round(6)
             i = ((verts[1:, 0] - verts[:-1, 0]) / 2).round(6)
             i = i[i > 0][0]
-            lines = np.concatenate([hexLines(a, i, off) for off in highl])
+            lines = np.concatenate([hex_lines(a, i, off) for off in highl])
 
             # select contour lines and draw
             uls, c = np.unique(lines.round(4), axis=0, return_counts=True)
@@ -100,6 +111,7 @@ class HexagonalPlot(BasePlot):
                 data = l.transpose()
                 sns.lineplot(x=data[0], y=data[1], lw=2, scalex=False, scaley=False, color="black")
 
+        # plot settings
         plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
         plt.suptitle(t=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Hexagonal ChemCharts Plot"),
                      fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 14))

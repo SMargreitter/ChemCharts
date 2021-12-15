@@ -6,6 +6,12 @@ from chemcharts.core.container.chemdata import ChemData
 
 
 class TanimotoSimilarity:
+    ########################################################
+
+                   # not (yet) integrated!!!!
+
+    ########################################################
+
     """
         Simplifies the scores with RDKit's BulkTanimotoSimilarity() function.
 
@@ -37,7 +43,6 @@ class TanimotoSimilarity:
 
         chemdata = deepcopy(chemdata)
         fps_list = chemdata.get_fingerprints()
-
         tan_sim_list = []
         length_fps_list = len(fps_list)
         for index in range(length_fps_list-1):
@@ -52,12 +57,12 @@ class TanimotoSimilarity:
             for idx in range(length_fps_list):
                 for fp in reversed_list:
                     if len(fp) < length_fps_list:
-                        fp.append(np.NaN)
+                        fp.append(np.NaN)                     # add nans to match length of fps in fps_list
             final_list = []
             for fp in reversed_list:
                 fp.reverse()
                 final_list.append(fp)
-            final_list.append([np.NaN] * length_fps_list)
+            final_list.append([np.NaN] * length_fps_list)      # add a list of nans to match length of fps_list
             score_array = np.array(final_list)
             return score_array
 

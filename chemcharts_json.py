@@ -75,16 +75,18 @@ if __name__ == "__main__":
     tasks = conf[_JE.CHEMCHARTS][_JE.EXECUTION]
     for task in tasks:
         if task[_JE.TASK] == _JSE.DATA_LOADING:
-            if not isinstance(task[_JE.INPUT], list):
-                task[_JE.INPUT] = list(task[_JE.INPUT])
+            input_elements = task[_JE.INPUT]
+            if not isinstance(input_elements, list):
+                input_elements = [input_elements]
             if task[_JE.INPUT_TYPE].upper() == "CSV":
                 # get column names
                 smiles_column = task[_JE.COLUMNS][_JE.SMILES_COLUMN]
                 scores_column = task[_JE.COLUMNS][_JE.SCORES_COLUMN]
                 epochs_column = task[_JE.COLUMNS][_JE.EPOCHS_COLUMN]
 
-                for inp in task[_JE.INPUT]:
-                    smiles, scores, epochs = load_smiles(task[_JE.INPUT],
+                for inp in input_elements:
+
+                    smiles, scores, epochs = load_smiles(inp,
                                                          smiles_column=smiles_column,
                                                          scores_column=scores_column,
                                                          epochs_column=epochs_column)

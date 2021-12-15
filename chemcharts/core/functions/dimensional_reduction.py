@@ -50,13 +50,13 @@ class DimensionalReduction:
 
             Parameters
             ----------
-            chemdata_list: ChemData
-                object of ChemData
+            chemdata_list: List[ChemData]
+                List of ChemData objects
 
             Returns
             -------
-            ChemData
-                returns a ChemData object containing an Embedding object (which includes the
+            List[ChemData]
+                returns a list of ChemData objects which had been added with an Embedding (which includes the
                 UMAP clustered fingerprints)
         """
 
@@ -80,5 +80,8 @@ class DimensionalReduction:
 
             # update chemdata and set index for next iteration
             chemdata.set_embedding(slice_embedding)
+
+            # update last_index
             last_index = end_index
+
         return chemdata_list

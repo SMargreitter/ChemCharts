@@ -33,7 +33,9 @@ _PE = PlottingEnum
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="implements chemcharts entry points")
-    parser.add_argument("-input_data", type=str, required=True, help="Path to input csv file.")
+    parser.add_argument("-input_data", type=str, required=True, help="Path to input csv file (Caution: Here only one "
+                                                                     "input dataset is possible - "
+                                                                     "for multiple input data use the Json version)")
     parser.add_argument("-output_plot", type=str, required=True, help="Path to output plot file.")
     parser.add_argument("-output_movie", type=str, required=False, default=None, help="Path to output movie.")
     parser.add_argument("-save_data", type=str, required=False, default=None,
@@ -65,10 +67,11 @@ if __name__ == "__main__":
     else:
         smiles, scores, epochs = load_smiles(args.input_data)
 
-        # initialize Chemdata and add smiles and fps
-        ori_data = [ChemData(smiles_obj=smiles, scores=scores)]
+        # initialize chemdata_list with ONE Chemdata object and add smiles and fps
+        ori_data = [ChemData(smiles_obj=smiles)]
         fps_generator = FingerprintGenerator(ori_data[0].get_smiles())
         fps = fps_generator.generate_fingerprints()
+        ori_data[0].set_scores(scores)
         ori_data[0].set_fingerprints(fps)
         ori_data[0].set_epochs(epochs)
 
@@ -122,6 +125,7 @@ if __name__ == "__main__":
                        parameters={_PE.PARAMETERS_XLIM: None,
                                    _PE.PARAMETERS_YLIM: None,
                                    _PE.PARAMETERS_SCORELIM: None,
+                                   _PE.PARAMETERS_CURRENT_CHEMDATA: None,
                                    _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0]},
                        settings={_PE.SETTINGS_VIEW: "",
                                  _PE.SETTINGS_PATH: args.output_plot})
@@ -130,9 +134,3 @@ if __name__ == "__main__":
         plot_instance.generate_movie(plot_data, args.output_movie)
 
     sys.exit(0)
-
-    # JSON:
-    # - tanimoto similarity
-    # - make movie
-
-
