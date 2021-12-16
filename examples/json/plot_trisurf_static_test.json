@@ -3,7 +3,7 @@
     "header": {},
     "execution": [
       {"task":  "data_loading",
-       "input":  "data/scaffold_memory.csv",
+       "input":  ["data/scaffold_memory.csv", "data/scaffold_memory_run2.csv"],
        "input_type":  "csv",
        "columns":  {
                      "smiles_column": "SMILES",
@@ -34,7 +34,7 @@
         "settings": {"path": "output/plots/trisurf_static_plot.png",
                      "format": "png",
                      "dpi": 150,
-                     "figsize": "(9,9)"}
+                     "figsize": [9, 9]}
       }
     ]
   }

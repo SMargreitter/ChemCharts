@@ -58,7 +58,7 @@ class ChemData:
                  tanimoto_similarity: np.array = None
                  ):
 
-        # sets defaults
+        # set defaults
         self.name = name
         self.epochs = [] if epochs is None else epochs
         self.active_inactive_list = [] if active_inactive_list is None else active_inactive_list
@@ -93,14 +93,14 @@ class ChemData:
         return copy_self
 
     def sort_epoch_list(self) -> List[int]:
-        # sorts epoch list and casts it to integers
+        # sort epoch list and casts it to integers
         sorted_epochs = list(set(self.get_epochs()))
         sorted_epochs.sort()
         sorted_epochs = [int(e) for e in sorted_epochs]
         return sorted_epochs
 
     def find_epoch_indices(self, sorted_epochs: List[int]) -> List[List[int]]:
-        # returns list of epoch indices
+        # return list of epoch indices
         epoch_indices_list = []
         epochs = self.get_epochs()
         for ep in sorted_epochs:
@@ -112,14 +112,14 @@ class ChemData:
         return epoch_indices_list
 
     def filter_epochs(self, epochs: List[int]):
-        # returns a chemdata with observations of MULTIPLE epochs
+        # return a chemdata with observations of MULTIPLE epochs
         multiple_epoch_chemdata = ChemData()
         for idx in epochs:
             multiple_epoch_chemdata = multiple_epoch_chemdata + self.filter_epoch(epoch=idx)
         return multiple_epoch_chemdata
 
     def filter_epoch(self, epoch: int):
-        # returns a chemdata with observations of ONE epoch only
+        # return a chemdata with observations of ONE epoch only
         copy_chemdata = deepcopy(self)
         sorted_epochs = copy_chemdata.sort_epoch_list()
         epoch_indices = copy_chemdata.find_epoch_indices(sorted_epochs)[epoch]

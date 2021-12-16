@@ -50,7 +50,7 @@ class ScatterInteractivePlot(BasePlot):
             width=800,
             margin=dict(r=20, l=10, b=30, t=70))
 
-        if _PE.SETTINGS_VIEW is True:
+        if settings.get(_PE.SETTINGS_VIEW) == "True":
             fig.show()
 
         fig.write_image(path,

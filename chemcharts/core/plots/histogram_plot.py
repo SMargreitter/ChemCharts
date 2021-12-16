@@ -20,11 +20,15 @@ class HistogramPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
-        # path settings
+        # lim setting
+        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
+        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+
+        # path setting
         path = settings.get(_PE.SETTINGS_PATH, None)
         self._prepare_folder(path=path)
 
-        # fig settings
+        # fig setting
         max_columns = 3
         len_chemdata = len(chemdata_list)
         n_rows = int((len_chemdata - 1) / max_columns) + 1
@@ -32,12 +36,10 @@ class HistogramPlot(BasePlot):
         figsize = settings.get(_PE.SETTINGS_FIG_SIZE, [17*n_rows, 17*n_cols])
 
         # create fig
-        fig, axes = plt.subplots(n_rows, n_cols, figsize=figsize)
-        fig.suptitle('Vertically stacked subplots')
-        for idx in range(len(chemdata_list)):
-            xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-            ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+        fig, axs = plt.subplots(n_rows, n_cols, figsize=figsize)
+        fig.suptitle(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Histogram ChemCharts Plot"))
 
+        for idx in range(len(chemdata_list)):
             scores_input = chemdata_list[idx].get_scores()
             score_name = chemdata_list[idx].get_name()
 
@@ -61,11 +63,16 @@ class HistogramPlot(BasePlot):
             sns.set_context("talk",
                             font_scale=0.5)
 
-            # deal with axes issue (array if multiple input, otherwise not)
-            if isinstance(axes, np.ndarray):
-                selected_axis = axes[int(idx / max_columns), idx % max_columns]
+            # deal with axs issue (array if multiple input, otherwise not)
+            if isinstance(axs, np.ndarray):
+                row_pos = int(idx / max_columns)
+                col_pos = idx % max_columns
+
+                # makes sure that array is 2D, even if only one row
+                axs = np.atleast_2d(axs)
+                selected_axis = axs[row_pos, col_pos]
             else:
-                selected_axis = axes
+                selected_axis = axs
 
             # generate seaborn histplot
             sns.histplot(scatter_df[score_name],
@@ -76,7 +83,7 @@ class HistogramPlot(BasePlot):
                          color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#d11d80"),
                          ax=selected_axis)
 
-            # Setting axes ranges (for this plot only x and y axis ranges from 0 to 1 make sense)
+            # Setting axs ranges (for this plot only x and y axis ranges from 0 to 1 make sense)
             if xlim is not None or ylim is not None:
                 print("Histogram plot does not support setting arbitrary axis limits.")
             plt.xlim(0, 1)

@@ -16,41 +16,47 @@ class TrisurfStaticPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
-        if isinstance(chemdata_list, list):
-            print("Function does not support multiple input objects (yet).")
-            chemdata_list = chemdata_list[0]
+        # lim setting
+        xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+                                              parameters=parameters)
 
-        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+        # path setting
         path = settings.get(_PE.SETTINGS_PATH, None)
-        scorelim = parameters.get(_PE.PARAMETERS_SCORELIM, None)
-
         self._prepare_folder(path=path)
 
-#        fig = plt.figure(settings.get(_PE.SETTINGS_FIG_SIZE, (9, 9)))
-        fig = plt.figure(figsize=(9, 9))
+        # fig setting
+        max_columns = 3
+        len_chemdata = len(chemdata_list)
+        n_rows = int((len_chemdata - 1) / max_columns) + 1
+        n_cols = min(len_chemdata, max_columns)
+        figsize = settings.get(_PE.SETTINGS_FIG_SIZE, [9 * n_rows, 9 * n_cols])
 
-        ax = plt.axes(projection='3d')
+        # create fig
+        fig, ax = plt.subplots(n_rows, n_cols, figsize=figsize)
+        fig.suptitle(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Trisurf Static ChemCharts Plot"))
 
-        ax.plot_trisurf(chemdata_list.get_embedding().np_array[:, 0],
-                        chemdata_list.get_embedding().np_array[:, 1],
-                        chemdata_list.get_scores(),
-                        cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, plt.get_cmap('twilight_shifted'))
-                        )
+        for idx in range(len(chemdata_list)):
+            ax = plt.axes(projection='3d')
 
-        # Adding labels
-        ax.set_title(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Trisurf Static ChemCharts Plot"))
-        ax.set_xlabel(_PLE.UMAP_1)
-        ax.set_ylabel(_PLE.UMAP_2)
-        ax.set_zlabel(_PLE.SCORES)
+            ax.plot_trisurf(chemdata_list[idx].get_embedding().np_array[:, 0],
+                            chemdata_list[idx].get_embedding().np_array[:, 1],
+                            chemdata_list[idx].get_scores(),
+                            cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, plt.get_cmap('twilight_shifted'))
+                            )
 
-        # Setting axes ranges
-        if xlim is not None:
-            plt.xlim(xlim[0], xlim[1])
-        if ylim is not None:
-            plt.ylim(ylim[0], ylim[1])
-        if scorelim is not None:
-            ax.set_zlim(scorelim[0], scorelim[1])
+            # adding labels
+            ax.set_title(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Trisurf Static ChemCharts Plot"))
+            ax.set_xlabel(_PLE.UMAP_1)
+            ax.set_ylabel(_PLE.UMAP_2)
+            ax.set_zlabel(_PLE.SCORES)
+
+            # setting axes ranges
+            if xlim is not None:
+                plt.xlim(xlim[0], xlim[1])
+            if ylim is not None:
+                plt.ylim(ylim[0], ylim[1])
+            if scorelim is not None:
+                ax.set_zlim(scorelim[0], scorelim[1])
 
         plt.savefig(path,
                     format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),

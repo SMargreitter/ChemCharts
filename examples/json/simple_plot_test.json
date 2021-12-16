@@ -3,7 +3,7 @@
     "header": {},
     "execution": [
       {"task":  "data_loading",
-       "input":  "data/scaffold_memory.csv",
+       "input":  ["data/scaffold_memory.csv", "data/scaffold_memory_run2.csv"],
        "input_type":  "csv",
        "columns":  {
                      "smiles_column": "SMILES",
@@ -38,17 +38,6 @@
         "path": "tests/junk/simple_test.pkl"
       },
       {"task": "generate_plot",
-       "type": "hexagonal_plot",
-       "parameters":  {"title": "Hexagonal ChemCharts Plot",
-                       "gridsize": 20,
-                       "fontsize": 14,
-                       "top": 0.9,
-                       "color": "#4CB391"},
-        "settings": {"path": "output/plots/hexagonal_plot.png",
-                     "format": "png",
-                     "dpi": 150}
-      },
-      {"task": "generate_plot",
        "type": "histogram_plot",
        "parameters":  {"title": "Histogram ChemCharts Plot",
                        "bins": 20,
@@ -59,6 +48,17 @@
                     "format": "png",
                     "dpi": 300,
                     "figsize": [17, 17]}
+      },
+      {"task": "generate_plot",
+       "type": "hexagonal_plot",
+       "parameters":  {"title": "Hexagonal ChemCharts Plot",
+                       "gridsize": 20,
+                       "fontsize": 14,
+                       "top": 0.9,
+                       "color": "#4CB391"},
+        "settings": {"path": "output/plots/hexagonal_plot.png",
+                     "format": "png",
+                     "dpi": 150}
       },
       {"task": "generate_plot",
        "type": "scatter_boxplot_plot",
@@ -72,7 +72,7 @@
       },
       {"task": "generate_plot",
        "type": "scatter_interactive_plot",
-       "parameters":  {"title": "Scatter Boxplot ChemCharts Plot",
+       "parameters":  {"title": "Scatter Interactive ChemCharts Plot",
                        "marker_size": 1},
        "settings": {"path": "output/plots/scatter_interactive_plot.png",
                     "view":  false,

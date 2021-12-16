@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Tuple
 
 import ffmpeg
 from copy import deepcopy
@@ -17,7 +17,7 @@ class BasePlot:
 
     @staticmethod
     def _path_update_snapshot(ori_path: str, epoch_id: int) -> str:
-        # updates path with ".png" filename as well as epoch reference
+        # update path with ".png" filename as well as epoch reference
         path, file_name = os.path.split(os.path.abspath(ori_path))
         stripped_file_name = file_name.split(".", 1)[0]
         updated_file_name = f"{stripped_file_name}.png"
@@ -30,6 +30,20 @@ class BasePlot:
         path, _ = os.path.split(os.path.abspath(path))
         if not os.path.isdir(path):
             os.mkdir(path)
+
+    @staticmethod
+    def _get_lims(chemdata_list: List[ChemData], parameters: dict) -> Tuple[Tuple, Tuple, Tuple]:
+        total_xlims = []
+        total_ylims = []
+        total_scorelims = []
+        for idx in range(len(chemdata_list)):
+            total_xlims += list(parameters.get(_PE.PARAMETERS_XLIM, [None]))
+            total_ylims += list(parameters.get(_PE.PARAMETERS_YLIM, [None]))
+            total_scorelims += list(parameters.get(_PE.PARAMETERS_SCORELIM, [None]))
+        xlim = None if None in total_xlims else (min(total_xlims), max(total_xlims))
+        ylim = None if None in total_ylims else (min(total_ylims), max(total_ylims))
+        scorelim = None if None in total_scorelims else (min(total_scorelims), max(total_scorelims))
+        return xlim, ylim, scorelim
 
     def generate_movie(self, chemdata_list: List[ChemData], movie_path: str, aggregate_epochs: bool = True):
         # movie function does not (yet) support multiple dataset input
@@ -56,7 +70,7 @@ class BasePlot:
         updated_path_list = []
         total_chemdata = chemdata_list
 
-        # generates epoch_chemdata
+        # epoch_chemdata generation
         for idx in range(len(sorted_epochs)):
             if aggregate_epochs:
                 # list comprehension range is index +1, to get the actual epoch indices,

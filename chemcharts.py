@@ -33,14 +33,17 @@ _PE = PlottingEnum
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="implements chemcharts entry points")
-    parser.add_argument("-input_data", type=str, required=True, help="Path to input csv file (Caution: Here only one "
-                                                                     "input dataset is possible - "
-                                                                     "for multiple input data use the Json version)")
-    parser.add_argument("-output_plot", type=str, required=True, help="Path to output plot file.")
-    parser.add_argument("-output_movie", type=str, required=False, default=None, help="Path to output movie.")
+    parser.add_argument("-input_data", type=str, required=True,
+                        help="Path to input csv file (Caution: Here only one input dataset is possible - "
+                             "for multiple input data use the Json version)")
+    parser.add_argument("-output_plot", type=str, required=True,
+                        help="Path to output plot file.")
+    parser.add_argument("-output_movie", type=str, required=False, default=None,
+                        help="Path to output movie.")
     parser.add_argument("-save_data", type=str, required=False, default=None,
                         help="Path to output processed ChemData object")
-    parser.add_argument("-k", type=int, required=False, default=10, help="Number of clusters for KMeans.")
+    parser.add_argument("-k", type=int, required=False, default=10,
+                        help="Number of clusters for KMeans.")
     parser.add_argument("-plot", type=str, required=False, default="hexagonal_plot",
                         help="Choose a plot: "
                              "scatter_static_plot" "|"
@@ -50,13 +53,16 @@ if __name__ == "__main__":
                              "trisurf_static_plot" "|"
                              "trisurf_interactive_plot (no movie function possible)" "|"
                              "hexagonal_plot (default)")
+    parser.add_argument("-view", type=str, required=False, default="False",
+                        help="Choose view setting 'True' or 'False'")
     parser.add_argument("-data", type=str, required=False, default="original_data",
                         help="Choose the data set:"
                              "filtered_data,"
                              "clustered_data,"
                              "filtered_clustered_data,"
                              "original_data (default, no filtering or clustering)")
-    parser.add_argument("-binning", type=int, required=False, default=None, help="Choose the amount of bins")
+    parser.add_argument("-binning", type=int, required=False, default=None,
+                        help="Choose the amount of bins")
 
     args, args_unk = parser.parse_known_args()
 
@@ -127,7 +133,7 @@ if __name__ == "__main__":
                                    _PE.PARAMETERS_SCORELIM: None,
                                    _PE.PARAMETERS_CURRENT_CHEMDATA: None,
                                    _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0]},
-                       settings={_PE.SETTINGS_VIEW: "",
+                       settings={_PE.SETTINGS_VIEW: args.view,
                                  _PE.SETTINGS_PATH: args.output_plot})
     # make movie
     if args.output_movie is not None:

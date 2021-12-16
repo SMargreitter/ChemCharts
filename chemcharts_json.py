@@ -99,7 +99,7 @@ if __name__ == "__main__":
                 with open(task[_JE.INPUT][0], "rb") as dill_file:
                     chemdata_list = dill.load(dill_file)
             else:
-                raise ValueError(f"Input type {task[_JE.INPUT_TYPE]} not supported (yet).")
+                raise ValueError(f"Input type {task[_JE.INPUT_TYPE]} not (yet) supported.")
 
         elif task[_JE.TASK] == _JSE.GENERATE_FINGERPRINTS:
             fp_type = task[_JE.TYPE].upper()

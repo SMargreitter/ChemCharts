@@ -19,9 +19,9 @@ class DimensionalReduction:
 
         Method
         ----------
-        clustering <chemdata: ChemData, k: int>
-            returns a ChemData object containing an Embedding object (which includes the
-            UMAP clustered fingerprints)
+        calculate <chemdata_list: List[ChemData])>
+            returns a chemdata_list containing ChemData objects containing an Embedding (clustered
+             fingerprints) which is based on observations from all ChemData objects in the list
     """
 
     def __init__(self):
@@ -45,8 +45,9 @@ class DimensionalReduction:
 
     def calculate(self, chemdata_list: List[ChemData]) -> List[ChemData]:
         """
-            The calculate function accesses fingerprints of a given ChemData, reduces them with UMAP and
-            adds the clustered fingerprints as Embedding to the ChemData.
+            The calculate function accesses ChemData objects in a list and then reduces their fingerprints
+            (based on observations from all ChemData objects in the list) with UMAP and then adds the
+            clustered fingerprints as Embedding to the ChemData in the list.
 
             Parameters
             ----------
@@ -56,8 +57,8 @@ class DimensionalReduction:
             Returns
             -------
             List[ChemData]
-                returns a list of ChemData objects which had been added with an Embedding (which includes the
-                UMAP clustered fingerprints)
+                returns a list of ChemData objects with Embeddings (clustered fingerprints) based on all
+                observations from all ChemData objects
         """
 
         # combine all fingerprints of all ChemData object for the embedding stage,
@@ -72,7 +73,7 @@ class DimensionalReduction:
         # add embeddings to respective ChemCharts objects
         last_index = 0
         for chemdata in chemdata_list:
-            # generate slice Embedding based on chemdata's fingerprint length
+            # generate a sliced Embedding based on the chemdata's fingerprint length
             len_fps = len(chemdata.get_fingerprints())
             end_index = last_index + len_fps
             np_buffer = embedding.np_array[last_index:end_index]
