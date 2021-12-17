@@ -29,7 +29,7 @@
        "settings": {"path": "output/plots/histogram_plot.png",
                     "format": "png",
                     "dpi": 300,
-                    "figsize": [17, 17]}
+                    "figsize": [1, 1]}
       },
       {"task": "generate_plot",
        "type": "scatter_interactive_plot",

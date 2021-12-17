@@ -63,9 +63,9 @@ class HexagonalPlot(BasePlot):
         #    chemdata_list = chemdata_list[0]
 
         # set parameters and settings
-        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
-        path = settings.get(_PE.SETTINGS_PATH, None)
+    #    xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
+    #    ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
+    #    path = settings.get(_PE.SETTINGS_PATH, None)
         current_chemdata = parameters.get(_PE.PARAMETERS_CURRENT_CHEMDATA, None)
         total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list)
         gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
