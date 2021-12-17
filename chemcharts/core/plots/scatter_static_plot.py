@@ -16,44 +16,50 @@ class ScatterStaticPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
-        if isinstance(chemdata_list, list):
-            print("Function does not support multiple input objects (yet).")
-            chemdata_list = chemdata_list[0]
+        # lim setting
+        xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+                                              parameters=parameters)
 
-        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
-        path = settings.get(_PE.SETTINGS_PATH, None)
-        scorelim = parameters.get(_PE.PARAMETERS_SCORELIM, None)
+        # final path setting
+        final_path = settings.get(_PE.SETTINGS_PATH, None)
+        self._prepare_folder(path=final_path)
 
-        self._prepare_folder(path=path)
+        # temp path setting
+        temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
-        fig = plt.figure()
-        ax = fig.add_subplot(projection='3d')
+        # loop over ChemData objects and generate plots
+        for idx in range(len(chemdata_list)):
 
-        plt.gcf().set_size_inches((15, 15))
-      #  plt.gcf().set_size_inches(tuple(settings.get(_PE.SETTINGS_FIG_SIZE, (15,15))))
+            ax = plt.axes(projection='3d')
 
-        ax.scatter(chemdata_list.get_embedding().np_array[:, 0],
-                   chemdata_list.get_embedding().np_array[:, 1],
-                   zs=chemdata_list.get_scores(),
-                   s=parameters.get(_PE.PARAMETERS_PLOT_S, 1),
-                   color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#0000ff"))
+            # TODO set figsize with user input?
 
-        ax.set_title(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Static ChemCharts Plot"))
-        ax.set_xlabel(_PLE.UMAP_1)
-        ax.set_ylabel(_PLE.UMAP_2)
-        ax.set_zlabel(_PLE.SCORES)
+            ax.scatter(chemdata_list[idx].get_embedding().np_array[:, 0],
+                       chemdata_list[idx].get_embedding().np_array[:, 1],
+                       zs=chemdata_list[idx].get_scores(),
+                       s=parameters.get(_PE.PARAMETERS_PLOT_S, 1),
+                       color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#0000ff"))
 
-        # setting axes ranges
-        if xlim is not None:
-            plt.xlim(xlim[0], xlim[1])
-        if ylim is not None:
-            plt.ylim(ylim[0], ylim[1])
-        if scorelim is not None:
-            ax.set_zlim(scorelim[0], scorelim[1])
+            name = f"Dataset_{idx}" if chemdata_list[idx].get_name() == "" else chemdata_list[idx].get_name()
+            ax.set_title(name)
+            ax.set_xlabel(_PLE.UMAP_1)
+            ax.set_ylabel(_PLE.UMAP_2)
+            ax.set_zlabel(_PLE.SCORES)
 
-        plt.savefig(path,
-                    format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
-                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 100))
+            # setting axes ranges
+            if xlim is not None:
+                plt.xlim(xlim[0], xlim[1])
+            if ylim is not None:
+                plt.ylim(ylim[0], ylim[1])
+            if scorelim is not None:
+                ax.set_zlim(scorelim[0], scorelim[1])
 
-        plt.close(fig)
+            plt.savefig(temp_plots_path_list[idx],
+                        format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                        dpi=settings.get(_PE.SETTINGS_FIG_DPI, 250))
+
+            plt.close("all")
+
+        self._merge_multiple_plots(subplot_paths=temp_plots_path_list,
+                                   merged_path=final_path)
+        self._clear_temp_dir(path=temp_folder_path)

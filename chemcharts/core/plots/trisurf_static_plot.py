@@ -20,22 +20,16 @@ class TrisurfStaticPlot(BasePlot):
         xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
                                               parameters=parameters)
 
-        # path setting
-        path = settings.get(_PE.SETTINGS_PATH, None)
-        self._prepare_folder(path=path)
+        # final path setting
+        final_path = settings.get(_PE.SETTINGS_PATH, None)
+        self._prepare_folder(path=final_path)
 
-        # fig setting
-        max_columns = 3
-        len_chemdata = len(chemdata_list)
-        n_rows = int((len_chemdata - 1) / max_columns) + 1
-        n_cols = min(len_chemdata, max_columns)
-        figsize = settings.get(_PE.SETTINGS_FIG_SIZE, [9 * n_rows, 9 * n_cols])
+        # temp path setting
+        temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
-        # create fig
-        fig, ax = plt.subplots(n_rows, n_cols, figsize=figsize)
-        fig.suptitle(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Trisurf Static ChemCharts Plot"))
-
+        # loop over ChemData objects and generate plots
         for idx in range(len(chemdata_list)):
+
             ax = plt.axes(projection='3d')
 
             ax.plot_trisurf(chemdata_list[idx].get_embedding().np_array[:, 0],
@@ -44,8 +38,8 @@ class TrisurfStaticPlot(BasePlot):
                             cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, plt.get_cmap('twilight_shifted'))
                             )
 
-            # adding labels
-            ax.set_title(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Trisurf Static ChemCharts Plot"))
+            name = f"Dataset_{idx}" if chemdata_list[idx].get_name() == "" else chemdata_list[idx].get_name()
+            ax.set_title(name)
             ax.set_xlabel(_PLE.UMAP_1)
             ax.set_ylabel(_PLE.UMAP_2)
             ax.set_zlabel(_PLE.SCORES)
@@ -58,8 +52,12 @@ class TrisurfStaticPlot(BasePlot):
             if scorelim is not None:
                 ax.set_zlim(scorelim[0], scorelim[1])
 
-        plt.savefig(path,
-                    format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
-                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 250))
+            plt.savefig(temp_plots_path_list[idx],
+                        format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                        dpi=settings.get(_PE.SETTINGS_FIG_DPI, 250))
 
-        plt.close(fig)
+            plt.close("all")
+
+        self._merge_multiple_plots(subplot_paths=temp_plots_path_list,
+                                   merged_path=final_path)
+        self._clear_temp_dir(path=temp_folder_path)

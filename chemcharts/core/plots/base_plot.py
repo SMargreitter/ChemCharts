@@ -1,8 +1,12 @@
 import os
+import tempfile
+import shutil
 from typing import List, Tuple
 
 import ffmpeg
 from copy import deepcopy
+
+from PIL import Image, ImageFont, ImageDraw
 
 from chemcharts.core.container.chemdata import ChemData
 
@@ -45,6 +49,48 @@ class BasePlot:
         scorelim = None if None in total_scorelims else (min(total_scorelims), max(total_scorelims))
         return xlim, ylim, scorelim
 
+    def _generate_temp_paths(self, number_paths: int) -> Tuple[str, List[str]]:
+        tempdir = tempfile.mkdtemp()
+        file_path_list = []
+        for idx_path in range(number_paths):
+            _, file_path = tempfile.mkstemp(prefix=str(idx_path),
+                                            dir=tempdir)
+            file_path_list.append(file_path)
+        return tempdir, file_path_list
+
+    def _clear_temp_dir(self, path: str):
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+
+    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str):
+        # get list of image, widths and heights
+        image_list = [Image.open(x) for x in subplot_paths]
+        widths_list, heights_list = zip(*(i.size for i in image_list))
+
+        total_width = sum(widths_list)
+        max_height = max(heights_list)
+        # TODO increase img height to nicely plot the "overall" title
+
+        # create new image
+        new_im = Image.new('RGB', (total_width, max_height))
+
+        # add images to new image
+        x_offset = 0
+        for im in image_list:
+            # x dimension changes with every image,y dimension always stays 0
+            new_im.paste(im, (x_offset, 0))
+            # update x dimension
+            x_offset += im.size[0]
+
+        font_file = "/usr/share/fonts/truetype/freefont/FreeSerif.ttf"
+        if os.path.isfile(font_file):
+            draw = ImageDraw.Draw(new_im)
+            font = ImageFont.truetype(font_file, size=42)
+            draw.text((total_width/2.5, 0), "Trisurf Static ChemCharts Plot", (0, 0, 0), font=font)
+
+        # save new merged image to path
+        new_im.save(merged_path)
+
     def generate_movie(self, chemdata_list: List[ChemData], movie_path: str, aggregate_epochs: bool = True):
         # movie function does not (yet) support multiple dataset input
         if isinstance(chemdata_list, list):
@@ -65,7 +111,8 @@ class BasePlot:
                 max(chemdata_list.get_embedding().np_array[:, 0]))
         ylim = (min(chemdata_list.get_embedding().np_array[:, 1]),
                 max(chemdata_list.get_embedding().np_array[:, 1]))
-        scorelim = (min(chemdata_list.get_scores()), max(chemdata_list.get_scores()))
+        scorelim = (min(chemdata_list.get_scores()),
+                    max(chemdata_list.get_scores()))
         sorted_epochs = chemdata_list.sort_epoch_list()
         updated_path_list = []
         total_chemdata = chemdata_list

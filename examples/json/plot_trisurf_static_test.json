@@ -3,29 +3,8 @@
     "header": {},
     "execution": [
       {"task":  "data_loading",
-       "input":  ["data/scaffold_memory.csv", "data/scaffold_memory_run2.csv"],
-       "input_type":  "csv",
-       "columns":  {
-                     "smiles_column": "SMILES",
-                     "scores_column": "total_score",
-                     "epochs_column": "Step"
-                    }
-      },
-      {"task":  "generate_fingerprints",
-       "type":  "maccs",
-       "parameters":  {"useFeatures":  true}
-      },
-      {"task":  "dimensional_reduction",
-       "type": "UMAP",
-       "parameters":  {}
-      },
-      {"task":  "clustering_data",
-       "type": "KMmeans",
-       "parameters":  {"k": 30}
-      },
-      {"task":  "binning_scores",
-       "type": "binning",
-       "parameters":  {"num_bins": 10}
+       "input":  ["tests/junk/trisurf_static_test.pkl"],
+       "input_type":  "pkl"
       },
       {"task": "generate_plot",
        "type": "trisurf_static_plot",

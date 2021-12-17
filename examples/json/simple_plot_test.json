@@ -3,39 +3,21 @@
     "header": {},
     "execution": [
       {"task":  "data_loading",
-       "input":  ["data/scaffold_memory.csv", "data/scaffold_memory_run2.csv"],
-       "input_type":  "csv",
-       "columns":  {
-                     "smiles_column": "SMILES",
-                     "scores_column": "total_score",
-                     "epochs_column": "Step"
-                    }
+       "input":  ["tests/junk/simple_test.pkl"],
+       "input_type":  "pkl"
       },
-      {"task":  "generate_fingerprints",
-       "type":  "standard",
-       "parameters":  {}
-      },
-      {"task":  "dimensional_reduction",
-       "type": "UMAP",
-       "parameters":  {}
-      },
-      {"task":  "filtering_data",
-       "type": "filtering",
-       "parameters":  {"range_dim1": [-100, 100],
-                       "range_dim2": [-100, 100]}
-      },
-      {"task":  "clustering_data",
-       "type": "KMmeans",
-       "parameters":  {"k": 10}
-      },
-      {"task":  "binning_scores",
-       "type": "binning",
-       "parameters":  {"num_bins": 4}
-      },
-      {
-        "task": "write_out",
-        "format": "pkl",
-        "path": "tests/junk/simple_test.pkl"
+      {"task": "generate_plot",
+       "type": "scatter_boxplot_plot",
+       "parameters":  {"title": "Scatter Boxplot ChemCharts Plot",
+                       "fontsize": 14,
+                       "top": 0.9,
+                       "xlim": [-6.5, 14],
+                       "ylim": [-9, 12]
+       },
+        "settings": {"path": "output/plots/scatter_boxplot_plot.png",
+                     "format": "png",
+                     "dpi": 150,
+                     "figsize": [30, 30]}
       },
       {"task": "generate_plot",
        "type": "histogram_plot",
@@ -50,27 +32,6 @@
                     "figsize": [17, 17]}
       },
       {"task": "generate_plot",
-       "type": "hexagonal_plot",
-       "parameters":  {"title": "Hexagonal ChemCharts Plot",
-                       "gridsize": 20,
-                       "fontsize": 14,
-                       "top": 0.9,
-                       "color": "#4CB391"},
-        "settings": {"path": "output/plots/hexagonal_plot.png",
-                     "format": "png",
-                     "dpi": 150}
-      },
-      {"task": "generate_plot",
-       "type": "scatter_boxplot_plot",
-       "parameters":  {"title": "Scatter Boxplot ChemCharts Plot",
-                       "fontsize": 14,
-                       "top": 0.9},
-        "settings": {"path": "output/plots/scatter_boxplot_plot.png",
-                     "format": "png",
-                     "dpi": 150,
-                     "figsize": [17, 17]}
-      },
-      {"task": "generate_plot",
        "type": "scatter_interactive_plot",
        "parameters":  {"title": "Scatter Interactive ChemCharts Plot",
                        "marker_size": 1},
@@ -82,7 +43,7 @@
        "type": "scatter_static_plot",
        "parameters":  {"title": "Scatter Static ChemCharts Plot",
                        "color": "#0000ff",
-                       "s": 6},
+                       "s": 1},
         "settings": {"path": "output/plots/scatter_static_plot.png",
                      "format": "png",
                      "dpi": 150,
@@ -104,6 +65,17 @@
                      "format": "png",
                      "dpi": 150,
                      "figsize": [9, 9]}
+      },
+      {"task": "generate_plot",
+       "type": "hexagonal_plot",
+       "parameters":  {"title": "Hexagonal ChemCharts Plot",
+                       "gridsize": 20,
+                       "fontsize": 14,
+                       "top": 0.9,
+                       "color": "#4CB391"},
+        "settings": {"path": "output/plots/hexagonal_plot.png",
+                     "format": "png",
+                     "dpi": 150}
       }
     ]
   }

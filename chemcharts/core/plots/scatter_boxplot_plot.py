@@ -18,39 +18,50 @@ class ScatterBoxplotPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
-        if isinstance(chemdata_list, list):
-            print("Function does not support multiple input objects (yet).")
-            chemdata_list = chemdata_list[0]
+        # lim setting
+        xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+                                              parameters=parameters)
 
-        xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-        ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
-        path = settings.get(_PE.SETTINGS_PATH, None)
+        # final path setting
+        final_path = settings.get(_PE.SETTINGS_PATH, None)
+        self._prepare_folder(path=final_path)
 
-        self._prepare_folder(path=path)
+        # temp path setting
+        temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
-        scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list.get_embedding().np_array[:, 0],
-                                   _PLE.UMAP_2: chemdata_list.get_embedding().np_array[:, 1],
-                                   "z": chemdata_list.get_scores()})
+        # loop over ChemData objects and generate plots
+        for idx in range(len(chemdata_list)):
 
-        sns.set_context("talk", font_scale=0.5)
-#        plt.figure(settings.get(_PE.SETTINGS_FIG_SIZE, (17, 17)))
- #       plt.figure(17, 17)
-        g = sns.JointGrid(data=scatter_df,
-                          x=_PLE.UMAP_1,
-                          y=_PLE.UMAP_2,
-                          xlim=xlim,
-                          ylim=ylim
-                          )
-        g.plot_joint(sns.scatterplot)
-        g.plot_marginals(sns.boxplot)
+            scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list[idx].get_embedding().np_array[:, 0],
+                                       _PLE.UMAP_2: chemdata_list[idx].get_embedding().np_array[:, 1],
+                                       "z": chemdata_list[idx].get_scores()})
 
-        plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
+            sns.set_context("talk", font_scale=0.5)
 
-        plt.suptitle(parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Boxplot ChemCharts Plot"),
-                     fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 14))
+            g = sns.JointGrid(data=scatter_df,
+                              x=_PLE.UMAP_1,
+                              y=_PLE.UMAP_2,
+                              xlim=xlim,
+                              ylim=ylim
+                              )
 
-        plt.savefig(path,
-                    format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
-                    dpi=settings.get(_PE.SETTINGS_FIG_DPI, 150))
+            g.plot_joint(sns.scatterplot)
+            g.plot_marginals(sns.boxplot)
 
-        plt.close("all")
+            # TODO set figsize with user input?
+            plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
+
+            name = f"Dataset_{idx}" if chemdata_list[idx].get_name() == "" else chemdata_list[idx].get_name()
+            plt.suptitle(name,
+                         fontsize=parameters.get(_PE.PARAMETERS_PLOT_TITLE_FONTSIZE, 14))
+
+            plt.savefig(temp_plots_path_list[idx],
+                        format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
+                        dpi=settings.get(_PE.SETTINGS_FIG_DPI, 250))
+
+            plt.close("all")
+
+        self._merge_multiple_plots(subplot_paths=temp_plots_path_list,
+                                   merged_path=final_path)
+        self._clear_temp_dir(path=temp_folder_path)
+

@@ -2,6 +2,7 @@
 #  coding=utf-8
 
 import argparse
+import os.path
 import sys
 import dill
 import json
@@ -90,7 +91,7 @@ if __name__ == "__main__":
                                                          smiles_column=smiles_column,
                                                          scores_column=scores_column,
                                                          epochs_column=epochs_column)
-                    next_chemdata = ChemData(name=_JE.CHEMDATA_NAME)
+                    next_chemdata = ChemData(name=os.path.basename(inp))
                     next_chemdata.set_scores(scores)
                     next_chemdata.set_smiles(smiles)
                     next_chemdata.set_epochs(epochs)

@@ -1,0 +1,42 @@
+{
+  "chemcharts": {
+    "header": {},
+    "execution": [
+      {"task":  "data_loading",
+       "input":  ["data/scaffold_memory.csv", "data/scaffold_memory_run2.csv", "data/scaffold_memory_run3.csv"],
+       "input_type":  "csv",
+       "columns":  {
+                     "smiles_column": "SMILES",
+                     "scores_column": "total_score",
+                     "epochs_column": "Step"
+                    }
+      },
+      {"task":  "generate_fingerprints",
+       "type":  "standard",
+       "parameters":  {}
+      },
+      {"task":  "dimensional_reduction",
+       "type": "UMAP",
+       "parameters":  {}
+      },
+      {"task":  "filtering_data",
+       "type": "filtering",
+       "parameters":  {"range_dim1": [-100, 100],
+                       "range_dim2": [-100, 100]}
+      },
+      {"task":  "clustering_data",
+       "type": "KMmeans",
+       "parameters":  {"k": 10}
+      },
+      {"task":  "binning_scores",
+       "type": "binning",
+       "parameters":  {"num_bins": 4}
+      },
+      {
+        "task": "write_out",
+        "format": "pkl",
+        "path": "tests/junk/simple_test.pkl"
+      }
+    ]
+  }
+}
