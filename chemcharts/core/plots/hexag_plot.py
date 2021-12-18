@@ -67,7 +67,7 @@ class HexagonalPlot(BasePlot):
     #    ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
     #    path = settings.get(_PE.SETTINGS_PATH, None)
         current_chemdata = parameters.get(_PE.PARAMETERS_CURRENT_CHEMDATA, None)
-        total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list)
+        total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list[0])
         gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
 
         # lim setting
@@ -77,7 +77,6 @@ class HexagonalPlot(BasePlot):
         # final path setting
         final_path = settings.get(_PE.SETTINGS_PATH, None)
         self._prepare_folder(path=final_path)
-
 
         extent = (xlim[0], xlim[1], ylim[0], ylim[1]) if xlim is not None else None
 
@@ -109,8 +108,8 @@ class HexagonalPlot(BasePlot):
             # https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
 
             # generate seaborn jointplot with hexbin background colors
-            sns.jointplot(x=chemdata_list.get_embedding().np_array[:, 0],
-                          y=chemdata_list.get_embedding().np_array[:, 1],
+            sns.jointplot(x=chemdata_list[idx].get_embedding().np_array[:, 0],
+                          y=chemdata_list[idx].get_embedding().np_array[:, 1],
                           xlim=xlim,
                           ylim=ylim,
                           joint_kws={"gridsize": gridsize,

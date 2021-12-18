@@ -151,7 +151,9 @@ if __name__ == "__main__":
         elif task[_JE.TASK] == _JSE.GENERATE_MOVIE:
             plot_type = task[_JE.TYPE].lower()
             plot_instance = initialize_plot(plot_type)
-            plot_instance.generate_movie(chemdata_list, task[_JE.SETTINGS][_JE.PATH])
+            plot_instance.generate_movie(chemdata_list=chemdata_list,
+                                         movie_path=task[_JE.SETTINGS][_JE.PATH],
+                                         parameters=task.get(_JE.PARAMETERS, {}))
         else:
             raise ValueError(f"Task definition {task[_JE.TASK]} not supported.")
         print(f"Task {task[_JE.TASK]} completed.")

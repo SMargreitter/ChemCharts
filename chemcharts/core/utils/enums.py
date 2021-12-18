@@ -84,6 +84,7 @@ class PlottingEnum:
 
     PARAMETERS_CURRENT_CHEMDATA = "current_chemdata"
     PARAMETERS_TOTAL_CHEMDATA = "total_chemdata"
+    PARAMETERS_USE_CURRENT_EPOCH = "use_current_epoch"
 
     SETTINGS_FIG_FORMAT = "format"
     SETTINGS_FIG_DPI = "dpi"

@@ -36,6 +36,13 @@ class BasePlot:
             os.mkdir(path)
 
     @staticmethod
+    def _merge_chemdata_list(chemdata_list: List[ChemData]) -> ChemData:
+        chemdata_buffer = ChemData()
+        for chemdata in chemdata_list:
+            chemdata_buffer = chemdata_buffer + chemdata
+        return chemdata_buffer
+
+    @staticmethod
     def _get_lims(chemdata_list: List[ChemData], parameters: dict) -> Tuple[Tuple, Tuple, Tuple]:
         total_xlims = []
         total_ylims = []
@@ -91,7 +98,11 @@ class BasePlot:
         # save new merged image to path
         new_im.save(merged_path)
 
-    def generate_movie(self, chemdata_list: List[ChemData], movie_path: str, aggregate_epochs: bool = True):
+    def generate_movie(self,
+                       chemdata_list: List[ChemData],
+                       movie_path: str,
+                       parameters: dict = {},
+                       aggregate_epochs: bool = True):
         # movie function does not (yet) support multiple dataset input
         if isinstance(chemdata_list, list):
             print("Function does not (yet) support multiple input objects.")
@@ -127,12 +138,15 @@ class BasePlot:
                 # useful when big batch sizes, not exposed at the moment!
                 epoch_chemdata = chemdata_list.filter_epoch(epoch=idx)
 
-            current_chemdata = chemdata_list.filter_epoch(epoch=idx)
+            # extract current epoch if flag is true in parameters
+            use_current_epoch = parameters.get(_PE.PARAMETERS_USE_CURRENT_EPOCH, False)
+            current_chemdata = None if not use_current_epoch else chemdata_list.filter_epoch(epoch=idx)
+
             updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
 
             # plot generation
-            self.plot(chemdata_list=epoch_chemdata,
+            self.plot(chemdata_list=[epoch_chemdata],
                       parameters={_PE.PARAMETERS_XLIM: xlim,
                                   _PE.PARAMETERS_YLIM: ylim,
                                   _PE.PARAMETERS_SCORELIM: scorelim,
