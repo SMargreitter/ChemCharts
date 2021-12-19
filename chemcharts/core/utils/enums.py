@@ -67,6 +67,17 @@ class JsonStepsEnum:
     GENERATE_MOVIE = "generate_movie"
 
 
+class MovieEnum:
+    PARAMETERS = "parameters"
+    PARAMETERS_USE_CURRENT_EPOCH = "use_current_epoch"
+
+    SETTINGS = "settings"
+    SETTINGS_MOVIE_PATH = "movie_path"
+
+    ENDING_GIF = ".gif"
+    ENDING_MP4 = ".mp4"
+
+
 class PlottingEnum:
     PARAMETERS_GRIDSIZE = "gridsize"
     PARAMETERS_BINS = "bins"
@@ -84,7 +95,6 @@ class PlottingEnum:
 
     PARAMETERS_CURRENT_CHEMDATA = "current_chemdata"
     PARAMETERS_TOTAL_CHEMDATA = "total_chemdata"
-    PARAMETERS_USE_CURRENT_EPOCH = "use_current_epoch"
 
     SETTINGS_FIG_FORMAT = "format"
     SETTINGS_FIG_DPI = "dpi"

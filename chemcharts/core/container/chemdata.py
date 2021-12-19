@@ -82,7 +82,6 @@ class ChemData:
     def __add__(self, obj):
         copy_self = deepcopy(self)
         obj = deepcopy(obj)
-        copy_self.set_name('_'.join([copy_self.name, obj.name]))
         copy_self.set_epochs(copy_self.epochs + obj.epochs)
         copy_self.set_active_inactive_list(copy_self.active_inactive_list + obj.active_inactive_list)
         copy_self.set_scores(copy_self.scores + obj.scores)

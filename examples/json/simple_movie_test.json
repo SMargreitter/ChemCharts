@@ -11,22 +11,29 @@
        "parameters":  {
          "use_current_epoch": false
        },
-        "settings": {"path": "output/hexagonal_movie/hexagonal_movie.mp4"}
+        "settings": {"movie_path": "output/hexagonal_movie_mp4/hexagonal_movie.mp4"}
+      },
+      {"task": "generate_movie",
+       "type": "hexagonal_plot",
+       "parameters":  {
+         "use_current_epoch": false
+       },
+        "settings": {"movie_path": "output/hexagonal_movie_gif/hexagonal_movie.gif"}
       },
       {"task": "generate_movie",
        "type": "trisurf_static_plot",
        "parameters":  {},
-        "settings": {"path": "output/trisurf_static_movie/trisurf_static_movie.mp4"}
+        "settings": {"movie_path": "output/trisurf_static_movie/trisurf_static_movie.mp4"}
       },
       {"task": "generate_movie",
        "type": "scatter_boxplot_plot",
        "parameters":  {},
-        "settings": {"path": "output/scatter_boxplot_movie/scatter_boxplot_movie.mp4"}
+        "settings": {"movie_path": "output/scatter_boxplot_movie/scatter_boxplot_movie.mp4"}
       },
       {"task": "generate_movie",
        "type": "scatter_static_plot",
        "parameters":  {},
-        "settings": {"path": "output/scatter_static_movie/scatter_static_movie.mp4"}
+        "settings": {"movie_path": "output/scatter_static_movie/scatter_static_movie.mp4"}
       }
     ]
   }

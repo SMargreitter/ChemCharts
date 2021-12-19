@@ -26,7 +26,7 @@ from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
 from chemcharts.core.functions.io_functions import load_smiles
 
-from chemcharts.core.utils.enums import GeneratePlotsEnum
+from chemcharts.core.utils.enums import GeneratePlotsEnum, MovieEnum
 from chemcharts.core.utils.enums import DataFittingEnum
 from chemcharts.core.utils.enums import FingerprintEnum
 from chemcharts.core.utils.enums import JsonStepsEnum
@@ -36,6 +36,7 @@ _DFE = DataFittingEnum
 _FE = FingerprintEnum
 _JSE = JsonStepsEnum
 _JE = JsonEnum
+_ME = MovieEnum
 
 
 def initialize_plot(plot_type: str) -> BasePlot:
@@ -152,8 +153,8 @@ if __name__ == "__main__":
             plot_type = task[_JE.TYPE].lower()
             plot_instance = initialize_plot(plot_type)
             plot_instance.generate_movie(chemdata_list=chemdata_list,
-                                         movie_path=task[_JE.SETTINGS][_JE.PATH],
-                                         parameters=task.get(_JE.PARAMETERS, {}))
+                                         parameters=task.get(_JE.PARAMETERS, {}),
+                                         settings=task.get(_JE.SETTINGS, {}))
         else:
             raise ValueError(f"Task definition {task[_JE.TASK]} not supported.")
         print(f"Task {task[_JE.TASK]} completed.")

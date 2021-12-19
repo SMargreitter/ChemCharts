@@ -58,21 +58,13 @@ class HexagonalPlot(BasePlot):
         return gridsize
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
-        #if isinstance(chemdata_list, list):
-        #    print("Function does not (yet) support multiple input objects.")
-        #    chemdata_list = chemdata_list[0]
-
-        # set parameters and settings
-    #    xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
-    #    ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
-    #    path = settings.get(_PE.SETTINGS_PATH, None)
         current_chemdata = parameters.get(_PE.PARAMETERS_CURRENT_CHEMDATA, None)
         total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list[0])
         gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
 
         # lim setting
-        xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list, # ?????????
-                                              parameters=parameters)       # ????????
+        xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+                                              parameters=parameters)
 
         # final path setting
         final_path = settings.get(_PE.SETTINGS_PATH, None)
@@ -144,5 +136,6 @@ class HexagonalPlot(BasePlot):
             plt.close("all")
 
         self._merge_multiple_plots(subplot_paths=temp_plots_path_list,
-                                   merged_path=final_path)
+                                   merged_path=final_path,
+                                   title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Hexagonal ChemCharts Plot"))
         self._clear_temp_dir(path=temp_folder_path)

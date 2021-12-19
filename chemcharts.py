@@ -23,12 +23,13 @@ from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
 from chemcharts.core.functions.io_functions import load_smiles
 
-from chemcharts.core.utils.enums import GeneratePlotsEnum
+from chemcharts.core.utils.enums import GeneratePlotsEnum, MovieEnum
 from chemcharts.core.utils.enums import DataFittingEnum
 from chemcharts.core.utils.enums import PlottingEnum
 _GPE = GeneratePlotsEnum
 _DFE = DataFittingEnum
 _PE = PlottingEnum
+_ME = MovieEnum
 
 
 if __name__ == "__main__":
@@ -137,6 +138,6 @@ if __name__ == "__main__":
                                  _PE.SETTINGS_PATH: args.output_plot})
     # make movie
     if args.output_movie is not None:
-        plot_instance.generate_movie(plot_data, args.output_movie)
+        plot_instance.generate_movie(plot_data, settings={_ME.SETTINGS_MOVIE_PATH: args.output_movie})
 
     sys.exit(0)

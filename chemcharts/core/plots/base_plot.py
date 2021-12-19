@@ -1,4 +1,5 @@
 import os
+import subprocess
 import tempfile
 import shutil
 from typing import List, Tuple
@@ -10,9 +11,10 @@ from PIL import Image, ImageFont, ImageDraw
 
 from chemcharts.core.container.chemdata import ChemData
 
-from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import PlottingEnum, MovieEnum
 
 _PE = PlottingEnum
+_ME = MovieEnum
 
 
 class BasePlot:
@@ -69,7 +71,7 @@ class BasePlot:
         if os.path.isdir(path):
             shutil.rmtree(path)
 
-    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str):
+    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str, title: str):
         # get list of image, widths and heights
         image_list = [Image.open(x) for x in subplot_paths]
         widths_list, heights_list = zip(*(i.size for i in image_list))
@@ -93,15 +95,16 @@ class BasePlot:
         if os.path.isfile(font_file):
             draw = ImageDraw.Draw(new_im)
             font = ImageFont.truetype(font_file, size=42)
-            draw.text((total_width/2.5, 0), "Trisurf Static ChemCharts Plot", (0, 0, 0), font=font)
+            width_message, _ = draw.textsize(title)
+            draw.text(((total_width - width_message)/2, 0), title, (0, 0, 0), font=font)
 
         # save new merged image to path
         new_im.save(merged_path)
 
     def generate_movie(self,
                        chemdata_list: List[ChemData],
-                       movie_path: str,
                        parameters: dict = {},
+                       settings: dict = {},
                        aggregate_epochs: bool = True):
         # movie function does not (yet) support multiple dataset input
         if isinstance(chemdata_list, list):
@@ -117,7 +120,7 @@ class BasePlot:
 
         # preparation
         chemdata_list = deepcopy(chemdata_list)
-        self._prepare_folder(path=movie_path)
+        self._prepare_folder(path=settings[_ME.SETTINGS_MOVIE_PATH])
         xlim = (min(chemdata_list.get_embedding().np_array[:, 0]),
                 max(chemdata_list.get_embedding().np_array[:, 0]))
         ylim = (min(chemdata_list.get_embedding().np_array[:, 1]),
@@ -139,10 +142,11 @@ class BasePlot:
                 epoch_chemdata = chemdata_list.filter_epoch(epoch=idx)
 
             # extract current epoch if flag is true in parameters
-            use_current_epoch = parameters.get(_PE.PARAMETERS_USE_CURRENT_EPOCH, False)
+            use_current_epoch = parameters.get(_ME.PARAMETERS_USE_CURRENT_EPOCH, False)
             current_chemdata = None if not use_current_epoch else chemdata_list.filter_epoch(epoch=idx)
 
-            updated_snapshot_path = self._path_update_snapshot(ori_path=movie_path, epoch_id=idx)
+            updated_snapshot_path = self._path_update_snapshot(ori_path=settings[_ME.SETTINGS_MOVIE_PATH],
+                                                               epoch_id=idx)
             updated_path_list.append(updated_snapshot_path)
 
             # plot generation
@@ -157,13 +161,23 @@ class BasePlot:
                       )
 
         # movie generation
-        path, file_name = os.path.split(os.path.abspath(movie_path))
-        (
-            ffmpeg
-            .input(f"{path}/*.png", pattern_type='glob', framerate=5)
-            .output(movie_path)
-            .run()
-        )
+        path, file_name = os.path.split(os.path.abspath(settings[_ME.SETTINGS_MOVIE_PATH]))
+        ending = file_name[-4:0].lower()
+        if ending == _ME.ENDING_GIF:
+            command = f"convert -delay 30 -loop 0 {path}/*.png {settings[_ME.SETTINGS_MOVIE_PATH]}"
+            result = subprocess.run(command.split(),
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE,
+                                    check=True,
+                                    shell=True)
+            print(result.stdout)
+        elif ending == _ME.ENDING_MP4:
+            (
+                ffmpeg
+                .input(f"{path}/*.png", pattern_type='glob', framerate=5)
+                .output(settings[_ME.SETTINGS_MOVIE_PATH])
+                .run()
+            )
 
     # error message
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
