@@ -54,7 +54,7 @@ class TrisurfStaticPlot(BasePlot):
 
             plt.savefig(temp_plots_path_list[idx],
                         format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
-                        dpi=settings.get(_PE.SETTINGS_FIG_DPI, 250))
+                        dpi=settings.get(_PE.SETTINGS_FIG_DPI, _PE.SETTINGS_FIG_DPI_DEFAULT))
 
             plt.close("all")
 

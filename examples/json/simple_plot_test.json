@@ -8,7 +8,7 @@
       },
       {"task": "generate_plot",
        "type": "hexagonal_plot",
-       "parameters":  {"title": "Hexagonal ChemCharts Plot - custom",
+       "parameters":  {"title": "Hexagonal ChemCharts Plot",
                        "gridsize": 20,
                        "fontsize": 14,
                        "top": 0.9,

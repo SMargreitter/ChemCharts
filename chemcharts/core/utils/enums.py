@@ -98,6 +98,7 @@ class PlottingEnum:
 
     SETTINGS_FIG_FORMAT = "format"
     SETTINGS_FIG_DPI = "dpi"
+    SETTINGS_FIG_DPI_DEFAULT = 300
     SETTINGS_FIG_SIZE = "figsize"
 
     SETTINGS_VIEW = "view"

@@ -38,6 +38,7 @@ class HistogramPlot(BasePlot):
             scores_input = chemdata_list[idx].get_scores()
             score_name = chemdata_list[idx].get_name()
 
+            # TODO fix tanimoto
             """   
             # include tanimoto_similarity   
             if selection == "tanimoto_similarity":
@@ -86,6 +87,7 @@ class HistogramPlot(BasePlot):
 
             # TODO set figsize with user input?
             plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
+            plt.xlabel("Scores", fontsize=10)
 
             name = f"Dataset_{idx}" if chemdata_list[idx].get_name() == "" else chemdata_list[idx].get_name()
             plt.suptitle(name,
@@ -93,7 +95,7 @@ class HistogramPlot(BasePlot):
 
             plt.savefig(temp_plots_path_list[idx],
                         format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
-                        dpi=settings.get(_PE.SETTINGS_FIG_DPI, 250))
+                        dpi=settings.get(_PE.SETTINGS_FIG_DPI, _PE.SETTINGS_FIG_DPI_DEFAULT))
 
             plt.close("all")
 

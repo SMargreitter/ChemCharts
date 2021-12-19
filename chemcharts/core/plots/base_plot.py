@@ -77,26 +77,26 @@ class BasePlot:
         widths_list, heights_list = zip(*(i.size for i in image_list))
 
         total_width = sum(widths_list)
-        max_height = max(heights_list)
+        max_height = max(heights_list)+150
         # TODO increase img height to nicely plot the "overall" title
 
         # create new image
-        new_im = Image.new('RGB', (total_width, max_height))
+        new_im = Image.new('RGB', size=(total_width, max_height), color="white")
 
         # add images to new image
         x_offset = 0
         for im in image_list:
             # x dimension changes with every image,y dimension always stays 0
-            new_im.paste(im, (x_offset, 0))
+            new_im.paste(im, (x_offset, 150))
             # update x dimension
             x_offset += im.size[0]
 
         font_file = "/usr/share/fonts/truetype/freefont/FreeSerif.ttf"
         if os.path.isfile(font_file):
             draw = ImageDraw.Draw(new_im)
-            font = ImageFont.truetype(font_file, size=42)
-            width_message, _ = draw.textsize(title)
-            draw.text(((total_width - width_message)/2, 0), title, (0, 0, 0), font=font)
+            font_size = int(48 / 2700 * total_width)
+            font = ImageFont.truetype(font_file, size=font_size)
+            draw.text((total_width/2.5, 30), title, (0, 0, 0), font=font)
 
         # save new merged image to path
         new_im.save(merged_path)
@@ -162,15 +162,14 @@ class BasePlot:
 
         # movie generation
         path, file_name = os.path.split(os.path.abspath(settings[_ME.SETTINGS_MOVIE_PATH]))
-        ending = file_name[-4:0].lower()
+        ending = file_name[-4:].lower()
         if ending == _ME.ENDING_GIF:
             command = f"convert -delay 30 -loop 0 {path}/*.png {settings[_ME.SETTINGS_MOVIE_PATH]}"
-            result = subprocess.run(command.split(),
+            result = subprocess.run(command,
                                     stdout=subprocess.PIPE,
                                     stderr=subprocess.PIPE,
                                     check=True,
                                     shell=True)
-            print(result.stdout)
         elif ending == _ME.ENDING_MP4:
             (
                 ffmpeg
@@ -178,6 +177,8 @@ class BasePlot:
                 .output(settings[_ME.SETTINGS_MOVIE_PATH])
                 .run()
             )
+        else:
+            raise ValueError(f"Only .gif and .mp4 is supported.")
 
     # error message
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
