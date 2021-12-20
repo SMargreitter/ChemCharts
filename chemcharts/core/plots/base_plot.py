@@ -159,17 +159,19 @@ class BasePlot:
                       settings={_PE.SETTINGS_VIEW: "",
                                 _PE.SETTINGS_PATH: updated_snapshot_path}
                       )
+            break
 
         # movie generation
         path, file_name = os.path.split(os.path.abspath(settings[_ME.SETTINGS_MOVIE_PATH]))
         ending = file_name[-4:].lower()
         if ending == _ME.ENDING_GIF:
-            command = f"convert -delay 30 -loop 0 {path}/*.png {settings[_ME.SETTINGS_MOVIE_PATH]}"
-            result = subprocess.run(command,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE,
-                                    check=True,
-                                    shell=True)
+            """-vf "fps=25,scale=900:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"""
+            (
+                ffmpeg
+                .input(f"{path}/*.png", pattern_type='glob', framerate=5)
+                .output(settings[_ME.SETTINGS_MOVIE_PATH])
+                .run()
+            )
         elif ending == _ME.ENDING_MP4:
             (
                 ffmpeg
