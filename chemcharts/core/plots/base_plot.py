@@ -159,7 +159,6 @@ class BasePlot:
                       settings={_PE.SETTINGS_VIEW: "",
                                 _PE.SETTINGS_PATH: updated_snapshot_path}
                       )
-            break
 
         # movie generation
         path, file_name = os.path.split(os.path.abspath(settings[_ME.SETTINGS_MOVIE_PATH]))
