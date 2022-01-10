@@ -26,11 +26,11 @@
       },
       {"task":  "clustering_data",
        "type": "KMmeans",
-       "parameters":  {"k": 10}
+       "parameters":  {"k": 50}
       },
       {"task":  "binning_scores",
        "type": "binning",
-       "parameters":  {"num_bins": 4}
+       "parameters":  {"num_bins": 10}
       },
       {
         "task": "write_out",

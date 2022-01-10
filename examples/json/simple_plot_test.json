@@ -49,7 +49,7 @@
        "parameters":  {"title": "Scatter Interactive ChemCharts Plot",
                        "marker_size": 1},
        "settings": {"path": "output/plots/scatter_interactive_plot.png",
-                    "view":  false,
+                    "view":  true,
                      "format": "png"}
       },
       {"task": "generate_plot",

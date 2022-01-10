@@ -49,7 +49,7 @@ class TrisurfInteractivePlot(BasePlot):
             margin=dict(r=50, l=50, b=50, t=100)
         )
 
-        if settings.get(_PE.SETTINGS_VIEW) is "True":
+        if settings.get(_PE.SETTINGS_VIEW) is True:
             fig.show()
 
         fig.write_image(path,
