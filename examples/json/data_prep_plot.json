@@ -21,8 +21,8 @@
       },
       {"task":  "filtering_data",
        "type": "filtering",
-       "parameters":  {"range_dim1": [-100, 100],
-                       "range_dim2": [-100, 100]}
+       "parameters":  {"range_dim1": [-50, 50],
+                       "range_dim2": [-50, 50]}
       },
       {"task":  "clustering_data",
        "type": "KMmeans",
