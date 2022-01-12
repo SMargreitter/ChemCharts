@@ -41,6 +41,8 @@ if __name__ == "__main__":
                         help="Path to output plot file.")
     parser.add_argument("-output_movie", type=str, required=False, default=None,
                         help="Path to output movie.")
+    parser.add_argument("-dataset_name", type=str, required=False, default=None,
+                        help="Name your dataset.")
     parser.add_argument("-save_data", type=str, required=False, default=None,
                         help="Path to output processed ChemData object")
     parser.add_argument("-k", type=int, required=False, default=10,
@@ -54,7 +56,7 @@ if __name__ == "__main__":
                              "trisurf_static_plot" "|"
                              "trisurf_interactive_plot (no movie function possible)" "|"
                              "hexagonal_plot (default)")
-    parser.add_argument("-view", type=str, required=False, default="False",
+    parser.add_argument("-view", type=bool, required=False, default=False,
                         help="Choose view setting 'True' or 'False'")
     parser.add_argument("-data", type=str, required=False, default="original_data",
                         help="Choose the data set:"
@@ -75,7 +77,8 @@ if __name__ == "__main__":
         smiles, scores, epochs = load_smiles(args.input_data)
 
         # initialize chemdata_list with ONE Chemdata object and add smiles and fps
-        ori_data = [ChemData(smiles_obj=smiles)]
+
+        ori_data = [ChemData(smiles_obj=smiles, name=args.dataset_name)]
         fps_generator = FingerprintGenerator(ori_data[0].get_smiles())
         fps = fps_generator.generate_fingerprints()
         ori_data[0].set_scores(scores)

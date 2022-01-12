@@ -50,9 +50,9 @@ class BasePlot:
         total_ylims = []
         total_scorelims = []
         for idx in range(len(chemdata_list)):
-            total_xlims += list(parameters.get(_PE.PARAMETERS_XLIM, [None]))
-            total_ylims += list(parameters.get(_PE.PARAMETERS_YLIM, [None]))
-            total_scorelims += list(parameters.get(_PE.PARAMETERS_SCORELIM, [None]))
+            total_xlims += [None] if parameters.get(_PE.PARAMETERS_XLIM, None) is None else parameters[_PE.PARAMETERS_XLIM]
+            total_ylims += [None] if parameters.get(_PE.PARAMETERS_YLIM, None) is None else parameters[_PE.PARAMETERS_YLIM]
+            total_scorelims += [None] if parameters.get(_PE.PARAMETERS_SCORELIM, None) is None else parameters[_PE.PARAMETERS_SCORELIM]
         xlim = None if None in total_xlims else (min(total_xlims), max(total_xlims))
         ylim = None if None in total_ylims else (min(total_ylims), max(total_ylims))
         scorelim = None if None in total_scorelims else (min(total_scorelims), max(total_scorelims))
@@ -71,14 +71,14 @@ class BasePlot:
         if os.path.isdir(path):
             shutil.rmtree(path)
 
-    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str, title: str):
+    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str, title: str, idx: int):
         # get list of image, widths and heights
         image_list = [Image.open(x) for x in subplot_paths]
         widths_list, heights_list = zip(*(i.size for i in image_list))
+        width, _ = image_list[0].size
 
         total_width = sum(widths_list)
-        max_height = max(heights_list)+150
-        # TODO increase img height to nicely plot the "overall" title
+        max_height = max(heights_list)+200
 
         # create new image
         new_im = Image.new('RGB', size=(total_width, max_height), color="white")
@@ -94,9 +94,17 @@ class BasePlot:
         font_file = "/usr/share/fonts/truetype/freefont/FreeSerif.ttf"
         if os.path.isfile(font_file):
             draw = ImageDraw.Draw(new_im)
-            font_size = int(48 / 2700 * total_width)
+            if idx < 1:
+                font_size = int(130 / 2700 * width)
+            else:
+                font_size = int(48 / 2700 * total_width)
+
             font = ImageFont.truetype(font_file, size=font_size)
-            draw.text((total_width/2.5, 30), title, (0, 0, 0), font=font)
+
+            if idx < 1:
+                draw.text((width/4.5, 30), title, (0, 0, 0), font=font)
+            else:
+                draw.text((total_width/2.5, 30), title, (0, 0, 0), font=font)
 
         # save new merged image to path
         new_im.save(merged_path)

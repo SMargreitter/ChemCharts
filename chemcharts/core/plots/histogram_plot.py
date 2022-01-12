@@ -101,5 +101,6 @@ class HistogramPlot(BasePlot):
 
         self._merge_multiple_plots(subplot_paths=temp_plots_path_list,
                                    merged_path=final_path,
-                                   title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Histogram ChemCharts Plot"))
+                                   title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Histogram ChemCharts Plot"),
+                                   idx=idx)
         self._clear_temp_dir(path=temp_folder_path)
