@@ -150,6 +150,7 @@ class BasePlot:
                 epoch_chemdata = chemdata_list.filter_epoch(epoch=idx)
 
             # extract current epoch if flag is true in parameters
+            # TODO: refactor that, as it is only used for contour generation in hexagonal_plot yet
             use_current_epoch = parameters.get(_ME.PARAMETERS_USE_CURRENT_EPOCH, False)
             current_chemdata = None if not use_current_epoch else chemdata_list.filter_epoch(epoch=idx)
 
@@ -172,13 +173,21 @@ class BasePlot:
         path, file_name = os.path.split(os.path.abspath(settings[_ME.SETTINGS_MOVIE_PATH]))
         ending = file_name[-4:].lower()
         if ending == _ME.ENDING_GIF:
-            """-vf "fps=25,scale=900:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"""
+            _, tmp_path_mp4 = tempfile.mkstemp(suffix=".mp4")
             (
                 ffmpeg
-                .input(f"{path}/*.png", pattern_type='glob', framerate=5)
-                .output(settings[_ME.SETTINGS_MOVIE_PATH])
-                .run()
+                    .input(f"{path}/*.png", pattern_type='glob', framerate=5)
+                    .output(tmp_path_mp4)
+                    .global_args("-y")
+                    .run()
             )
+            command = ' '.join(["ffmpeg",
+                                "-y",
+                                "-i", tmp_path_mp4,
+                                "-r 15",
+                                '-vf "scale=512:-1,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"',
+                                settings[_ME.SETTINGS_MOVIE_PATH]])
+            result = os.system(command)
         elif ending == _ME.ENDING_MP4:
             (
                 ffmpeg

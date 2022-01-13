@@ -50,7 +50,7 @@
                        "marker_size": 1},
        "settings": {"path": "output/plots/scatter_interactive_plot.png",
                     "view":  true,
-                     "format": "png"}
+                    "format": "png"}
       },
       {"task": "generate_plot",
        "type": "scatter_static_plot",

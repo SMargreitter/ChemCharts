@@ -8,15 +8,13 @@
       },
       {"task": "generate_movie",
        "type": "hexagonal_plot",
-       "parameters":  {
-         "use_current_epoch": false
+       "parameters":  {"use_current_epoch": false
        },
         "settings": {"movie_path": "output/hexagonal_movie_mp4/hexagonal_movie.mp4"}
       },
       {"task": "generate_movie",
        "type": "hexagonal_plot",
-       "parameters":  {
-         "use_current_epoch": false
+       "parameters":  {"use_current_epoch": false
        },
         "settings": {"movie_path": "output/hexagonal_movie_gif/hexagonal_movie.gif"}
       },
