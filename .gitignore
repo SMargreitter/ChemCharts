@@ -21,7 +21,6 @@ dist/
 
 # Maven
 target/
-dist/
 
 # JetBrains IDE
 chemcharts/.idea/
@@ -40,6 +39,8 @@ Thumbs.db
 *.exe
 *.war
 
+test.png
+output_movie
 # Large media files
 *.mp4
 *.tiff
