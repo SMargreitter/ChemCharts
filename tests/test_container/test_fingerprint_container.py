@@ -57,6 +57,8 @@ class TestFingerprintContainer(unittest.TestCase):
 
     def test_add_item(self):
         test_fingerprints = FingerprintContainer(name="test_fingerprint", fingerprint_list=self.fingerprint_list)
+
+        # Note, that "type mismatch" is fine here.
         test_fingerprints += FingerprintContainer(name="test_fingerprint_add",
                                                   fingerprint_list=[[0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
         self.assertIn([0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], test_fingerprints.fingerprint_list)

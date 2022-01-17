@@ -10,10 +10,12 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
 
-from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import PlottingEnum, MovieEnum
 from chemcharts.core.utils.enums import TestPathsEnum
 from chemcharts.core.utils.enums import TestPlotMovieEnum
 from chemcharts.core.utils.enums import TestNameEnum
+
+_ME = MovieEnum()
 _PE = PlottingEnum()
 _TPE = TestPathsEnum()
 _TPME = TestPlotMovieEnum
@@ -111,12 +113,13 @@ class TestScatterBoxplotPlot(unittest.TestCase):
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
                       _PE.PARAMETERS_SCORELIM: None}
-        test_plot.plot(self.test_chemdata, parameters, settings)
+        test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST]))
-        self.assertTrue(23000 <= file_size <= 43000)
+        self.assertTrue(50000 <= file_size <= 100000)
 
     def test_check_movie_size(self):
         test_plot = ScatterBoxplotPlot()
-        test_plot.generate_movie(self.test_chemdata, '/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE, _TPME.MOVIE_UNITTEST]))
+        test_plot.generate_movie([self.test_chemdata],
+                                 settings={_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE, _TPME.MOVIE_UNITTEST])})
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE, _TPME.MOVIE_UNITTEST]))
-        self.assertTrue(4000 <= file_size <= 24000)
+        self.assertTrue(20000 <= file_size <= 40000)

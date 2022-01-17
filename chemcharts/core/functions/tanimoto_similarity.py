@@ -7,7 +7,7 @@ from chemcharts.core.container.chemdata import ChemData
 
 class TanimotoSimilarity:
     ########################################################
-
+    # TODO:
                    # not (yet) integrated!!!!
 
     ########################################################

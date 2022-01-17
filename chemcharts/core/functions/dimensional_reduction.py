@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 import warnings
 from typing import List
 

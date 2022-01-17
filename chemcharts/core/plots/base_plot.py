@@ -1,16 +1,12 @@
 import os
-import subprocess
 import tempfile
 import shutil
 from typing import List, Tuple
 
 import ffmpeg
 from copy import deepcopy
-
 from PIL import Image, ImageFont, ImageDraw
-
 from chemcharts.core.container.chemdata import ChemData
-
 from chemcharts.core.utils.enums import PlottingEnum, MovieEnum
 
 _PE = PlottingEnum

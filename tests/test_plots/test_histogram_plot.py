@@ -10,11 +10,12 @@ from chemcharts.core.container.smiles import Smiles
 
 from chemcharts.core.plots.histogram_plot import HistogramPlot
 
-from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import PlottingEnum, MovieEnum
 from chemcharts.core.utils.enums import TestPathsEnum
 from chemcharts.core.utils.enums import TestPlotMovieEnum
 from chemcharts.core.utils.enums import TestNameEnum
 
+_ME = MovieEnum()
 _PE = PlottingEnum()
 _TPE = TestPathsEnum()
 _TPME = TestPlotMovieEnum
@@ -112,12 +113,13 @@ class TestHistogramPlot(unittest.TestCase):
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
                       _PE.PARAMETERS_SCORELIM: None}
-        test_plot.plot(self.test_chemdata, parameters, settings)
+        test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HISTOGRAM_TEST, _TPME.PLOT_UNITTEST]))
-        self.assertTrue(149000 <= file_size <= 180000)
+        self.assertTrue(50000 <= file_size <= 90000)
 
     def test_check_movie_size(self):
         test_plot = HistogramPlot()
-        test_plot.generate_movie(self.test_chemdata, '/'.join([_TPE.PATH_HISTOGRAM_MOVIE, _TPME.MOVIE_UNITTEST]))
+        test_plot.generate_movie([self.test_chemdata],
+                                 settings={_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_HISTOGRAM_MOVIE, _TPME.MOVIE_UNITTEST])})
         file_size = os.path.getsize('/'.join([_TPE.PATH_HISTOGRAM_MOVIE, _TPME.MOVIE_UNITTEST]))
-        self.assertTrue(33000 <= file_size <= 53000)
+        self.assertTrue(25000 <= file_size <= 50000)

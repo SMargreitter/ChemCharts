@@ -77,7 +77,6 @@ if __name__ == "__main__":
         smiles, scores, epochs = load_smiles(args.input_data)
 
         # initialize chemdata_list with ONE Chemdata object and add smiles and fps
-
         ori_data = [ChemData(smiles_obj=smiles, name=args.dataset_name)]
         fps_generator = FingerprintGenerator(ori_data[0].get_smiles())
         fps = fps_generator.generate_fingerprints()

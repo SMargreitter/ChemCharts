@@ -169,7 +169,7 @@ class FingerprintGenerator:
 
     def generate_fingerprints_maccs(self) -> FingerprintContainer:
         """
-            Transforms internal MolSmiles to fingerprints by using the MACC RDKit fingerprint function,
+            Transforms internal MolSmiles to fingerprints by using the MACCS RDKit fingerprint function,
             adds them to the fingerprint_list of an object of the FingerprintContainer and returns it.
 
             Returns

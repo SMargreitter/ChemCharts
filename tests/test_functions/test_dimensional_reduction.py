@@ -97,4 +97,3 @@ class TestDimensionalReduction(unittest.TestCase):
         self.assertEqual(30, len(test_calculation[0].get_smiles()))
         self.assertEqual(30, len(test_calculation[0].get_fingerprints()))
         self.assertListEqual([-3, 11], [int(x) for x in list(test_calculation[0].get_embedding()[0])])
-
