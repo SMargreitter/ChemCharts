@@ -28,13 +28,13 @@ COc1cccc(-c2c3c(cc4ccccc24)C(=O)NC3=O)c1 ⮕ [1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0
 
 
 5. When it comes to the plot generation step, the following types can be chosen:
-    * [scatter static plot](../img/scatter_static_plot.png)
-    * [scatter boxplot plot](../img/scatter_boxplot_plot.png)
-    * [scatter interactive plot (only static preview available)](../img/scatter_interactive_plot.png)
-    * [histogram plot (scores)](../img/histogram_plot.png)
-    * [trisurf static plot](../img/trisurf_static_plot.png)
-    * [trisurf interactive plot (only static preview available)](../img/trisurf_interactive_plot.png)
-    * [hexagonal plot (default)](../img/hexagonal_plot.png)
+    * [scatter static plot](img/scatter_static_plot.png)
+    * [scatter boxplot plot](img/scatter_boxplot_plot.png)
+    * [scatter interactive plot (only static preview available)](img/scatter_interactive_plot.png)
+    * [histogram plot (scores)](img/histogram_plot.png)
+    * [trisurf static plot](img/trisurf_static_plot.png)
+    * [trisurf interactive plot (only static preview available)](img/trisurf_interactive_plot.png)
+    * [hexagonal plot (default)](img/hexagonal_plot.png)
    
     For interactive plots a view setting can be chosen, which allows for a pop-up browser window of the interactive plot.
     
