@@ -50,7 +50,7 @@ COc1cccc(-c2c3c(cc4ccccc24)C(=O)NC3=O)c1 ⮕ [1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0
 * Anaconda or Miniconda with Python > 3.7
 * Installation of the environment:
 
-```conda env create -f environment.yml```
+```conda env create -f environment_min.yml```
 
 ## Usage
 * Activate environment:
@@ -63,6 +63,15 @@ COc1cccc(-c2c3c(cc4ccccc24)C(=O)NC3=O)c1 ⮕ [1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0
 * Execution of command-line interface (CLI) / entry point:
 
 ```python chemcharts.py -input_data data/scaffold_memory.csv -output_plot test.png```
+
+* Execution of unit tests:
+
+```python main_test.py```
+
+Note, that you need `ffmpeg` installed on your computer in case you want to generate movies. On Ubuntu it will look something like:
+
+```sudo apt update
+sudo apt install ffmpeg```
 
 ## Instructions and tutorials
 For detailed guides on how to use ```JSON``` for generating ChemCharts plots, see notebook templates for plot [Learning Demo Chemcharts Json Plot](notebooks/Learning_Demo_Chemcharts_JSON_Plot.ipynb) or movie generation [Learning Demo Chemcharts Json Movie](notebooks/Learning_Demo_Chemcharts_JSON_Movie.ipynb). For in-depth explanations of the ChemCharts entry points, please see: [Learning Demo Chemcharts Entry Point](notebooks/Learning_Demo_Chemcharts_Entry_Point.ipynb).

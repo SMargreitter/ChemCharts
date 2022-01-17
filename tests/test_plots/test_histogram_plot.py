@@ -115,7 +115,7 @@ class TestHistogramPlot(unittest.TestCase):
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HISTOGRAM_TEST, _TPME.PLOT_UNITTEST]))
-        self.assertTrue(50000 <= file_size <= 90000)
+        self.assertTrue(25000 <= file_size <= 90000)
 
     def test_check_movie_size(self):
         test_plot = HistogramPlot()
