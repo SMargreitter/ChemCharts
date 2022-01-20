@@ -3,7 +3,7 @@
     "header": {},
     "execution": [
       {"task":  "data_loading",
-       "input":  ["data/scaffold_memory.csv", "data/scaffold_memory_run2.csv", "data/scaffold_memory_run3.csv"],
+       "input":  ["data/scaffold_memory_groups.csv"],
        "input_type":  "csv",
        "columns":  {
                      "smiles_column": "SMILES",

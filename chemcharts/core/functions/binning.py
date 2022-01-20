@@ -23,7 +23,7 @@ class Binning:
         # return number spaces evenly w.r.t interval
         bins = list(np.linspace(start=min(scores) - 0.1, stop=max(scores) + 0.1, num=num_bins))
 
-        # get the indices of the bins to which the each value belongs
+        # get the indices of the bins to which each value belongs
         bin_idx = list(np.digitize(scores, bins=bins) - 1)
 
         sorted_bin_idx = list(set(bin_idx))
@@ -62,7 +62,10 @@ class Binning:
             cur_bin_idx = bin_idx[i_bin]
 
             # append median for current bin index
-            new_scores.append(median_scores[cur_bin_idx])
+            if cur_bin_idx < len(median_scores):
+                new_scores.append(median_scores[cur_bin_idx])
+            else:
+                continue
 
         return new_scores
 

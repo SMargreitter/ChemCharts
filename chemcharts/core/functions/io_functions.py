@@ -10,7 +10,8 @@ _RE = ReinventEnum
 def load_smiles(path: str,
                 smiles_column: str = _RE.SMILES,
                 scores_column: str = _RE.TOTAL_SCORE,
-                epochs_column: str = _RE.EPOCHS_COLUMN) -> Tuple[Smiles, list, list]:
+                epochs_column: str = _RE.EPOCHS_COLUMN,
+                groups_column: str = _RE.GROUPS_COLUMN) -> Tuple[Smiles, list, list, list]:
     """
          The load_smiles function loads data from a file and allocates its data to a Smiles object
          and to a score as well as epoch list.
@@ -25,6 +26,8 @@ def load_smiles(path: str,
             the file column containing the total_score
          epochs_column: str = "Step"
             the file column containing the epochs
+         groups_column: str = "groups"
+            the file column containing the groups
 
          Returns
          -------
@@ -36,4 +39,5 @@ def load_smiles(path: str,
     smiles = Smiles(list(loaded_data[smiles_column]))
     scores = list(loaded_data[scores_column])
     epoch = list(loaded_data[epochs_column])
-    return smiles, scores, epoch
+    groups = list(loaded_data[groups_column])
+    return smiles, scores, epoch, groups

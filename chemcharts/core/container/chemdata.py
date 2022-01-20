@@ -25,6 +25,8 @@ class ChemData:
             should reflect the input data
         epoch : list of int
             referring to the Reinvent runs which generated the data set
+        groups : list of int
+            referring to groups for coloring plots
         active_inactive_list : list
             smiles divided in active and inactive list
         scores : list of int
@@ -51,6 +53,7 @@ class ChemData:
     def __init__(self, smiles_obj: Smiles = None,
                  name: str = "",
                  epochs: list = None,
+                 groups: list = None,
                  active_inactive_list: list = None,
                  scores: list = None,
                  fingerprints: FingerprintContainer = None,
@@ -61,6 +64,7 @@ class ChemData:
         # set defaults
         self.name = name
         self.epochs = [] if epochs is None else epochs
+        self.groups = [] if groups is None else groups
         self.active_inactive_list = [] if active_inactive_list is None else active_inactive_list
         self.scores = [] if scores is None else scores
         self.smiles_obj = Smiles() if smiles_obj is None else smiles_obj
@@ -71,6 +75,7 @@ class ChemData:
     def __repr__(self) -> str:
         return f"instance of ChemData with name: {self.name}," \
                f"epoch: {self.epochs}," \
+               f"group: {self.groups}," \
                f"number scores: {len(self.scores)}," \
                f"smiles: {self.smiles_obj}," \
                f"fingerprint: {self.fingerprints}," \
@@ -83,6 +88,7 @@ class ChemData:
         copy_self = deepcopy(self)
         obj = deepcopy(obj)
         copy_self.set_epochs(copy_self.epochs + obj.epochs)
+        copy_self.set_groups(copy_self.groups + obj.groups)
         copy_self.set_active_inactive_list(copy_self.active_inactive_list + obj.active_inactive_list)
         copy_self.set_scores(copy_self.scores + obj.scores)
         copy_self.set_smiles(copy_self.smiles_obj + obj.smiles_obj)
@@ -126,6 +132,7 @@ class ChemData:
             ChemData(smiles_obj=Smiles([copy_chemdata.get_smiles()[i] for i in epoch_indices]),
                      name=f"epoch_{epoch}_chemdata",
                      epochs=[copy_chemdata.get_epochs()[i] for i in epoch_indices],
+                     groups=[copy_chemdata.get_groups()[i] for i in epoch_indices],
                      scores=[copy_chemdata.get_scores()[i] for i in epoch_indices],
                      fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
                                                        fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in
@@ -144,6 +151,12 @@ class ChemData:
 
     def set_epochs(self, epochs: list):
         self.epochs = epochs
+
+    def get_groups(self) -> list:
+        return self.groups
+
+    def set_groups(self, groups: list):
+        self.groups = groups
 
     def get_active_inactive_list(self) -> list:
         return self.active_inactive_list

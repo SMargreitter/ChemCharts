@@ -85,17 +85,20 @@ if __name__ == "__main__":
                 smiles_column = task[_JE.COLUMNS][_JE.SMILES_COLUMN]
                 scores_column = task[_JE.COLUMNS][_JE.SCORES_COLUMN]
                 epochs_column = task[_JE.COLUMNS][_JE.EPOCHS_COLUMN]
+                groups_column = task[_JE.COLUMNS][_JE.GROUPS_COLUMN]
 
                 for inp in input_elements:
 
-                    smiles, scores, epochs = load_smiles(inp,
-                                                         smiles_column=smiles_column,
-                                                         scores_column=scores_column,
-                                                         epochs_column=epochs_column)
+                    smiles, scores, epochs, groups = load_smiles(inp,
+                                                                 smiles_column=smiles_column,
+                                                                 scores_column=scores_column,
+                                                                 epochs_column=epochs_column,
+                                                                 groups_column=groups_column)
                     next_chemdata = ChemData(name=os.path.basename(inp))
                     next_chemdata.set_scores(scores)
                     next_chemdata.set_smiles(smiles)
                     next_chemdata.set_epochs(epochs)
+                    next_chemdata.set_groups(groups)
                     chemdata_list.append(next_chemdata)
             elif task[_JE.INPUT_TYPE].upper() == "PKL":
                 with open(task[_JE.INPUT][0], "rb") as dill_file:

@@ -57,7 +57,10 @@ if __name__ == "__main__":
                              "trisurf_interactive_plot (no movie function possible)" "|"
                              "hexagonal_plot (default)")
     parser.add_argument("-view", type=bool, required=False, default=False,
-                        help="Choose view setting 'True' or 'False'")
+                        help="Choose view setting of interactive plots with 'True' or 'False'")
+    parser.add_argument("-boxplot", type=bool, required=False, default=False,
+                        help="Choose whether boxplots should be displayed in the "
+                             "scatter_boxplot_plot with 'True' or 'False'")
     parser.add_argument("-data", type=str, required=False, default="original_data",
                         help="Choose the data set:"
                              "filtered_data,"
@@ -74,7 +77,7 @@ if __name__ == "__main__":
         with open(args.input_data, "rb") as dill_file:
             plot_data = dill.load(dill_file)
     else:
-        smiles, scores, epochs = load_smiles(args.input_data)
+        smiles, scores, epochs, groups = load_smiles(args.input_data)
 
         # initialize chemdata_list with ONE Chemdata object and add smiles and fps
         ori_data = [ChemData(smiles_obj=smiles, name=args.dataset_name)]
@@ -83,6 +86,7 @@ if __name__ == "__main__":
         ori_data[0].set_scores(scores)
         ori_data[0].set_fingerprints(fps)
         ori_data[0].set_epochs(epochs)
+        ori_data[0].set_groups(groups)
 
         # generate embedding (dimensional reduction)
         dimensional_reduction = DimensionalReduction()
@@ -137,7 +141,9 @@ if __name__ == "__main__":
                                    _PE.PARAMETERS_CURRENT_CHEMDATA: None,
                                    _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0]},
                        settings={_PE.SETTINGS_VIEW: args.view,
-                                 _PE.SETTINGS_PATH: args.output_plot})
+                                 _PE.SETTINGS_PATH: args.output_plot,
+                                 _PE.SETTINGS_BOXPLOT: args.boxplot})
+
     # make movie
     if args.output_movie is not None:
         plot_instance.generate_movie(plot_data, settings={_ME.SETTINGS_MOVIE_PATH: args.output_movie})

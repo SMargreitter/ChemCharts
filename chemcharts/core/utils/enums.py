@@ -40,6 +40,7 @@ class JsonEnum:
     SMILES_COLUMN = "smiles_column"
     SCORES_COLUMN = "scores_column"
     EPOCHS_COLUMN = "epochs_column"
+    GROUPS_COLUMN = "groups_column"
 
     TYPE = "type"
 
@@ -53,6 +54,8 @@ class JsonEnum:
     SETTINGS = "settings"
     PATH = "path"
     VIEW = "view"
+    BOXPLOT = "boxplot"
+    GROUP_NAME = "group_name"
 
 
 class JsonStepsEnum:
@@ -103,18 +106,23 @@ class PlottingEnum:
 
     SETTINGS_VIEW = "view"
     SETTINGS_PATH = "path"
+    SETTINGS_BOXPLOT = "boxplot"
+    SETTINGS_GROUP_NAME = "group_name"
+    SETTINGS_GROUP_NAME_DEFAULT = "groups"
 
 
 class PlotLabellingEnum:
     UMAP_1 = "UMAP_1"
     UMAP_2 = "UMAP_2"
     SCORES = "Scores"
+    GROUPS = "Groups"
 
 
 class ReinventEnum:
     SMILES = "SMILES"
     TOTAL_SCORE = "total_score"
     EPOCHS_COLUMN = "Step"
+    GROUPS_COLUMN = "groups"
 
 
 class TestPathsEnum:

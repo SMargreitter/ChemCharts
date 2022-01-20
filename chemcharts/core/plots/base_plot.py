@@ -67,11 +67,12 @@ class BasePlot:
         if os.path.isdir(path):
             shutil.rmtree(path)
 
-    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str, title: str, idx: int):
+    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str, title: str):
         # get list of image, widths and heights
         image_list = [Image.open(x) for x in subplot_paths]
         widths_list, heights_list = zip(*(i.size for i in image_list))
         width, _ = image_list[0].size
+        number_plots = len(subplot_paths)
 
         total_width = sum(widths_list)
         max_height = max(heights_list)+200
@@ -90,14 +91,14 @@ class BasePlot:
         font_file = "/usr/share/fonts/truetype/freefont/FreeSerif.ttf"
         if os.path.isfile(font_file):
             draw = ImageDraw.Draw(new_im)
-            if idx < 1:
+            if number_plots == 1:
                 font_size = int(130 / 2700 * width)
             else:
                 font_size = int(48 / 2700 * total_width)
 
             font = ImageFont.truetype(font_file, size=font_size)
 
-            if idx < 1:
+            if number_plots == 1:
                 draw.text((width/4.5, 30), title, (0, 0, 0), font=font)
             else:
                 draw.text((total_width/2.5, 30), title, (0, 0, 0), font=font)
@@ -162,7 +163,9 @@ class BasePlot:
                                   _PE.PARAMETERS_CURRENT_CHEMDATA: current_chemdata,
                                   _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
                       settings={_PE.SETTINGS_VIEW: "",
-                                _PE.SETTINGS_PATH: updated_snapshot_path}
+                                _PE.SETTINGS_PATH: updated_snapshot_path,
+                                _PE.SETTINGS_BOXPLOT: "",
+                                _PE.SETTINGS_GROUP_NAME: ""}
                       )
 
         # movie generation
