@@ -131,13 +131,13 @@ class ChemData:
         epoch_chemdata = \
             ChemData(smiles_obj=Smiles([copy_chemdata.get_smiles()[i] for i in epoch_indices]),
                      name=f"epoch_{epoch}_chemdata",
-                     epochs=[copy_chemdata.get_epochs()[i] for i in epoch_indices],
-                     groups=[copy_chemdata.get_groups()[i] for i in epoch_indices],
-                     scores=[copy_chemdata.get_scores()[i] for i in epoch_indices],
+                     epochs=[] if not copy_chemdata.get_epochs() else [copy_chemdata.get_epochs()[i] for i in epoch_indices],
+                     groups=[] if not copy_chemdata.get_groups() else [copy_chemdata.get_groups()[i] for i in epoch_indices],
+                     scores=[] if not copy_chemdata.get_scores() else [copy_chemdata.get_scores()[i] for i in epoch_indices],
                      fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
                                                        fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in
                                                                          epoch_indices]),
-                     embedding=Embedding(np.vstack([copy_chemdata.get_embedding()[i] for i in epoch_indices])))
+                     embedding=Embedding() if copy_chemdata.get_embedding().np_array is None else Embedding(np.vstack([copy_chemdata.get_embedding()[i] for i in epoch_indices])))
         return epoch_chemdata
 
     def get_name(self) -> str:

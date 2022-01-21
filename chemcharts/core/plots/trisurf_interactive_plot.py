@@ -45,7 +45,8 @@ class TrisurfInteractivePlot(BasePlot):
                 xaxis={} if xlim is None else dict(nticks=6, range=xlim),
                 yaxis={} if ylim is None else dict(nticks=6, range=ylim),
                 zaxis={} if scorelim is None else dict(nticks=6, range=scorelim)),
-            width=700,
+            width=settings.get(_PE.SETTINGS_FIG_SIZE[0], 900),
+            height=settings.get(_PE.SETTINGS_FIG_SIZE[1], 900),
             margin=dict(r=50, l=50, b=50, t=100)
         )
 

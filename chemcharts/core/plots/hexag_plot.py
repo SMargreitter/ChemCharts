@@ -123,6 +123,7 @@ class HexagonalPlot(BasePlot):
                     data = l.transpose()
                     sns.lineplot(x=data[0], y=data[1], lw=2, scalex=False, scaley=False, color="black")
 
+            plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (8, 8)))
             plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
 
             name = f"Dataset_{idx}" if chemdata_list[idx].get_name() == "" else chemdata_list[idx].get_name()

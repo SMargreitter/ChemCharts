@@ -30,6 +30,7 @@ class TrisurfStaticPlot(BasePlot):
         # loop over ChemData objects and generate plots
         for idx in range(len(chemdata_list)):
 
+            plt.figure(figsize=(settings.get(_PE.SETTINGS_FIG_SIZE, (5, 5))))
             ax = plt.axes(projection='3d')
 
             ax.plot_trisurf(chemdata_list[idx].get_embedding().np_array[:, 0],

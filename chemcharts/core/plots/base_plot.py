@@ -163,9 +163,7 @@ class BasePlot:
                                   _PE.PARAMETERS_CURRENT_CHEMDATA: current_chemdata,
                                   _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
                       settings={_PE.SETTINGS_VIEW: "",
-                                _PE.SETTINGS_PATH: updated_snapshot_path,
-                                _PE.SETTINGS_BOXPLOT: "",
-                                _PE.SETTINGS_GROUP_NAME: ""}
+                                _PE.SETTINGS_PATH: updated_snapshot_path}
                       )
 
         # movie generation

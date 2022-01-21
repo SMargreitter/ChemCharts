@@ -36,7 +36,7 @@ class ScatterBoxplotPlot(BasePlot):
                                        _PLE.UMAP_2: chemdata_list[idx].get_embedding().np_array[:, 1],
                                        "z": chemdata_list[idx].get_scores(),
                                        settings.get(_PE.SETTINGS_GROUP_NAME, _PE.SETTINGS_GROUP_NAME_DEFAULT):
-                                           chemdata_list[idx].get_groups()})
+                                           None if not chemdata_list[idx].get_groups() else chemdata_list[idx].get_groups()})
 
             sns.set_context("talk", font_scale=0.5)
 
@@ -49,6 +49,7 @@ class ScatterBoxplotPlot(BasePlot):
                               palette="flare"
                               )
 
+            plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (6, 6)))
             g.plot_joint(sns.scatterplot)
 
             if settings.get(_PE.SETTINGS_BOXPLOT) is True:

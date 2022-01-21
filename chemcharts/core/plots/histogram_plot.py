@@ -85,7 +85,7 @@ class HistogramPlot(BasePlot):
             plt.xlim(0, 1)
             plt.ylim(0, 1)
 
-            # TODO set figsize with user input?
+            plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (7, 7)))
             plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
             plt.xlabel("Scores", fontsize=10)
 

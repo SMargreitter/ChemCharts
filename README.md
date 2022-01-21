@@ -5,7 +5,7 @@
 Chemcharts is an open source program designed to visualize the distribution of molecules in chemical space. It allows for data parsing and preparation and then generates various plots or movies. In order to generate graphical representations that are interpretable, ChemCharts reduces the high-dimensional fingerprint representation to 2D embedded coordinates. There are two ways to run it, either via a command-line entry point, or, for full control over all settings, by specifying a JSON configuration file. While ChemCharts is input agnostic to some extent, it is particularly useful as a post-processing step to compound generative modelling with [```REINVENT```](https://github.com/MolecularAI/Reinvent), which has a so-called "scaffold memory" as its final output.
 
 ## Data input
-ChemCharts accepts input from one or multiple datasets in csv format. The file needs to include columns with molecules in SMILES format and scores (when time resolution is desired, an epoch column should be included too). For the developing process as well as the notebook, datasets have been generated with ```REINVENT``` (open source), see [Example Dataset](https://github.com/ChemCharts/ChemCharts/data/Scaffold_Example_Reinvent_Dataset.zip).
+ChemCharts accepts input from one or multiple datasets in csv format. The file needs to include columns with molecules in SMILES format and scores (when time resolution is desired, an epoch/step column should be included). The scatter_boxplot_plot allows group colouring which requires an additional column defining the belonging of molecules. For the developing process as well as the notebook, datasets have been generated with ```REINVENT``` (open source), see [Example Dataset](https://github.com/ChemCharts/ChemCharts/data/Scaffold_Example_Reinvent_Dataset.zip).
 
 ## What can ChemCharts do?
 
@@ -29,7 +29,7 @@ COc1cccc(-c2c3c(cc4ccccc24)C(=O)NC3=O)c1 ⮕ [1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0
 
 5. When it comes to the plot generation step, the following types can be chosen:
     * [scatter static plot](img/scatter_static_plot.png)
-    * [scatter boxplot plot](img/scatter_boxplot_plot.png)
+    * [scatter boxplot plot (colour grouping)](img/scatter_boxplot_plot.png)
     * [scatter interactive plot (only static preview available)](img/scatter_interactive_plot.png)
     * [histogram plot (scores)](img/histogram_plot.png)
     * [trisurf static plot](img/trisurf_static_plot.png)

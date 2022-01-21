@@ -1,4 +1,5 @@
 import unittest
+
 import numpy as np
 
 from chemcharts.core.container.embedding import Embedding

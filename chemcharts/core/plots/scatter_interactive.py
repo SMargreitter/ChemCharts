@@ -33,6 +33,7 @@ class ScatterInteractivePlot(BasePlot):
                                    _PLE.UMAP_2: chemdata_list.get_embedding().np_array[:, 1],
                                    _PLE.SCORES: chemdata_list.get_scores()
                                    })
+
         fig = px.scatter_3d(scatter_df,
                             x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=_PLE.SCORES,
                             color='Scores',
@@ -47,7 +48,8 @@ class ScatterInteractivePlot(BasePlot):
                 xaxis={} if xlim is None else dict(nticks=6, range=xlim),
                 yaxis={} if ylim is None else dict(nticks=6, range=ylim),
                 zaxis={} if scorelim is None else dict(nticks=6, range=scorelim)),
-            width=800,
+            width=settings.get(_PE.SETTINGS_FIG_SIZE[0], 900),
+            height=settings.get(_PE.SETTINGS_FIG_SIZE[1], 900),
             margin=dict(r=20, l=10, b=30, t=70))
 
         if settings.get(_PE.SETTINGS_VIEW) is True:

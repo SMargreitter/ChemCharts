@@ -116,7 +116,7 @@ class TestScatterInteractivePlot(unittest.TestCase):
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_INTERACTIVE_TEST, _TPME.PLOT_UNITTEST]))
-        self.assertTrue(45000 <= file_size <= 65000)
+        self.assertTrue(70000 <= file_size <= 120000)
 
     def test_check_movie_size(self):
         test_plot = ScatterInteractivePlot()
