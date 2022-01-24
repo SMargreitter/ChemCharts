@@ -32,11 +32,13 @@ class ScatterBoxplotPlot(BasePlot):
         # loop over ChemData objects and generate plots
         for idx in range(len(chemdata_list)):
 
-            scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list[idx].get_embedding().np_array[:, 0],
-                                       _PLE.UMAP_2: chemdata_list[idx].get_embedding().np_array[:, 1],
-                                       "z": chemdata_list[idx].get_scores(),
-                                       settings.get(_PE.SETTINGS_GROUP_NAME, _PE.SETTINGS_GROUP_NAME_DEFAULT):
-                                           None if not chemdata_list[idx].get_groups() else chemdata_list[idx].get_groups()})
+            scatter_df = pd.DataFrame(
+                {_PLE.UMAP_1: chemdata_list[idx].get_embedding().np_array[:, 0],
+                 _PLE.UMAP_2: chemdata_list[idx].get_embedding().np_array[:, 1],
+                 "z":
+                    None if not chemdata_list[idx].get_scores() else chemdata_list[idx].get_scores(),
+                 settings.get(_PE.SETTINGS_GROUP_NAME, _PE.SETTINGS_GROUP_NAME_DEFAULT):
+                    None if not chemdata_list[idx].get_groups() else chemdata_list[idx].get_groups()})
 
             sns.set_context("talk", font_scale=0.5)
 

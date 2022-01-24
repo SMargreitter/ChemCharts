@@ -138,7 +138,8 @@ if __name__ == "__main__":
                                    _PE.PARAMETERS_CURRENT_CHEMDATA: None,
                                    _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0]},
                        settings={_PE.SETTINGS_VIEW: args.view,
-                                 _PE.SETTINGS_PATH: args.output_plot})
+                                 _PE.SETTINGS_PATH: args.output_plot,
+                                 _PE.SETTINGS_BOXPLOT: True})
 
     # make movie
     if args.output_movie is not None:

@@ -37,7 +37,7 @@ def load_smiles(path: str,
 
     loaded_data = pd.read_csv(path)
     smiles = Smiles(list(loaded_data[smiles_column]))
-    scores = list(loaded_data[scores_column])
-    epoch = list(loaded_data[epochs_column])
-    groups = list(loaded_data[groups_column])
+    scores = [] if scores_column not in list(loaded_data) else list(loaded_data[scores_column])
+    epoch = [] if epochs_column not in list(loaded_data) else list(loaded_data[epochs_column])
+    groups = [] if groups_column not in list(loaded_data) else list(loaded_data[groups_column])
     return smiles, scores, epoch, groups
