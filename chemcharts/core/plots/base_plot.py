@@ -13,7 +13,7 @@ _PE = PlottingEnum
 _ME = MovieEnum
 
 
-def _check_score_input(chemdata_list: list, plot_type: str):
+def _check_score_input(chemdata_list: List[ChemData], plot_type: str) -> bool:
     # check whether there is a score input
     for idx in range(len(chemdata_list)):
         if not chemdata_list[idx].get_scores():
@@ -23,7 +23,7 @@ def _check_score_input(chemdata_list: list, plot_type: str):
     return True
 
 
-def _check_epoch_input(chemdata_list: list):
+def _check_epoch_input(chemdata_list: List[ChemData]) -> bool:
     # check whether there is an epoch input
     for idx in range(len(chemdata_list)):
         if not chemdata_list[idx].get_epochs():
@@ -73,7 +73,8 @@ class BasePlot:
         scorelim = None if None in total_scorelims else (min(total_scorelims), max(total_scorelims))
         return xlim, ylim, scorelim
 
-    def _generate_temp_paths(self, number_paths: int) -> Tuple[str, List[str]]:
+    @staticmethod
+    def _generate_temp_paths(number_paths: int) -> Tuple[str, List[str]]:
         tempdir = tempfile.mkdtemp()
         file_path_list = []
         for idx_path in range(number_paths):
@@ -82,11 +83,13 @@ class BasePlot:
             file_path_list.append(file_path)
         return tempdir, file_path_list
 
-    def _clear_temp_dir(self, path: str):
+    @staticmethod
+    def _clear_temp_dir(path: str):
         if os.path.isdir(path):
             shutil.rmtree(path)
 
-    def _merge_multiple_plots(self, subplot_paths: List[str], merged_path: str, title: str):
+    @staticmethod
+    def _merge_multiple_plots(subplot_paths: List[str], merged_path: str, title: str):
         # get list of image, widths and heights
         image_list = [Image.open(x) for x in subplot_paths]
         widths_list, heights_list = zip(*(i.size for i in image_list))
