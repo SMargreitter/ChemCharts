@@ -1,0 +1,12 @@
+#! /bin/bash
+# Start by making sure that the anaconda folder is on the PATH
+# so that the source activate command works.
+# This isn't necessary if you already know that
+# the anaconda bin dir is on the PATH
+export PYTHONPATH=/home/nutzer/Dokumente/Projects/chemcharts:$PYTHONPATH
+
+conda activate environment_Knime
+
+python "$@" 1>&1 2>&2
+
+chmod gou+x environment_Knime.sh
