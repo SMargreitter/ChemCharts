@@ -18,6 +18,8 @@ class ScatterBoxplotPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        super(ScatterBoxplotPlot, self).plot(chemdata_list, parameters, settings)
+
         # lim setting
         xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
                                               parameters=parameters)

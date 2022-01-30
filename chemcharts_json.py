@@ -31,12 +31,14 @@ from chemcharts.core.utils.enums import DataFittingEnum
 from chemcharts.core.utils.enums import FingerprintEnum
 from chemcharts.core.utils.enums import JsonStepsEnum
 from chemcharts.core.utils.enums import JsonEnum
+from chemcharts.core.utils.enums import ReinventEnum
 _GPE = GeneratePlotsEnum
 _DFE = DataFittingEnum
 _FE = FingerprintEnum
 _JSE = JsonStepsEnum
 _JE = JsonEnum
 _ME = MovieEnum
+_RE = ReinventEnum
 
 
 def initialize_plot(plot_type: str) -> BasePlot:
@@ -83,9 +85,10 @@ if __name__ == "__main__":
             if task[_JE.INPUT_TYPE].upper() == "CSV":
                 # get column names
                 smiles_column = task[_JE.COLUMNS][_JE.SMILES_COLUMN]
-                scores_column = task[_JE.COLUMNS][_JE.SCORES_COLUMN]
-                epochs_column = task[_JE.COLUMNS][_JE.EPOCHS_COLUMN]
-                groups_column = task[_JE.COLUMNS][_JE.GROUPS_COLUMN]
+
+                scores_column = task[_JE.COLUMNS].get(_JE.SCORES_COLUMN, _RE.TOTAL_SCORE)
+                epochs_column = task[_JE.COLUMNS].get(_JE.EPOCHS_COLUMN, _RE.EPOCHS_COLUMN)
+                groups_column = task[_JE.COLUMNS].get(_JE.GROUPS_COLUMN, _RE.GROUPS_COLUMN)
 
                 for inp in input_elements:
 

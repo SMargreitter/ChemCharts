@@ -19,6 +19,9 @@ class HistogramPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        # no warning message for multiple chemdata object inputs since normalisation
+        # for xlim and ylim is here anyways applied
+
         score_input_result = _check_score_input(chemdata_list, "Histogram")
         # checks whether _check_score_input function returns 'True'
         if score_input_result:

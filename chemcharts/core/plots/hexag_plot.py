@@ -58,6 +58,8 @@ class HexagonalPlot(BasePlot):
         return gridsize
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        super(HexagonalPlot, self).plot(chemdata_list, parameters, settings)
+
         current_chemdata = parameters.get(_PE.PARAMETERS_CURRENT_CHEMDATA, None)
         total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list[0])
         gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)

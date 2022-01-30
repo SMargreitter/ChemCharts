@@ -18,6 +18,8 @@ class ScatterInteractivePlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        super(ScatterInteractivePlot, self).plot(chemdata_list, parameters, settings)
+
         score_input_result = _check_score_input(chemdata_list, "Scatter_interactive")
         # checks whether _check_score_input function returns 'True'
         if score_input_result:

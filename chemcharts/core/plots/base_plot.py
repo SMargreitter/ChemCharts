@@ -222,6 +222,11 @@ class BasePlot:
             else:
                 raise ValueError(f"Only .gif and .mp4 is supported.")
 
-    # error message
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
-        raise NotImplemented("This method needs to be overloaded in a child class.")
+        # warning message to set xlim and ylim when multiple chemdata objects are provided
+        if len(chemdata_list) > 1 and \
+                (parameters.get(_PE.PARAMETERS_XLIM, None) is None
+                 or parameters.get(_PE.PARAMETERS_YLIM, None) is None):
+            print("Warning: When plotting multiple chemdata objects (datasets), "
+                  "it might be good to specify XLIM and YLIM to ensure "
+                  "all subplots show the same excerpt.")
