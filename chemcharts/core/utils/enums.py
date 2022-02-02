@@ -99,6 +99,10 @@ class PlottingEnum:
     PARAMETERS_CURRENT_CHEMDATA = "current_chemdata"
     PARAMETERS_TOTAL_CHEMDATA = "total_chemdata"
 
+    PARAMETERS_MODE = "mode"
+    PARAMETERS_GROUP_LEGEND_NAME = "group_legend_name"
+    PARAMETERS_GROUP_LEGEND_NAME_DEFAULT = "groups"
+
     SETTINGS_FIG_FORMAT = "format"
     SETTINGS_FIG_DPI = "dpi"
     SETTINGS_FIG_DPI_DEFAULT = 300
@@ -107,8 +111,6 @@ class PlottingEnum:
     SETTINGS_VIEW = "view"
     SETTINGS_PATH = "path"
     SETTINGS_BOXPLOT = "boxplot"
-    SETTINGS_GROUP_NAME = "group_name"
-    SETTINGS_GROUP_NAME_DEFAULT = "groups"
 
 
 class PlotLabellingEnum:

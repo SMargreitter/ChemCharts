@@ -28,13 +28,14 @@
                        "fontsize": 14,
                        "top": 0.9,
                        "xlim": [-6.5, 14],
-                       "ylim": [-9, 12]
+                       "ylim": [-9, 12],
+                       "group_legend_name": "Molecule_groups",
+                       "mode": "scores"
        },
         "settings": {"path": "output/plots/scatter_boxplot_plot.png",
                      "format": "png",
                      "dpi": 150,
                      "figsize": [6, 6],
-                     "group_name": "Molecule_groups",
                      "boxplot": true
         }
       },
