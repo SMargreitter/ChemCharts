@@ -27,10 +27,9 @@
        "parameters":  {"title": "Scatter Boxplot ChemCharts Plot",
                        "fontsize": 14,
                        "top": 0.9,
-                       "xlim": [-6.5, 14],
-                       "ylim": [-9, 12],
+                       "color": "flare",
                        "group_legend_name": "Molecule_groups",
-                       "mode": "scores"
+                       "mode": "groups"
        },
         "settings": {"path": "output/plots/scatter_boxplot_plot.png",
                      "format": "png",

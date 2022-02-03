@@ -17,48 +17,52 @@ class ScatterBoxplotPlot(BasePlot):
     def __init__(self):
         super().__init__()
 
-    def _make_plain_plot(self, scatter_df, xlim, ylim):
+    @staticmethod
+    def _make_plain_plot(scatter_df, xlim, ylim, parameters: dict):
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
-                          hue="Scores",
-                          palette="flare"
+                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
                           )
         return g
 
-    def _make_score_plot(self, scatter_df, xlim, ylim, parameters):
+    @staticmethod
+    def _make_score_plot(scatter_df, xlim, ylim, parameters: dict):
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
-                          hue="Scores",
-                          palette="flare"
+                          hue=scatter_df["Scores"],
+                          hue_norm=(0.8, 1),
+                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
                           )
-
-        # cmap = sns.diverging_palette(240, 10, l=65, center="dark", as_cmap=True)
 
         # Make space for the colorbar
-        g.fig.subplots_adjust(right=.92)
+        g.fig.subplots_adjust(left=0.250)
 
         # Get a mappable object with the same colormap as the data
-        points = plt.scatter([], [], c=[], vmin=0, vmax=1, cmap="flare")
+        points = plt.scatter([], [], c=[], vmin=0.8, vmax=1, cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare"))
+
+        # Add axes for colorbar
+        cbaxes = g.fig.add_axes([0.02, 0.15, 0.03, 0.6])
 
         # Draw the colorbar
-        g.fig.colorbar(points)
+        g.fig.colorbar(points, cax=cbaxes)
 
         return g
 
-    def _make_group_plot(self, scatter_df, xlim, ylim, parameters):
+    @staticmethod
+    def _make_group_plot(scatter_df, xlim, ylim, parameters: dict):
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
                           hue=parameters.get(_PE.PARAMETERS_GROUP_LEGEND_NAME, _PE.PARAMETERS_GROUP_LEGEND_NAME_DEFAULT),
-                          palette="flare"
+                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
                           )
         return g
 
@@ -85,23 +89,35 @@ class ScatterBoxplotPlot(BasePlot):
 
             sns.set_context("talk", font_scale=0.5)
 
-            if parameters.get(_PE.PARAMETERS_MODE) == "plain":
-                scatter_df.assign(Scores=[None if not chemdata_list[idx].get_scores()
-                                          else chemdata_list[idx].get_scores()])
-                g = self._make_plain_plot(scatter_df, xlim, ylim)
-            elif parameters.get(_PE.PARAMETERS_MODE) == "scores":
-                scatter_df.assign(Scores=[None if not chemdata_list[idx].get_scores()
-                                          else chemdata_list[idx].get_scores()])
+            mode = parameters.get(_PE.PARAMETERS_MODE, "undefined")
+            if mode == "plain":
+                scatter_df.insert(2,
+                                  "Scores",
+                                  None if not chemdata_list[idx].get_scores()
+                                  else chemdata_list[idx].get_scores(),
+                                  allow_duplicates=False)
+                g = self._make_plain_plot(scatter_df, xlim, ylim, parameters)
+            elif mode == "scores":
+                scatter_df.insert(2,
+                                  "Scores",
+                                  None if not chemdata_list[idx].get_scores()
+                                  else chemdata_list[idx].get_scores(),
+                                  allow_duplicates=False)
                 g = self._make_score_plot(scatter_df, xlim, ylim, parameters)
-            elif parameters.get(_PE.PARAMETERS_MODE) == "groups":
-                scatter_df.assign(Groups=[None if not chemdata_list[idx].get_groups()
-                                          else chemdata_list[idx].get_groups()])
+            elif mode == "groups":
+                scatter_df.insert(2,
+                                  parameters.get(_PE.PARAMETERS_GROUP_LEGEND_NAME, _PE.PARAMETERS_GROUP_LEGEND_NAME_DEFAULT),
+                                  None if not chemdata_list[idx].get_groups()
+                                  else chemdata_list[idx].get_groups(),
+                                  allow_duplicates=False)
                 g = self._make_group_plot(scatter_df, xlim, ylim, parameters)
             else:
-                raise ValueError(f"Please choose a mode (plain, score or groups)")
+                raise ValueError(f"Please choose a plot mode (plain, scores or groups)")
 
             plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (6, 6)))
             g.plot_joint(sns.scatterplot)
+            if mode == "scores":
+                legend = g.ax_joint.legend().remove()
 
             if settings.get(_PE.SETTINGS_BOXPLOT) is True:
                 g.plot_marginals(sns.boxplot)
