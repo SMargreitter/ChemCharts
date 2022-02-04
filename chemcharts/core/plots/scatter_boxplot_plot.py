@@ -29,14 +29,14 @@ class ScatterBoxplotPlot(BasePlot):
         return g
 
     @staticmethod
-    def _make_score_plot(scatter_df, xlim, ylim, parameters: dict):
+    def _make_score_plot(scatter_df, xlim, ylim, parameters: dict, vmin: float, vmax: float):
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
                           hue=scatter_df["Scores"],
-                          hue_norm=(0.8, 1),
+                          hue_norm=(vmin, vmax),
                           palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
                           )
 
@@ -44,7 +44,7 @@ class ScatterBoxplotPlot(BasePlot):
         g.fig.subplots_adjust(left=0.250)
 
         # Get a mappable object with the same colormap as the data
-        points = plt.scatter([], [], c=[], vmin=0.8, vmax=1, cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare"))
+        points = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare"))
 
         # Add axes for colorbar
         cbaxes = g.fig.add_axes([0.02, 0.15, 0.03, 0.6])
@@ -80,6 +80,13 @@ class ScatterBoxplotPlot(BasePlot):
         # temp path setting
         temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
+        # calculates vmin vmax if not set, otherwise uses min and max values of scores
+        new_list = []
+        for chemdata_object in chemdata_list:
+            new_list.extend(chemdata_object.get_scores())
+        vmin = parameters.get(_PE.PARAMETERS_VMIN, min(new_list))
+        vmax = parameters.get(_PE.PARAMETERS_VMAX, max(new_list))
+
         # loop over ChemData objects and generate plots
         for idx in range(len(chemdata_list)):
 
@@ -103,7 +110,7 @@ class ScatterBoxplotPlot(BasePlot):
                                   None if not chemdata_list[idx].get_scores()
                                   else chemdata_list[idx].get_scores(),
                                   allow_duplicates=False)
-                g = self._make_score_plot(scatter_df, xlim, ylim, parameters)
+                g = self._make_score_plot(scatter_df, xlim, ylim, parameters, vmin, vmax)
             elif mode == "groups":
                 scatter_df.insert(2,
                                   parameters.get(_PE.PARAMETERS_GROUP_LEGEND_NAME, _PE.PARAMETERS_GROUP_LEGEND_NAME_DEFAULT),

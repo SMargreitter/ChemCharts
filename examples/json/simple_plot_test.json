@@ -29,7 +29,9 @@
                        "top": 0.9,
                        "color": "flare",
                        "group_legend_name": "Molecule_groups",
-                       "mode": "groups"
+                       "mode": "scores",
+                       "vmin": 0.8,
+                       "vmax": 1
        },
         "settings": {"path": "output/plots/scatter_boxplot_plot.png",
                      "format": "png",
