@@ -36,7 +36,7 @@ class ScatterBoxplotPlot(BasePlot):
                           xlim=xlim,
                           ylim=ylim,
                           hue=scatter_df["Scores"],
-                          hue_norm=(vmin, vmax),
+                          hue_norm=None if vmin is None or vmax is None else (vmin, vmax),
                           palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
                           )
 
@@ -67,6 +67,7 @@ class ScatterBoxplotPlot(BasePlot):
         return g
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        # base class call
         super(ScatterBoxplotPlot, self).plot(chemdata_list, parameters, settings)
 
         # lim setting
@@ -80,12 +81,15 @@ class ScatterBoxplotPlot(BasePlot):
         # temp path setting
         temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
-        # calculates vmin vmax if not set, otherwise uses min and max values of scores
+        # calculates vmin and vmax if not set, otherwise uses min and max values of scores
         new_list = []
+        vmin = None
+        vmax = None
         for chemdata_object in chemdata_list:
             new_list.extend(chemdata_object.get_scores())
-        vmin = parameters.get(_PE.PARAMETERS_VMIN, min(new_list))
-        vmax = parameters.get(_PE.PARAMETERS_VMAX, max(new_list))
+        if len(new_list) > 0:
+            vmin = parameters.get(_PE.PARAMETERS_VMIN, min(new_list))
+            vmax = parameters.get(_PE.PARAMETERS_VMAX, max(new_list))
 
         # loop over ChemData objects and generate plots
         for idx in range(len(chemdata_list)):
@@ -96,7 +100,7 @@ class ScatterBoxplotPlot(BasePlot):
 
             sns.set_context("talk", font_scale=0.5)
 
-            mode = parameters.get(_PE.PARAMETERS_MODE, "undefined")
+            mode = parameters.get(_PE.PARAMETERS_MODE, "plain")
             if mode == "plain":
                 scatter_df.insert(2,
                                   "Scores",
@@ -123,6 +127,7 @@ class ScatterBoxplotPlot(BasePlot):
 
             plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (6, 6)))
             g.plot_joint(sns.scatterplot)
+
             if mode == "scores":
                 legend = g.ax_joint.legend().remove()
 

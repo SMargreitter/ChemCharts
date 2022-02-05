@@ -18,13 +18,17 @@ class ScatterInteractivePlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        # base class call
         super(ScatterInteractivePlot, self).plot(chemdata_list, parameters, settings)
 
+        # checks whether there is a score input
         score_input_result = _check_score_input(chemdata_list, "Scatter_interactive")
-        # checks whether _check_score_input function returns 'True'
-        if score_input_result:
+
+        # checks whether there are multiple input objects
+        if score_input_result:      # checks whether _check_score_input function returns 'True'
             if isinstance(chemdata_list, list):
-                print("Function does not (yet) support multiple input objects.")
+                print("Scatter interactive function does not support multiple input objects. "
+                      "Proceeding with first object.")
                 chemdata_list = chemdata_list[0]
 
             xlim = parameters.get(_PE.PARAMETERS_XLIM, None)

@@ -8,8 +8,7 @@
        "columns":  {
                      "smiles_column": "SMILES",
                      "scores_column": "total_score",
-                     "epochs_column": "Step",
-                     "groups_column": "groups"
+                     "epochs_column": "Step"
                     }
       },
       {"task":  "generate_fingerprints",

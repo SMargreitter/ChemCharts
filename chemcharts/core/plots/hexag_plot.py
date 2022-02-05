@@ -58,6 +58,7 @@ class HexagonalPlot(BasePlot):
         return gridsize
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        # base class call
         super(HexagonalPlot, self).plot(chemdata_list, parameters, settings)
 
         current_chemdata = parameters.get(_PE.PARAMETERS_CURRENT_CHEMDATA, None)
@@ -102,6 +103,9 @@ class HexagonalPlot(BasePlot):
             # https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
 
             # generate seaborn jointplot with hexbin background colors
+            vmax = None
+            if parameters.get(_PE.PARMETERS_CROSS_OBJECT_NORMALIZE, True):
+                vmax = hb.get_array().max()
             sns.jointplot(x=chemdata_list[idx].get_embedding().np_array[:, 0],
                           y=chemdata_list[idx].get_embedding().np_array[:, 1],
                           xlim=xlim,
@@ -109,7 +113,7 @@ class HexagonalPlot(BasePlot):
                           joint_kws={"gridsize": gridsize,
                                      "vmin": 0,
                                      "lw": 1,
-                                     "vmax": hb.get_array().max()},
+                                     "vmax": vmax},
                           kind="hex",
                           extent=extent,
                           color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")

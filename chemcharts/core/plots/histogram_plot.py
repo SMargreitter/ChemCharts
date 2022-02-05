@@ -22,9 +22,11 @@ class HistogramPlot(BasePlot):
         # no warning message for multiple chemdata object inputs since normalisation
         # for xlim and ylim is here anyways applied
 
+        # checks whether there is a score input
         score_input_result = _check_score_input(chemdata_list, "Histogram")
-        # checks whether _check_score_input function returns 'True'
-        if score_input_result:
+
+        # checks whether there are multiple input objects
+        if score_input_result:      # checks whether _check_score_input function returns 'True'
             # lim setting
             xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
                                                   parameters=parameters)

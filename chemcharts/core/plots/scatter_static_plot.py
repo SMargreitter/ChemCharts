@@ -16,11 +16,14 @@ class ScatterStaticPlot(BasePlot):
         super().__init__()
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
+        # base class call
         super(ScatterStaticPlot, self).plot(chemdata_list, parameters, settings)
 
+        # checks whether there is a score input
         score_input_result = _check_score_input(chemdata_list, "Scatter_static")
-        # checks whether _check_score_input function returns 'True'
-        if score_input_result:
+
+        # checks whether there are multiple input objects
+        if score_input_result:      # checks whether _check_score_input function returns 'True'
             # lim setting
             xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
                                                   parameters=parameters)

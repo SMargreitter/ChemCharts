@@ -140,7 +140,8 @@ class BasePlot:
 
             # movie function does not (yet) support multiple dataset input
             if isinstance(chemdata_list, list):
-                print("Function does not (yet) support multiple input objects.")
+                print("Movie function does not (yet) support multiple input objects. "
+                      "Proceeding with first object.")
                 chemdata_list = chemdata_list[0]
 
             # error message
@@ -181,6 +182,8 @@ class BasePlot:
                 updated_snapshot_path = self._path_update_snapshot(ori_path=settings[_ME.SETTINGS_MOVIE_PATH],
                                                                    epoch_id=idx)
                 updated_path_list.append(updated_snapshot_path)
+
+                #TODO when refactoring with pydantic is done allow movie making to accept and overwrite parameters
 
                 # plot generation
                 self.plot(chemdata_list=[epoch_chemdata],
@@ -229,4 +232,4 @@ class BasePlot:
                  or parameters.get(_PE.PARAMETERS_YLIM, None) is None):
             print("Warning: When plotting multiple chemdata objects (datasets), "
                   "it might be good to specify XLIM and YLIM to ensure "
-                  "all subplots show the same excerpt.")
+                  "all subplots show the same excerpt (exception: histogram).")

@@ -107,12 +107,35 @@ class TestScatterBoxplotPlot(unittest.TestCase):
     def setUp(self) -> None:
         pass
 
-    def test_scatter_boxplot_plot(self):
+    def test_scatter_boxplot_plot_scores(self):
         test_plot = ScatterBoxplotPlot()
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
-                      _PE.PARAMETERS_SCORELIM: None}
+                      _PE.PARAMETERS_SCORELIM: None,
+                      _PE.PARAMETERS_MODE: "scores"}
+        test_plot.plot([self.test_chemdata], parameters, settings)
+        file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST]))
+        self.assertTrue(50000 <= file_size <= 100000)
+
+    def test_scatter_boxplot_plot_groups(self):
+        test_plot = ScatterBoxplotPlot()
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST])}
+        parameters = {_PE.PARAMETERS_XLIM: None,
+                      _PE.PARAMETERS_YLIM: None,
+                      _PE.PARAMETERS_SCORELIM: None,
+                      _PE.PARAMETERS_MODE: "groups"}
+        test_plot.plot([self.test_chemdata], parameters, settings)
+        file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST]))
+        self.assertTrue(50000 <= file_size <= 100000)
+
+    def test_scatter_boxplot_plot_plain(self):
+        test_plot = ScatterBoxplotPlot()
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST])}
+        parameters = {_PE.PARAMETERS_XLIM: None,
+                      _PE.PARAMETERS_YLIM: None,
+                      _PE.PARAMETERS_SCORELIM: None,
+                      _PE.PARAMETERS_MODE: "plain"}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(50000 <= file_size <= 100000)
@@ -120,6 +143,7 @@ class TestScatterBoxplotPlot(unittest.TestCase):
     def test_check_movie_size(self):
         test_plot = ScatterBoxplotPlot()
         test_plot.generate_movie([self.test_chemdata],
-                                 settings={_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE, _TPME.MOVIE_UNITTEST])})
+                                 settings={_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE,
+                                                                              _TPME.MOVIE_UNITTEST])})
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE, _TPME.MOVIE_UNITTEST]))
         self.assertTrue(20000 <= file_size <= 40000)
