@@ -32,7 +32,7 @@ _PE = PlottingEnum
 _ME = MovieEnum
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="implements chemcharts entry points")
     parser.add_argument("-input_data", type=str, required=True,
                         help="Path to input csv file (Caution: Here only one input dataset is possible - "
@@ -144,5 +144,9 @@ if __name__ == "__main__":
     # make movie
     if args.output_movie is not None:
         plot_instance.generate_movie(plot_data, settings={_ME.SETTINGS_MOVIE_PATH: args.output_movie})
+
+
+if __name__ == "__main__":
+    main()
 
     sys.exit(0)

@@ -9,5 +9,6 @@ setup(
     package_dir={"": "src"},
     description="ChemCharts: Chemical Space Visualizer",
     python_requires=">=3.7",
-    entry_points={"console_scripts": ["chemcharts = chemcharts.scripts.chemcharts_json:main"]},
+    entry_points={"console_scripts": ["chemcharts_cli = chemcharts.scripts.chemcharts_cli:main",
+                                      "chemcharts = chemcharts.scripts.chemcharts_json:main"]},
 )

@@ -65,7 +65,7 @@ def initialize_plot(plot_type: str) -> BasePlot:
     return plot_instance
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="implements chemcharts entry points")
     parser.add_argument("-conf", type=str, required=True, help="Path to JSON configuration file.")
     args, args_unk = parser.parse_known_args()
@@ -164,5 +164,9 @@ if __name__ == "__main__":
         else:
             raise ValueError(f"Task definition {task[_JE.TASK]} not supported.")
         print(f"Task {task[_JE.TASK]} completed.")
+
+
+if __name__ == "__main__":
+    main()
 
     sys.exit(0)

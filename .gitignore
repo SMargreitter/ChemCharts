@@ -1,6 +1,7 @@
 # Node artifact files
 node_modules/
 dist/
+*.egg*
 
 # Compiled Java class files
 *.class
