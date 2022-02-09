@@ -13,5 +13,5 @@ def move_directory_up(path: str, n=1) -> str:
 
 def attach_root_path(path: str) -> str:
     """Function to prepend a given string by the absolute path of the module."""
-    abs_path = os.path.abspath(move_directory_up(__file__, n=3))
+    abs_path = os.path.abspath(move_directory_up(__file__, n=4))
     return os.path.join(abs_path, path)

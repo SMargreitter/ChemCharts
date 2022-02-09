@@ -52,6 +52,18 @@ COc1cccc(-c2c3c(cc4ccccc24)C(=O)NC3=O)c1 ⮕ [1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0
 
 ```conda env create -f environment_min.yml```
 
+* Install `ChemCharts` from `pip`:
+```
+conda activate chemcharts
+pip install chemcharts
+```
+
+* Or install the latest version from source:
+```
+conda activate chemcharts
+pip install -e .
+```
+
 * Note, that you need `ffmpeg` installed on your computer in case you want to generate movies. On Ubuntu it will look something like:
 
 ```
@@ -63,13 +75,17 @@ sudo apt install ffmpeg
 * Activate environment:
 
 ```conda activate chemcharts```
-* For jupyter notebooks:
-
-```export PYTHONPATH=/path/to/chemcharts:$PYTHONPATH```
 
 * Execution of command-line interface (CLI) / entry point:
 
-```python chemcharts.py -input_data data/scaffold_memory.csv -output_plot test.png```
+```chemcharts_cli -input_data data/scaffold_memory.csv -output_plot test.png```
+
+* Execution of `JSON` interface / entry point:
+
+```
+chemcharts -conf examples/json/data_prep_plot.json
+chemcharts -conf examples/json/simple_plot_test.json
+```
 
 * Execution of unit tests:
 
