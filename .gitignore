@@ -20,6 +20,7 @@ target/
 
 # JetBrains IDE
 chemcharts/.idea/
+.idea
 
 # Unit test reports
 TEST*.xml
@@ -35,8 +36,6 @@ Thumbs.db
 *.exe
 *.war
 
-test.png
-output_movie
 # Large media files
 *.mp4
 *.tiff
@@ -46,9 +45,14 @@ output_movie
 *.wmv
 *.png
 
+# Output
 output
+output_movie
+test.png
 *.pkl
 
+# Junk
 tests/junk
+
+# Jupyter notebooks
 notebooks/.ipynb_*
-.idea

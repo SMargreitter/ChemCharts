@@ -8,6 +8,7 @@ from seaborn.distributions import _freedman_diaconis_bins
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
+from chemcharts.core.utils.colour_functions import get_continuous_cmap
 from chemcharts.core.utils.enums import PlottingEnum
 _PE = PlottingEnum
 
@@ -57,13 +58,59 @@ class HexagonalPlot(BasePlot):
             gridsize = int(np.mean([x_bins, y_bins]))
         return gridsize
 
+    @staticmethod
+    def _generate_jointplot(chemdata_list_idx, xlim, ylim, gridsize, vmin, vmax, cmap, color, extent):
+        if isinstance(color, str):
+            sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
+                          y=chemdata_list_idx.get_embedding().np_array[:, 1],
+                          xlim=xlim,
+                          ylim=ylim,
+                          joint_kws={"gridsize": gridsize,
+                                     "vmin": vmin,
+                                     "vmax": vmax,
+                                     "lw": 1},
+                          kind="hex",
+                          color=color,
+                          extent=extent
+                          )
+        else:
+            sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
+                          y=chemdata_list_idx.get_embedding().np_array[:, 1],
+                          xlim=xlim,
+                          ylim=ylim,
+                          joint_kws={"gridsize": gridsize,
+                                     "vmin": vmin,
+                                     "vmax": vmax,
+                                     "lw": 1,
+                                     "cmap": cmap},
+                          kind="hex",
+                          extent=extent
+                          )
+
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
         # base class call
         super(HexagonalPlot, self).plot(chemdata_list, parameters, settings)
 
+        # chemdata
         current_chemdata = parameters.get(_PE.PARAMETERS_CURRENT_CHEMDATA, None)
         total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list[0])
-        gridsize = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
+
+        # color palette/cmap
+        color_input = parameters.get(_PE.PARAMETERS_PLOT_COLOR)
+        if isinstance(color_input, str):
+            color = parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
+            cmap = None
+        elif isinstance(color_input, list):
+            # inspired by solution from here:
+            # https://towardsdatascience.com/beautiful-custom-colormaps-with-matplotlib-5bab3d1f0e72
+            cmap = get_continuous_cmap(color_input)
+            color = None
+        else:
+            color = None
+            cmap = None
+            print("Warning: Color input needs to be either a seaborn palette, a hex code or "
+                  "a list of hex codes (you might want to have white as first value to allow"
+                  "for a white background). Default: #4CB391")
 
         # lim setting
         xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
@@ -76,7 +123,8 @@ class HexagonalPlot(BasePlot):
         extent = (xlim[0], xlim[1], ylim[0], ylim[1]) if xlim is not None else None
 
         # generate fixed gridsize for all following plots to make them equally spaced
-        gridsize = self._set_gridsize(total_chemdata, gridsize)
+        gridsize_input = parameters.get(_PE.PARAMETERS_GRIDSIZE, None)
+        gridsize = self._set_gridsize(total_chemdata, gridsize_input)
 
         # temp path setting
         temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
@@ -88,36 +136,34 @@ class HexagonalPlot(BasePlot):
             if current_chemdata is not None:
                 hb_current = plt.hexbin(x=current_chemdata.get_embedding().np_array[:, 0],
                                         y=current_chemdata.get_embedding().np_array[:, 1],
-                                        color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
                                         gridsize=gridsize,
                                         extent=extent)
 
             # generate the counts for the actual plotting
             hb = plt.hexbin(x=total_chemdata.get_embedding().np_array[:, 0],
                             y=total_chemdata.get_embedding().np_array[:, 1],
-                            color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391"),
                             gridsize=gridsize,
                             extent=extent)
 
             # inspired by 2nd solution from here:
             # https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
 
-            # generate seaborn jointplot with hexbin background colors
+            # vmin and vmax
+            vmin = 0
             vmax = None
             if parameters.get(_PE.PARMETERS_CROSS_OBJECT_NORMALIZE, True):
                 vmax = hb.get_array().max()
-            sns.jointplot(x=chemdata_list[idx].get_embedding().np_array[:, 0],
-                          y=chemdata_list[idx].get_embedding().np_array[:, 1],
-                          xlim=xlim,
-                          ylim=ylim,
-                          joint_kws={"gridsize": gridsize,
-                                     "vmin": 0,
-                                     "lw": 1,
-                                     "vmax": vmax},
-                          kind="hex",
-                          extent=extent,
-                          color=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
-                          )
+
+            # generates jointplot with hexbin background colors
+            self._generate_jointplot(chemdata_list_idx=chemdata_list[idx],
+                                     xlim=xlim,
+                                     ylim=ylim,
+                                     gridsize=gridsize,
+                                     vmin=vmin,
+                                     vmax=vmax,
+                                     cmap=cmap,
+                                     color=color,
+                                     extent=extent)
 
             # if selected generate contours for current hexbins
             if current_chemdata is not None:

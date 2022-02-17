@@ -14,7 +14,7 @@
                        "top": 0.9,
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
-                       "color": "#4CB391",
+                       "color": ["#FFFFFF", "#cc0000", "#003ba3", "#006600"],
                        "cross_object_normalize": false
        },
         "settings": {"path": "output/plots/hexagonal_plot.png",
