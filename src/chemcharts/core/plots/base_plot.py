@@ -6,8 +6,10 @@ from typing import List, Tuple
 import ffmpeg
 from copy import deepcopy
 from PIL import Image, ImageFont, ImageDraw
+
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.utils.enums import PlottingEnum, MovieEnum
+from chemcharts.core.utils.colour_functions import get_continuous_cmap
 
 _PE = PlottingEnum
 _ME = MovieEnum
@@ -127,6 +129,31 @@ class BasePlot:
 
         # save new merged image to path
         new_im.save(merged_path)
+
+    @staticmethod
+    def _coloring(parameters: dict) -> tuple:
+        color_input = parameters.get(_PE.PARAMETERS_PLOT_COLOR)
+        color = None
+        cmap = None
+        if isinstance(color_input, str) and color_input[0] == "#":
+            color = parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
+        elif isinstance(color_input, str) and color_input[0] != "#":
+            cmap = parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako_r")
+        elif isinstance(color_input, list):
+            # set color_input_list to default if input_list is empty
+            if len(color_input) == 0:
+                color_input = ["#FFFFFF", "#cc0000", "#003ba3", "#006600"]
+                print("Warning: The color_input list is empty, therefore the default is set to "
+                      "['#FFFFFF', '#cc0000', '#003ba3', '#006600'].")
+
+            # generate custom continuous cmpa/ inspired by solution from here:
+            # https://towardsdatascience.com/beautiful-custom-colormaps-with-matplotlib-5bab3d1f0e72
+            cmap = get_continuous_cmap(color_input)
+        else:
+            print("Warning: Color input needs to be either a seaborn palette, a hex code (recommended) "
+                  "or a list of hex codes (you might want to have '#FFFFFF' as first value to allow "
+                  "for a white background).")
+        return cmap, color
 
     def generate_movie(self,
                        chemdata_list: List[ChemData],

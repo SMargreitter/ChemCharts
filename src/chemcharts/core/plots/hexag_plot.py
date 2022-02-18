@@ -1,14 +1,15 @@
 from typing import List
 
+import matplotlib
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
+from seaborn import blend_palette
 from seaborn.distributions import _freedman_diaconis_bins
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
-from chemcharts.core.utils.colour_functions import get_continuous_cmap
 from chemcharts.core.utils.enums import PlottingEnum
 _PE = PlottingEnum
 
@@ -60,32 +61,27 @@ class HexagonalPlot(BasePlot):
 
     @staticmethod
     def _generate_jointplot(chemdata_list_idx, xlim, ylim, gridsize, vmin, vmax, cmap, color, extent):
-        if isinstance(color, str) and color[0] == "#":
-            sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
-                          y=chemdata_list_idx.get_embedding().np_array[:, 1],
-                          xlim=xlim,
-                          ylim=ylim,
-                          joint_kws={"gridsize": gridsize,
-                                     "vmin": vmin,
-                                     "vmax": vmax,
-                                     "lw": 1},
-                          kind="hex",
-                          color=color,
-                          extent=extent
-                          )
-        else:
-            sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
-                          y=chemdata_list_idx.get_embedding().np_array[:, 1],
-                          xlim=xlim,
-                          ylim=ylim,
-                          joint_kws={"gridsize": gridsize,
-                                     "vmin": vmin,
-                                     "vmax": vmax,
-                                     "lw": 1,
-                                     "cmap": cmap},
-                          kind="hex",
-                          extent=extent
-                          )
+        # if cmap is None, initialize the seaborn default over the matplotlib one
+        if cmap is None:
+            import matplotlib as mpl
+            import seaborn.utils as utils_sb
+            color_rgb = mpl.colors.colorConverter.to_rgb(color)
+            colors = [utils_sb.set_hls_values(color_rgb, l=l)  # noqa
+                      for l in np.linspace(1, 0, 12)]
+            cmap = blend_palette(colors, as_cmap=True)
+        sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
+                      y=chemdata_list_idx.get_embedding().np_array[:, 1],
+                      xlim=xlim,
+                      ylim=ylim,
+                      joint_kws={"gridsize": gridsize,
+                                 "vmin": vmin,
+                                 "vmax": vmax,
+                                 "lw": 1,
+                                 "cmap": cmap},
+                      kind="hex",
+                      color=color,
+                      extent=extent
+                      )
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
         # base class call
@@ -96,24 +92,7 @@ class HexagonalPlot(BasePlot):
         total_chemdata = parameters.get(_PE.PARAMETERS_TOTAL_CHEMDATA, chemdata_list[0])
 
         # color palette/cmap
-        color_input = parameters.get(_PE.PARAMETERS_PLOT_COLOR)
-        if isinstance(color_input, str) and color_input[0] == "#":
-            color = parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
-            cmap = None
-        elif isinstance(color_input, str) and color_input[0] != "#":
-            cmap = parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako_r")
-            color = None
-        elif isinstance(color_input, list):
-            # inspired by solution from here:
-            # https://towardsdatascience.com/beautiful-custom-colormaps-with-matplotlib-5bab3d1f0e72
-            cmap = get_continuous_cmap(color_input)
-            color = None
-        else:
-            color = None
-            cmap = None
-            print("Warning: Color input needs to be either a seaborn palette, a hex code or "
-                  "a list of hex codes (you might want to have white as first value to allow"
-                  "for a white background). Default: #4CB391")
+        cmap, color = self._coloring(parameters=parameters)
 
         # lim setting
         xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,

@@ -19,12 +19,16 @@ class ScatterBoxplotPlot(BasePlot):
 
     @staticmethod
     def _make_plain_plot(scatter_df, xlim, ylim, parameters: dict):
+        c_input = parameters.get(_PE.PARAMETERS_PLOT_COLOR, '#4368ff')
+        color_input = list([c_input])
+
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
-                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
+                          hue=[1 for _ in range(len(scatter_df))],
+                          palette=sns.color_palette(color_input, n_colors=1)
                           )
         return g
 
@@ -35,16 +39,16 @@ class ScatterBoxplotPlot(BasePlot):
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
-                          hue=scatter_df["Scores"],
+                          hue="Scores",
                           hue_norm=None if vmin is None or vmax is None else (vmin, vmax),
-                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
+                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako")
                           )
 
         # Make space for the colorbar
         g.fig.subplots_adjust(left=0.250)
 
         # Get a mappable object with the same colormap as the data
-        points = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare"))
+        points = plt.scatter([], [], c=[], vmin=vmin, vmax=vmax, cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako"))
 
         # Add axes for colorbar
         cbaxes = g.fig.add_axes([0.02, 0.15, 0.03, 0.6])
@@ -62,13 +66,16 @@ class ScatterBoxplotPlot(BasePlot):
                           xlim=xlim,
                           ylim=ylim,
                           hue=parameters.get(_PE.PARAMETERS_GROUP_LEGEND_NAME, _PE.PARAMETERS_GROUP_LEGEND_NAME_DEFAULT),
-                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
+                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako")
                           )
         return g
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
         # base class call
         super(ScatterBoxplotPlot, self).plot(chemdata_list, parameters, settings)
+
+        # color palette/cmap
+        cmap, color = self._coloring(parameters=parameters)
 
         # lim setting
         xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
@@ -117,7 +124,8 @@ class ScatterBoxplotPlot(BasePlot):
                 g = self._make_score_plot(scatter_df, xlim, ylim, parameters, vmin, vmax)
             elif mode == "groups":
                 scatter_df.insert(2,
-                                  parameters.get(_PE.PARAMETERS_GROUP_LEGEND_NAME, _PE.PARAMETERS_GROUP_LEGEND_NAME_DEFAULT),
+                                  parameters.get(_PE.PARAMETERS_GROUP_LEGEND_NAME,
+                                                 _PE.PARAMETERS_GROUP_LEGEND_NAME_DEFAULT),
                                   None if not chemdata_list[idx].get_groups()
                                   else chemdata_list[idx].get_groups(),
                                   allow_duplicates=False)
@@ -128,7 +136,7 @@ class ScatterBoxplotPlot(BasePlot):
             plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (6, 6)))
             g.plot_joint(sns.scatterplot)
 
-            if mode == "scores":
+            if mode == "scores" or mode == "plain":
                 legend = g.ax_joint.legend().remove()
 
             if settings.get(_PE.SETTINGS_BOXPLOT) is True:
