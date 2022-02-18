@@ -60,7 +60,7 @@ class HexagonalPlot(BasePlot):
 
     @staticmethod
     def _generate_jointplot(chemdata_list_idx, xlim, ylim, gridsize, vmin, vmax, cmap, color, extent):
-        if isinstance(color, str):
+        if isinstance(color, str) and color[0] == "#":
             sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
                           y=chemdata_list_idx.get_embedding().np_array[:, 1],
                           xlim=xlim,
@@ -97,9 +97,12 @@ class HexagonalPlot(BasePlot):
 
         # color palette/cmap
         color_input = parameters.get(_PE.PARAMETERS_PLOT_COLOR)
-        if isinstance(color_input, str):
+        if isinstance(color_input, str) and color_input[0] == "#":
             color = parameters.get(_PE.PARAMETERS_PLOT_COLOR, "#4CB391")
             cmap = None
+        elif isinstance(color_input, str) and color_input[0] != "#":
+            cmap = parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako_r")
+            color = None
         elif isinstance(color_input, list):
             # inspired by solution from here:
             # https://towardsdatascience.com/beautiful-custom-colormaps-with-matplotlib-5bab3d1f0e72

@@ -107,7 +107,29 @@ class TestHexagonalPlot(unittest.TestCase):
     def setUp(self) -> None:
         pass
 
-    def test_hexagonal_plot(self):
+    def test_hexagonal_plot_colorcode(self):
+        test_plot = HexagonalPlot()
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST])}
+        parameters = {_PE.PARAMETERS_XLIM: None,
+                      _PE.PARAMETERS_YLIM: None,
+                      _PE.PARAMETERS_SCORELIM: None,
+                      _PE.PARAMETERS_PLOT_COLOR: "#4CB391"}
+        test_plot.plot([self.test_chemdata], parameters, settings)
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST]))
+        self.assertTrue(60000 <= file_size <= 120000)
+
+    def test_hexagonal_plot_colorlist(self):
+        test_plot = HexagonalPlot()
+        settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST])}
+        parameters = {_PE.PARAMETERS_XLIM: None,
+                      _PE.PARAMETERS_YLIM: None,
+                      _PE.PARAMETERS_SCORELIM: None,
+                      _PE.PARAMETERS_PLOT_COLOR: ["#FFFFFF", "#cc0000", "#003ba3", "#006600"]}
+        test_plot.plot([self.test_chemdata], parameters, settings)
+        file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST]))
+        self.assertTrue(60000 <= file_size <= 120000)
+
+    def test_hexagonal_plot_nocolorinput(self):
         test_plot = HexagonalPlot()
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
@@ -115,7 +137,7 @@ class TestHexagonalPlot(unittest.TestCase):
                       _PE.PARAMETERS_SCORELIM: None}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST]))
-        self.assertTrue(60000 <= file_size <= 110000)
+        self.assertTrue(60000 <= file_size <= 140000)
 
     def test_check_movie_size(self):
         test_plot = HexagonalPlot()
