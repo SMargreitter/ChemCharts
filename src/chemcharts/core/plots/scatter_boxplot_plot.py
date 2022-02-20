@@ -88,7 +88,7 @@ class ScatterBoxplotPlot(BasePlot):
         # temp path setting
         temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
-        # calculates vmin and vmax if not set, otherwise uses min and max values of scores
+        # calculates vmin and vmax if not set (using min and max values of scores)
         new_list = []
         vmin = None
         vmax = None
