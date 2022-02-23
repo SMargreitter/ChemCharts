@@ -124,7 +124,7 @@ class TestTrisurfStaticPlot(unittest.TestCase):
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_TRISURF_STATIC_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
-                      _PE.PARAMETERS_SCORELIM: None}
+                      _PE.PARAMETERS_VALUELIM: None}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_TRISURF_STATIC_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(250000 <= file_size <= 350000)

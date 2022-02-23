@@ -69,7 +69,7 @@ class BasePlot:
         for idx in range(len(chemdata_list)):
             total_xlims += [None] if parameters.get(_PE.PARAMETERS_XLIM, None) is None else parameters[_PE.PARAMETERS_XLIM]
             total_ylims += [None] if parameters.get(_PE.PARAMETERS_YLIM, None) is None else parameters[_PE.PARAMETERS_YLIM]
-            total_scorelims += [None] if parameters.get(_PE.PARAMETERS_SCORELIM, None) is None else parameters[_PE.PARAMETERS_SCORELIM]
+            total_scorelims += [None] if parameters.get(_PE.PARAMETERS_VALUELIM, None) is None else parameters[_PE.PARAMETERS_VALUELIM]
         xlim = None if None in total_xlims else (min(total_xlims), max(total_xlims))
         ylim = None if None in total_ylims else (min(total_ylims), max(total_ylims))
         scorelim = None if None in total_scorelims else (min(total_scorelims), max(total_scorelims))
@@ -216,7 +216,7 @@ class BasePlot:
                 self.plot(chemdata_list=[epoch_chemdata],
                           parameters={_PE.PARAMETERS_XLIM: xlim,
                                       _PE.PARAMETERS_YLIM: ylim,
-                                      _PE.PARAMETERS_SCORELIM: scorelim,
+                                      _PE.PARAMETERS_VALUELIM: scorelim,
                                       _PE.PARAMETERS_CURRENT_CHEMDATA: current_chemdata,
                                       _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
                           settings={_PE.SETTINGS_VIEW: "",

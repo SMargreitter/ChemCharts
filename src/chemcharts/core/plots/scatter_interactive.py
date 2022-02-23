@@ -34,17 +34,17 @@ class ScatterInteractivePlot(BasePlot):
             xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
             ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
             path = settings.get(_PE.SETTINGS_PATH, None)
-            scorelim = parameters.get(_PE.PARAMETERS_SCORELIM, None)
+            scorelim = parameters.get(_PE.PARAMETERS_VALUELIM, None)
 
             self._prepare_folder(path=path)
 
             scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list.get_embedding().np_array[:, 0],
                                        _PLE.UMAP_2: chemdata_list.get_embedding().np_array[:, 1],
-                                       _PLE.SCORES: chemdata_list.get_scores()
+                                       _PLE.VALUES: chemdata_list.get_scores()
                                        })
 
             fig = px.scatter_3d(scatter_df,
-                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=_PLE.SCORES,
+                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=_PLE.VALUES,
                                 color='Scores',
                                 color_discrete_sequence=px.colors.qualitative.Plotly,
                                 range_color=scorelim,

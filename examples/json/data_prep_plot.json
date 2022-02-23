@@ -7,9 +7,9 @@
        "input_type":  "csv",
        "columns":  {
                      "smiles_column": "SMILES",
-                     "scores_column": "total_score",
+                     "values_columns": ["total_score", "raw_dockstream", "QED Score"],
                      "epochs_column": "Step"
-                    }
+                   }
       },
       {"task":  "generate_fingerprints",
        "type":  "standard",

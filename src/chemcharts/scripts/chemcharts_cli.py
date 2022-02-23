@@ -134,7 +134,7 @@ def main():
     plot_instance.plot(chemdata_list=plot_data,
                        parameters={_PE.PARAMETERS_XLIM: None,
                                    _PE.PARAMETERS_YLIM: None,
-                                   _PE.PARAMETERS_SCORELIM: None,
+                                   _PE.PARAMETERS_VALUELIM: None,
                                    _PE.PARAMETERS_CURRENT_CHEMDATA: None,
                                    _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0]},
                        settings={_PE.SETTINGS_VIEW: args.view,

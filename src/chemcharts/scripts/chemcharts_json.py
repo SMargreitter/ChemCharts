@@ -85,20 +85,18 @@ def main():
             if task[_JE.INPUT_TYPE].upper() == "CSV":
                 # get column names
                 smiles_column = task[_JE.COLUMNS][_JE.SMILES_COLUMN]
-
-                scores_column = task[_JE.COLUMNS].get(_JE.SCORES_COLUMN, _RE.TOTAL_SCORE)
+                values_columns = task[_JE.COLUMNS].get(_JE.VALUES_COLUMNS, [_RE.TOTAL_SCORE])
                 epochs_column = task[_JE.COLUMNS].get(_JE.EPOCHS_COLUMN, _RE.EPOCHS_COLUMN)
                 groups_column = task[_JE.COLUMNS].get(_JE.GROUPS_COLUMN, _RE.GROUPS_COLUMN)
 
                 for inp in input_elements:
-
-                    smiles, scores, epochs, groups = load_smiles(inp,
-                                                                 smiles_column=smiles_column,
-                                                                 scores_column=scores_column,
-                                                                 epochs_column=epochs_column,
-                                                                 groups_column=groups_column)
+                    smiles, values_df, epochs, groups = load_smiles(inp,
+                                                                    smiles_column=smiles_column,
+                                                                    values_columns=values_columns,
+                                                                    epochs_column=epochs_column,
+                                                                    groups_column=groups_column)
                     next_chemdata = ChemData(name=os.path.basename(inp))
-                    next_chemdata.set_scores(scores)
+                    next_chemdata.set_values(values_df)
                     next_chemdata.set_smiles(smiles)
                     next_chemdata.set_epochs(epochs)
                     next_chemdata.set_groups(groups)
@@ -139,7 +137,7 @@ def main():
             for chemdata in chemdata_list:
                 chemdata = clustering.clustering(chemdata=chemdata, k=task[_JE.PARAMETERS][_JE.K])
 
-        elif task[_JE.TASK] == _JSE.BINNING_SCORES:
+        elif task[_JE.TASK] == _JSE.BINNING_VALUE:
             binning = Binning()
             for chemdata in chemdata_list:
                 chemdata = binning.binning(chemdata=chemdata, num_bins=task[_JE.PARAMETERS][_JE.NUM_BINS])

@@ -51,7 +51,7 @@ class TrisurfStaticPlot(BasePlot):
                 ax.set_title(name)
                 ax.set_xlabel(_PLE.UMAP_1)
                 ax.set_ylabel(_PLE.UMAP_2)
-                ax.set_zlabel(_PLE.SCORES)
+                ax.set_zlabel(_PLE.VALUES)
 
                 # setting axes ranges
                 if xlim is not None:

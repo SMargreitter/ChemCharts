@@ -15,7 +15,10 @@
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
                        "color": ["#FFFFFF", "#cc0000", "#003ba3", "#006600"],
-                       "cross_object_normalize": false
+                       "cross_object_normalize": false,
+                       "value": {
+                         "column": "total_score"
+                       }
        },
         "settings": {"path": "output/plots/hexagonal_plot.png",
                      "format": "png",
@@ -77,7 +80,10 @@
                        "s": 1,
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
-                       "scorelim": [0, 1]
+                       "value": {
+                         "valuelim": [0, 1],
+                         "column": "total_score"
+                       }
        },
         "settings": {"path": "output/plots/scatter_static_plot.png",
                      "format": "png",
@@ -104,7 +110,10 @@
                        "color": "gist_rainbow",
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
-                       "scorelim": [0, 1]
+                       "value": {
+                         "valuelim": [0, 1],
+                         "column": "total_score"
+                       }
        },
         "settings": {"path": "output/plots/trisurf_static_plot.png",
                      "format": "png",

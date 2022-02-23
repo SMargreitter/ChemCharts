@@ -2,6 +2,7 @@ from copy import deepcopy
 from typing import List
 
 import numpy as np
+import pandas as pd
 
 from chemcharts.core.container.embedding import Embedding
 from chemcharts.core.container.fingerprint import FingerprintContainer
@@ -55,7 +56,7 @@ class ChemData:
                  epochs: list = None,
                  groups: list = None,
                  active_inactive_list: list = None,
-                 scores: list = None,
+                 values: pd.DataFrame() = None,
                  fingerprints: FingerprintContainer = None,
                  embedding: Embedding = None,
                  tanimoto_similarity: np.array = None
@@ -66,7 +67,7 @@ class ChemData:
         self.epochs = [] if epochs is None else epochs
         self.groups = [] if groups is None else groups
         self.active_inactive_list = [] if active_inactive_list is None else active_inactive_list
-        self.scores = [] if scores is None else scores
+        self.values = pd.DataFrame() if values is None else values
         self.smiles_obj = Smiles() if smiles_obj is None else smiles_obj
         self.fingerprints = FingerprintContainer("") if fingerprints is None else fingerprints
         self.embedding = Embedding() if embedding is None else embedding
@@ -76,7 +77,7 @@ class ChemData:
         return f"instance of ChemData with name: {self.name}," \
                f"epoch: {self.epochs}," \
                f"group: {self.groups}," \
-               f"number scores: {len(self.scores)}," \
+               f"values: {self.values.columns}," \
                f"smiles: {self.smiles_obj}," \
                f"fingerprint: {self.fingerprints}," \
                f"embedding: {self.embedding}"
@@ -90,7 +91,7 @@ class ChemData:
         copy_self.set_epochs(copy_self.epochs + obj.epochs)
         copy_self.set_groups(copy_self.groups + obj.groups)
         copy_self.set_active_inactive_list(copy_self.active_inactive_list + obj.active_inactive_list)
-        copy_self.set_scores(copy_self.scores + obj.scores)
+        copy_self.set_values(pd.concat([copy_self.values, obj.values]))
         copy_self.set_smiles(copy_self.smiles_obj + obj.smiles_obj)
         copy_self.set_fingerprints(copy_self.fingerprints + obj.fingerprints)
         copy_self.set_embedding(copy_self.embedding + obj.embedding)
@@ -133,7 +134,7 @@ class ChemData:
                      name=f"epoch_{epoch}_chemdata",
                      epochs=[] if not copy_chemdata.get_epochs() else [copy_chemdata.get_epochs()[i] for i in epoch_indices],
                      groups=[] if not copy_chemdata.get_groups() else [copy_chemdata.get_groups()[i] for i in epoch_indices],
-                     scores=[] if not copy_chemdata.get_scores() else [copy_chemdata.get_scores()[i] for i in epoch_indices],
+                     values=[] if not copy_chemdata.get_values() else [copy_chemdata.get_values()[i] for i in epoch_indices],
                      fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
                                                        fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in
                                                                          epoch_indices]),
@@ -164,11 +165,11 @@ class ChemData:
     def set_active_inactive_list(self, active_inactive_list: list):
         self.active_inactive_list = active_inactive_list
 
-    def get_scores(self) -> list:
-        return self.scores
+    def get_values(self) -> pd.DataFrame:
+        return self.values
 
-    def set_scores(self, scores: list):
-        self.scores = scores
+    def set_values(self, values: pd.DataFrame):
+        self.values = values
 
     def get_smiles(self) -> Smiles:
         return self.smiles_obj

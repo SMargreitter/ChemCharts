@@ -78,7 +78,7 @@ class ScatterBoxplotPlot(BasePlot):
         cmap, color = self._coloring(parameters=parameters)
 
         # lim setting
-        xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+        xlim, ylim, valuelim = self._get_lims(chemdata_list=chemdata_list,
                                               parameters=parameters)
 
         # final path setting
@@ -88,12 +88,12 @@ class ScatterBoxplotPlot(BasePlot):
         # temp path setting
         temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
-        # calculates vmin and vmax if not set (using min and max values of scores)
+        # calculates vmin and vmax if not set (using min and max values of value)
         new_list = []
         vmin = None
         vmax = None
         for chemdata_object in chemdata_list:
-            new_list.extend(chemdata_object.get_scores())
+            new_list.extend(chemdata_object.get_values())
         if len(new_list) > 0:
             vmin = parameters.get(_PE.PARAMETERS_VMIN, min(new_list))
             vmax = parameters.get(_PE.PARAMETERS_VMAX, max(new_list))
@@ -111,15 +111,15 @@ class ScatterBoxplotPlot(BasePlot):
             if mode == "plain":
                 scatter_df.insert(2,
                                   "Scores",
-                                  None if not chemdata_list[idx].get_scores()
-                                  else chemdata_list[idx].get_scores(),
+                                  None if not chemdata_list[idx].get_values()
+                                  else chemdata_list[idx].get_values(),
                                   allow_duplicates=False)
                 g = self._make_plain_plot(scatter_df, xlim, ylim, parameters)
             elif mode == "scores":
                 scatter_df.insert(2,
                                   "Scores",
-                                  None if not chemdata_list[idx].get_scores()
-                                  else chemdata_list[idx].get_scores(),
+                                  None if not chemdata_list[idx].get_values()
+                                  else chemdata_list[idx].get_values(),
                                   allow_duplicates=False)
                 g = self._make_score_plot(scatter_df, xlim, ylim, parameters, vmin, vmax)
             elif mode == "groups":

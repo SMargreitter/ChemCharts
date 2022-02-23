@@ -38,7 +38,7 @@ class JsonEnum:
 
     COLUMNS = "columns"
     SMILES_COLUMN = "smiles_column"
-    SCORES_COLUMN = "scores_column"
+    VALUES_COLUMNS = "values_columns"
     EPOCHS_COLUMN = "epochs_column"
     GROUPS_COLUMN = "groups_column"
 
@@ -64,7 +64,7 @@ class JsonStepsEnum:
     DIMENSIONAL_REDUCTION = "dimensional_reduction"
     FILTERING_DATA = "filtering_data"
     CLUSTERING_DATA = "clustering_data"
-    BINNING_SCORES = "binning_scores"
+    BINNING_VALUE = "binning_value"
     WRITE_OUT = "write_out"
     GENERATE_PLOT = "generate_plot"
     GENERATE_MOVIE = "generate_movie"
@@ -93,7 +93,7 @@ class PlottingEnum:
     PARAMETERS_PLOT_S = "s"                      #3d scatter plot ball size
     PARAMETERS_PLOT_MARKER_SIZE = "marker_size"
 
-    PARAMETERS_SCORELIM = "scorelim"
+    PARAMETERS_VALUELIM = "valuelim"
     PARAMETERS_YLIM = "ylim"
     PARAMETERS_XLIM = "xlim"
 
@@ -120,13 +120,13 @@ class PlottingEnum:
 class PlotLabellingEnum:
     UMAP_1 = "UMAP_1"
     UMAP_2 = "UMAP_2"
-    SCORES = "Scores"
+    VALUES = "Values"
     GROUPS = "Groups"
 
 
 class ReinventEnum:
     SMILES = "SMILES"
-    TOTAL_SCORE = "total_score"
+    TOTAL_SCORE = "values"
     EPOCHS_COLUMN = "Step"
     GROUPS_COLUMN = "groups"
 

@@ -50,16 +50,16 @@ class Filtering:
         embedding_df = pd.DataFrame(
             {_PLE.UMAP_1: chemdata.get_embedding().np_array[:, 0],
              _PLE.UMAP_2: chemdata.get_embedding().np_array[:, 1],
-             _PLE.SCORES: chemdata.get_scores()})
+             _PLE.VALUES: chemdata.get_scores()})
 
         df = embedding_df[embedding_df[_PLE.UMAP_1].between(range_dim1[0], range_dim1[1])]
         df = df[df[_PLE.UMAP_2].between(range_dim2[0], range_dim2[1])]
 
         # set scores in chemdata
-        chemdata.set_scores(list(df[_PLE.SCORES]))
+        chemdata.set_scores(list(df[_PLE.VALUES]))
 
         # delete scores from dataframe
-        df.drop(_PLE.SCORES, axis=1, inplace=True)
+        df.drop(_PLE.VALUES, axis=1, inplace=True)
 
         chemdata.set_embedding(Embedding(df.to_numpy()))
 

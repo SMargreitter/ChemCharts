@@ -32,7 +32,7 @@ class TrisurfInteractivePlot(BasePlot):
             xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
             ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
             path = settings.get(_PE.SETTINGS_PATH, None)
-            scorelim = parameters.get(_PE.PARAMETERS_SCORELIM, None)
+            scorelim = parameters.get(_PE.PARAMETERS_VALUELIM, None)
 
             self._prepare_folder(path=path)
 
