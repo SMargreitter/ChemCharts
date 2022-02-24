@@ -75,7 +75,7 @@ class ScatterBoxplotPlot(BasePlot):
         super(ScatterBoxplotPlot, self).plot(chemdata_list, parameters, settings)
 
         # color palette/cmap
-        cmap, color = self._coloring(parameters=parameters)
+        #cmap, color = self._coloring(parameters=parameters)
 
         # lim setting
         xlim, ylim, valuelim = self._get_lims(chemdata_list=chemdata_list,

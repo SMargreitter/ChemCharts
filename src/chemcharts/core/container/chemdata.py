@@ -56,7 +56,7 @@ class ChemData:
                  epochs: list = None,
                  groups: list = None,
                  active_inactive_list: list = None,
-                 values: pd.DataFrame() = None,
+                 values: pd.DataFrame = None,
                  fingerprints: FingerprintContainer = None,
                  embedding: Embedding = None,
                  tanimoto_similarity: np.array = None
@@ -125,6 +125,10 @@ class ChemData:
         return multiple_epoch_chemdata
 
     def filter_epoch(self, epoch: int):
+        # function for generating filtered dataframe according to epoch indices
+
+
+
         # return a chemdata with observations of ONE epoch only
         copy_chemdata = deepcopy(self)
         sorted_epochs = copy_chemdata.sort_epoch_list()
@@ -134,7 +138,7 @@ class ChemData:
                      name=f"epoch_{epoch}_chemdata",
                      epochs=[] if not copy_chemdata.get_epochs() else [copy_chemdata.get_epochs()[i] for i in epoch_indices],
                      groups=[] if not copy_chemdata.get_groups() else [copy_chemdata.get_groups()[i] for i in epoch_indices],
-                     values=[] if not copy_chemdata.get_values() else [copy_chemdata.get_values()[i] for i in epoch_indices],
+                     values=pd.DataFrame() if not copy_chemdata.get_values() is None else pd.DataFrame(),
                      fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
                                                        fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in
                                                                          epoch_indices]),

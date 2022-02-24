@@ -65,15 +65,19 @@ class BasePlot:
     def _get_lims(chemdata_list: List[ChemData], parameters: dict) -> Tuple[Tuple, Tuple, Tuple]:
         total_xlims = []
         total_ylims = []
-        total_scorelims = []
+        total_valuelims = []
+
+        # if limits are set in input json use their min and max
         for idx in range(len(chemdata_list)):
             total_xlims += [None] if parameters.get(_PE.PARAMETERS_XLIM, None) is None else parameters[_PE.PARAMETERS_XLIM]
             total_ylims += [None] if parameters.get(_PE.PARAMETERS_YLIM, None) is None else parameters[_PE.PARAMETERS_YLIM]
-            total_scorelims += [None] if parameters.get(_PE.PARAMETERS_VALUELIM, None) is None else parameters[_PE.PARAMETERS_VALUELIM]
+            total_valuelims += [None] if parameters.get(_PE.PARAMETERS_VALUELIM, None) is None else parameters[_PE.PARAMETERS_VALUELIM]
+
+        # if user has not set anything take None
         xlim = None if None in total_xlims else (min(total_xlims), max(total_xlims))
         ylim = None if None in total_ylims else (min(total_ylims), max(total_ylims))
-        scorelim = None if None in total_scorelims else (min(total_scorelims), max(total_scorelims))
-        return xlim, ylim, scorelim
+        valuelim = None if None in total_valuelims else (min(total_valuelims), max(total_valuelims))
+        return xlim, ylim, valuelim
 
     @staticmethod
     def _generate_temp_paths(number_paths: int) -> Tuple[str, List[str]]:
