@@ -125,10 +125,6 @@ class ChemData:
         return multiple_epoch_chemdata
 
     def filter_epoch(self, epoch: int):
-        # function for generating filtered dataframe according to epoch indices
-
-
-
         # return a chemdata with observations of ONE epoch only
         copy_chemdata = deepcopy(self)
         sorted_epochs = copy_chemdata.sort_epoch_list()
@@ -136,9 +132,12 @@ class ChemData:
         epoch_chemdata = \
             ChemData(smiles_obj=Smiles([copy_chemdata.get_smiles()[i] for i in epoch_indices]),
                      name=f"epoch_{epoch}_chemdata",
-                     epochs=[] if not copy_chemdata.get_epochs() else [copy_chemdata.get_epochs()[i] for i in epoch_indices],
-                     groups=[] if not copy_chemdata.get_groups() else [copy_chemdata.get_groups()[i] for i in epoch_indices],
-                     values=pd.DataFrame() if not copy_chemdata.get_values() is None else pd.DataFrame(),
+                     epochs=[] if not copy_chemdata.get_epochs()
+                     else [copy_chemdata.get_epochs()[i] for i in epoch_indices],
+                     groups=[] if not copy_chemdata.get_groups()
+                     else [copy_chemdata.get_groups()[i] for i in epoch_indices],
+                     values=pd.DataFrame() if not copy_chemdata.get_values() is None
+                     else copy_chemdata.get_values().iloc[epoch_indices],
                      fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
                                                        fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in
                                                                          epoch_indices]),
@@ -171,6 +170,9 @@ class ChemData:
 
     def get_values(self) -> pd.DataFrame:
         return self.values
+
+    def get_values_by_column(self, column_name: str) -> List[float]:
+        return self.values[column_name]
 
     def set_values(self, values: pd.DataFrame):
         self.values = values

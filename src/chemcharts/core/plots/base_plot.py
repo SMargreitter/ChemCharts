@@ -15,7 +15,7 @@ _PE = PlottingEnum
 _ME = MovieEnum
 
 
-def _check_score_input(chemdata_list: List[ChemData], plot_type: str) -> bool:
+def _check_value_input(chemdata_list: List[ChemData], plot_type: str) -> bool:
     # check whether there is a score input
     for idx in range(len(chemdata_list)):
         if not chemdata_list[idx].get_scores():
@@ -189,8 +189,10 @@ class BasePlot:
                     max(chemdata_list.get_embedding().np_array[:, 0]))
             ylim = (min(chemdata_list.get_embedding().np_array[:, 1]),
                     max(chemdata_list.get_embedding().np_array[:, 1]))
-            scorelim = (min(chemdata_list.get_scores()),
-                        max(chemdata_list.get_scores()))
+            valuelim = parameters.get(_PE.PARAMETERS_VALUELIM)
+            if valuelim is None:
+                print("Warning: There was no value input given and therefore not every plot will be possible. "
+                      "Please double check the 'valuelim' parameter.")
             sorted_epochs = chemdata_list.sort_epoch_list()
             updated_path_list = []
             total_chemdata = chemdata_list
@@ -214,13 +216,13 @@ class BasePlot:
                                                                    epoch_id=idx)
                 updated_path_list.append(updated_snapshot_path)
 
-                #TODO when refactoring with pydantic is done allow movie making to accept and overwrite parameters
+                # TODO when refactoring with pydantic is done allow movie making to accept and overwrite parameters
 
                 # plot generation
                 self.plot(chemdata_list=[epoch_chemdata],
                           parameters={_PE.PARAMETERS_XLIM: xlim,
                                       _PE.PARAMETERS_YLIM: ylim,
-                                      _PE.PARAMETERS_VALUELIM: scorelim,
+                                      _PE.PARAMETERS_VALUELIM: valuelim,
                                       _PE.PARAMETERS_CURRENT_CHEMDATA: current_chemdata,
                                       _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
                           settings={_PE.SETTINGS_VIEW: "",

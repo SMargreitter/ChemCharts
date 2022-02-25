@@ -93,6 +93,8 @@ class PlottingEnum:
     PARAMETERS_PLOT_S = "s"                      #3d scatter plot ball size
     PARAMETERS_PLOT_MARKER_SIZE = "marker_size"
 
+    PARAMETERS_VALUECOLUMN = "value_column"
+    PARAMETERS_VALUENAME = "value_name"
     PARAMETERS_VALUELIM = "valuelim"
     PARAMETERS_YLIM = "ylim"
     PARAMETERS_XLIM = "xlim"

@@ -3,6 +3,8 @@ import os
 import numpy as np
 import shutil
 
+import pandas as pd
+
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.container.embedding import Embedding
 from chemcharts.core.container.fingerprint import *
@@ -94,14 +96,16 @@ class TestScatterBoxplotPlot(unittest.TestCase):
                                                  [1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
                                                  [1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
                                                  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-        scores = [1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1]
+        values = pd.DataFrame([1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1], columns=["test_value"])
         epochs = [0, 1, 1, 0, 2, 2, 0, 1, 0, 2, 3, 2, 3, 1, 0, 0, 3, 2, 1, 1]
+        groups = [1, 1, 2, 3, 1, 2, 2, 2, 3, 1, 2, 2, 3, 3, 1, 2, 2, 3, 1, 1]
 
         test_data_set = ChemData(smiles)
         test_data_set.set_embedding(embedding_list)
         test_data_set.set_fingerprints(fingerprint_list)
-        test_data_set.set_scores(scores)
+        test_data_set.set_values(values)
         test_data_set.set_epochs(epochs)
+        test_data_set.set_groups(groups)
         cls.test_chemdata = test_data_set
 
     def setUp(self) -> None:
@@ -112,8 +116,9 @@ class TestScatterBoxplotPlot(unittest.TestCase):
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
-                      _PE.PARAMETERS_VALUELIM: None,
-                      _PE.PARAMETERS_MODE: "scores"}
+                      _PE.PARAMETERS_VALUELIM: [None, None],
+                      _PE.PARAMETERS_VALUECOLUMN: "test_value",
+                      _PE.PARAMETERS_MODE: "value"}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(50000 <= file_size <= 100000)
@@ -123,7 +128,8 @@ class TestScatterBoxplotPlot(unittest.TestCase):
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
-                      _PE.PARAMETERS_VALUELIM: None,
+                      _PE.PARAMETERS_VALUELIM: [None, None],
+                      _PE.PARAMETERS_VALUECOLUMN: "test_value",
                       _PE.PARAMETERS_MODE: "groups"}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST]))
@@ -134,7 +140,8 @@ class TestScatterBoxplotPlot(unittest.TestCase):
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
-                      _PE.PARAMETERS_VALUELIM: None,
+                      _PE.PARAMETERS_VALUELIM: [None, None],
+                      _PE.PARAMETERS_VALUECOLUMN: "test_value",
                       _PE.PARAMETERS_MODE: "plain"}
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_TEST, _TPME.PLOT_UNITTEST]))

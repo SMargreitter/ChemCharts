@@ -33,13 +33,13 @@ class ScatterBoxplotPlot(BasePlot):
         return g
 
     @staticmethod
-    def _make_score_plot(scatter_df, xlim, ylim, parameters: dict, vmin: float, vmax: float):
+    def _make_value_plot(scatter_df, xlim, ylim, parameters: dict, vmin: float, vmax: float):
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
-                          hue="Scores",
+                          hue="Value", #TODO expose
                           hue_norm=None if vmin is None or vmax is None else (vmin, vmax),
                           palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako")
                           )
@@ -74,7 +74,8 @@ class ScatterBoxplotPlot(BasePlot):
         # base class call
         super(ScatterBoxplotPlot, self).plot(chemdata_list, parameters, settings)
 
-        # color palette/cmap
+        # TODO either remove or fix custom palette
+        # color palette/cmap when list of hex colors are to be accepted
         #cmap, color = self._coloring(parameters=parameters)
 
         # lim setting
@@ -88,16 +89,6 @@ class ScatterBoxplotPlot(BasePlot):
         # temp path setting
         temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
-        # calculates vmin and vmax if not set (using min and max values of value)
-        new_list = []
-        vmin = None
-        vmax = None
-        for chemdata_object in chemdata_list:
-            new_list.extend(chemdata_object.get_values())
-        if len(new_list) > 0:
-            vmin = parameters.get(_PE.PARAMETERS_VMIN, min(new_list))
-            vmax = parameters.get(_PE.PARAMETERS_VMAX, max(new_list))
-
         # loop over ChemData objects and generate plots
         for idx in range(len(chemdata_list)):
 
@@ -109,34 +100,42 @@ class ScatterBoxplotPlot(BasePlot):
 
             mode = parameters.get(_PE.PARAMETERS_MODE, "plain")
             if mode == "plain":
-                scatter_df.insert(2,
-                                  "Scores",
-                                  None if not chemdata_list[idx].get_values()
-                                  else chemdata_list[idx].get_values(),
-                                  allow_duplicates=False)
                 g = self._make_plain_plot(scatter_df, xlim, ylim, parameters)
-            elif mode == "scores":
+            elif mode == "value":
+                # extract column name (if set and available in values dataframe)
+                value_column_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
+                if value_column_name is None or value_column_name not in list(
+                        chemdata_list[0].get_values().columns):
+                    raise ValueError(
+                        "Can only plot in value mode when both values dataframe and column name are provided and column is present in dataframe.")
+
+                # calculates vmin and vmax if not set (using min and max values of value)
+                new_list = []
+                vmin, vmax = parameters.get(_PE.PARAMETERS_VALUELIM, [None, None])
+                if vmin is None or vmax is None:
+                    for chemdata_object in chemdata_list:
+                        new_list.extend(chemdata_object.get_values_by_column(value_column_name))
+                    vmin, vmax = [min(new_list), max(new_list)]
+
                 scatter_df.insert(2,
-                                  "Scores",
-                                  None if not chemdata_list[idx].get_values()
-                                  else chemdata_list[idx].get_values(),
+                                  parameters.get(_PE.PARAMETERS_VALUENAME, "Value"),
+                                  chemdata_list[idx].get_values_by_column(value_column_name),
                                   allow_duplicates=False)
-                g = self._make_score_plot(scatter_df, xlim, ylim, parameters, vmin, vmax)
+                g = self._make_value_plot(scatter_df, xlim, ylim, parameters, vmin, vmax)
             elif mode == "groups":
                 scatter_df.insert(2,
                                   parameters.get(_PE.PARAMETERS_GROUP_LEGEND_NAME,
                                                  _PE.PARAMETERS_GROUP_LEGEND_NAME_DEFAULT),
-                                  None if not chemdata_list[idx].get_groups()
-                                  else chemdata_list[idx].get_groups(),
+                                  chemdata_list[idx].get_groups(),
                                   allow_duplicates=False)
                 g = self._make_group_plot(scatter_df, xlim, ylim, parameters)
             else:
-                raise ValueError(f"Please choose a plot mode (plain, scores or groups)")
+                raise ValueError(f"Please choose a plot mode (plain, value or groups)")
 
             plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (6, 6)))
             g.plot_joint(sns.scatterplot)
 
-            if mode == "scores" or mode == "plain":
+            if mode == "value" or mode == "plain":
                 legend = g.ax_joint.legend().remove()
 
             if settings.get(_PE.SETTINGS_BOXPLOT) is True:

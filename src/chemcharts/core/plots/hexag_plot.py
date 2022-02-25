@@ -95,7 +95,7 @@ class HexagonalPlot(BasePlot):
         cmap, color = self._coloring(parameters=parameters)
 
         # lim setting
-        xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+        xlim, ylim, valuelim = self._get_lims(chemdata_list=chemdata_list,
                                               parameters=parameters)
 
         # final path setting

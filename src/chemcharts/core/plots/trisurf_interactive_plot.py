@@ -5,7 +5,7 @@ import plotly.figure_factory as ff
 from scipy.spatial import Delaunay
 
 from chemcharts.core.container.chemdata import ChemData
-from chemcharts.core.plots.base_plot import BasePlot, _check_score_input
+from chemcharts.core.plots.base_plot import BasePlot, _check_value_input
 
 from chemcharts.core.utils.enums import PlottingEnum
 _PE = PlottingEnum
@@ -20,7 +20,7 @@ class TrisurfInteractivePlot(BasePlot):
         super(TrisurfInteractivePlot, self).plot(chemdata_list, parameters, settings)
 
         # checks whether there is a score input
-        score_input_result = _check_score_input(chemdata_list, "Trisurf_interactive")
+        score_input_result = _check_value_input(chemdata_list, "Trisurf_interactive")
 
         # checks whether there are multiple input objects
         if score_input_result:      # checks whether _check_score_input function returns 'True'

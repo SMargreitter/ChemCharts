@@ -6,7 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
-from chemcharts.core.plots.base_plot import BasePlot, _check_score_input
+from chemcharts.core.plots.base_plot import BasePlot, _check_value_input
 
 from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import PlotLabellingEnum
@@ -22,13 +22,13 @@ class HistogramPlot(BasePlot):
         # no warning message for multiple chemdata object inputs since normalisation
         # for xlim and ylim is here anyways applied
 
-        # checks whether there is a score input
-        score_input_result = _check_score_input(chemdata_list, "Histogram")
+        # checks whether there is a value input
+        value_input_result = _check_value_input(chemdata_list, "Histogram")
 
         # checks whether there are multiple input objects
-        if score_input_result:      # checks whether _check_score_input function returns 'True'
+        if value_input_result:      # checks whether _check_value_input function returns 'True'
             # lim setting
-            xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+            xlim, ylim, valuelim = self._get_lims(chemdata_list=chemdata_list,
                                                   parameters=parameters)
 
             # final path setting
@@ -43,18 +43,20 @@ class HistogramPlot(BasePlot):
             # loop over ChemData objects and generate plots
             for idx in range(len(chemdata_list)):
                 fig, axs = plt.subplots()
-                scores_input = chemdata_list[idx].get_scores()
-                score_name = chemdata_list[idx].get_name()
+                value_input = chemdata_list[idx].get_values()
+                value_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
+                if value_name is None or value_name not in list(value_input):
+                    print("Warning: No values available so plotting is not possible.")
 
                 # TODO fix tanimoto
                 """   
                 # include tanimoto_similarity   
                 if selection == "tanimoto_similarity":
-                    scores_input = chemdata.get_tanimoto_similarity()
-                    score_name = "Tanimoto Similarity"
-                elif selection == "scores":
-                    scores_input = chemdata.get_scores()
-                    score_name = "Scores"
+                    value_input = chemdata.get_tanimoto_similarity()
+                    value_name = "Tanimoto Similarity"
+                elif selection == "value":
+                    value_input = chemdata.get_values()
+                    value_name = parameters.get(_PE.V
                 else:
                     raise ValueError(f"Selection input: {selection} is not as expected.")
                 """
@@ -62,7 +64,7 @@ class HistogramPlot(BasePlot):
                 # generate data frame
                 scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list[idx].get_embedding().np_array[:, 0],
                                            _PLE.UMAP_2: chemdata_list[idx].get_embedding().np_array[:, 1],
-                                           score_name: scores_input})
+                                           value_name: value_input})
 
                 sns.set_context("talk",
                                 font_scale=0.5)
@@ -79,7 +81,7 @@ class HistogramPlot(BasePlot):
                     selected_axis = axs
 
                 # generate seaborn histplot
-                sns.histplot(scatter_df[score_name],
+                sns.histplot(scatter_df[value_name],
                              element="step",
                              bins=parameters.get(_PE.PARAMETERS_BINS, 20),
                              stat="proportion",

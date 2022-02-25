@@ -3,7 +3,7 @@ from typing import List
 import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
-from chemcharts.core.plots.base_plot import BasePlot, _check_score_input
+from chemcharts.core.plots.base_plot import BasePlot, _check_value_input
 
 from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import PlotLabellingEnum
@@ -20,12 +20,12 @@ class TrisurfStaticPlot(BasePlot):
         super(TrisurfStaticPlot, self).plot(chemdata_list, parameters, settings)
 
         # checks whether there is a score input
-        score_input_result = _check_score_input(chemdata_list, "Trisurf_static")
+        score_input_result = _check_value_input(chemdata_list, "Trisurf_static")
 
         # checks whether there are multiple input objects
         if score_input_result:      # checks whether _check_score_input function returns 'True'
             # lim setting
-            xlim, ylim, scorelim = self._get_lims(chemdata_list=chemdata_list,
+            xlim, ylim, valuelim = self._get_lims(chemdata_list=chemdata_list,
                                                   parameters=parameters)
 
             # final path setting
@@ -43,7 +43,7 @@ class TrisurfStaticPlot(BasePlot):
 
                 ax.plot_trisurf(chemdata_list[idx].get_embedding().np_array[:, 0],
                                 chemdata_list[idx].get_embedding().np_array[:, 1],
-                                chemdata_list[idx].get_scores(),
+                                chemdata_list[idx].get_values(),
                                 cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, plt.get_cmap('twilight_shifted'))
                                 )
 
@@ -58,8 +58,8 @@ class TrisurfStaticPlot(BasePlot):
                     plt.xlim(xlim[0], xlim[1])
                 if ylim is not None:
                     plt.ylim(ylim[0], ylim[1])
-                if scorelim is not None:
-                    ax.set_zlim(scorelim[0], scorelim[1])
+                if valuelim is not None:
+                    ax.set_zlim(valuelim[0], valuelim[1])
 
                 plt.savefig(temp_plots_path_list[idx],
                             format=settings.get(_PE.SETTINGS_FIG_FORMAT, 'png'),
