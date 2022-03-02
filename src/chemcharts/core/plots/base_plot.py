@@ -16,10 +16,10 @@ _ME = MovieEnum
 
 
 def _check_value_input(chemdata_list: List[ChemData], plot_type: str) -> bool:
-    # check whether there is a score input
+    # check whether there is a value input
     for idx in range(len(chemdata_list)):
-        if not chemdata_list[idx].get_scores():
-            print(f"Input Warning: {plot_type}_plot generation without score input not possible! "
+        if chemdata_list[idx].get_values() is None:
+            print(f"Input Warning: {plot_type}_plot generation without value input not possible! "
                   "(only hexagonal and scatter_boxplot plots can be generated without scores)")
             return False
     return True
@@ -193,6 +193,9 @@ class BasePlot:
             if valuelim is None:
                 print("Warning: There was no value input given and therefore not every plot will be possible. "
                       "Please double check the 'valuelim' parameter.")
+            value_name = parameters.get(_PE.PARAMETERS_VALUENAME)
+            value_column = parameters.get(_PE.PARAMETERS_VALUECOLUMN)
+
             sorted_epochs = chemdata_list.sort_epoch_list()
             updated_path_list = []
             total_chemdata = chemdata_list
@@ -224,7 +227,10 @@ class BasePlot:
                                       _PE.PARAMETERS_YLIM: ylim,
                                       _PE.PARAMETERS_VALUELIM: valuelim,
                                       _PE.PARAMETERS_CURRENT_CHEMDATA: current_chemdata,
-                                      _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata},
+                                      _PE.PARAMETERS_TOTAL_CHEMDATA: total_chemdata,
+                                      _PE.PARAMETERS_VALUECOLUMN: value_column,
+                                      _PE.PARAMETERS_VALUENAME: value_name
+                                      },
                           settings={_PE.SETTINGS_VIEW: "",
                                     _PE.SETTINGS_PATH: updated_snapshot_path}
                           )

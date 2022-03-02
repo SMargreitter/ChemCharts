@@ -35,7 +35,8 @@
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
                        "valuelim": [0, 1],
-                       "value_column": "total_score"
+                       "value_column": "total_score",
+                       "value_name": "Scores"
        },
         "settings": {"path": "output/plots/scatter_boxplot_plot.png",
                      "format": "png",
@@ -51,6 +52,7 @@
                        "fontsize": 14,
                        "top": 0.9,
                        "color": "#d11d80"
+
        },
        "settings": {"path": "output/plots/histogram_plot.png",
                     "format": "png",

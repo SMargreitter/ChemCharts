@@ -106,8 +106,8 @@ class ScatterBoxplotPlot(BasePlot):
                 value_column_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
                 if value_column_name is None or value_column_name not in list(
                         chemdata_list[0].get_values().columns):
-                    raise ValueError(
-                        "Can only plot in value mode when both values dataframe and column name are provided and column is present in dataframe.")
+                    raise ValueError("Can only plot in value mode when both values dataframe and "
+                                     "column name are provided and column is present in dataframe.")
 
                 # calculates vmin and vmax if not set (using min and max values of value)
                 new_list = []

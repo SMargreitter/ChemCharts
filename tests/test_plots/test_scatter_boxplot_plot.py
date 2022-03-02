@@ -2,7 +2,6 @@ import unittest
 import os
 import numpy as np
 import shutil
-
 import pandas as pd
 
 from chemcharts.core.container.chemdata import ChemData
@@ -149,8 +148,10 @@ class TestScatterBoxplotPlot(unittest.TestCase):
 
     def test_check_movie_size(self):
         test_plot = ScatterBoxplotPlot()
-        test_plot.generate_movie([self.test_chemdata],
-                                 settings={_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE,
-                                                                              _TPME.MOVIE_UNITTEST])})
+        settings = {_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE, _TPME.MOVIE_UNITTEST])}
+        parameters = {_PE.PARAMETERS_VALUECOLUMN: "test_value",
+                      _PE.PARAMETERS_VALUENAME: "Value"
+                      }
+        test_plot.generate_movie([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_SCATTER_BOXPLOT_MOVIE, _TPME.MOVIE_UNITTEST]))
         self.assertTrue(20000 <= file_size <= 40000)

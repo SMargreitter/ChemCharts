@@ -136,7 +136,7 @@ class ChemData:
                      else [copy_chemdata.get_epochs()[i] for i in epoch_indices],
                      groups=[] if not copy_chemdata.get_groups()
                      else [copy_chemdata.get_groups()[i] for i in epoch_indices],
-                     values=pd.DataFrame() if not copy_chemdata.get_values() is None
+                     values=None if copy_chemdata.get_values() is None
                      else copy_chemdata.get_values().iloc[epoch_indices],
                      fingerprints=FingerprintContainer(name=f"epoch_{epoch}_fps",
                                                        fingerprint_list=[copy_chemdata.get_fingerprints()[i] for i in

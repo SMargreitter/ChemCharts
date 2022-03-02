@@ -45,8 +45,9 @@ class HistogramPlot(BasePlot):
                 fig, axs = plt.subplots()
                 value_input = chemdata_list[idx].get_values()
                 value_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
+                value_column = value_input[value_name]
                 if value_name is None or value_name not in list(value_input):
-                    print("Warning: No values available so plotting is not possible.")
+                    raise ValueError("Warning: No values available so plotting is not possible.")
 
                 # TODO fix tanimoto
                 """   
@@ -64,7 +65,7 @@ class HistogramPlot(BasePlot):
                 # generate data frame
                 scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list[idx].get_embedding().np_array[:, 0],
                                            _PLE.UMAP_2: chemdata_list[idx].get_embedding().np_array[:, 1],
-                                           value_name: value_input})
+                                           value_name: value_column})
 
                 sns.set_context("talk",
                                 font_scale=0.5)
@@ -97,7 +98,7 @@ class HistogramPlot(BasePlot):
 
                 plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (7, 7)))
                 plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
-                plt.xlabel("Scores", fontsize=10)
+                plt.xlabel(parameters.get(_PE.PARAMETERS_VALUECOLUMN, "Value"), fontsize=10)
 
                 name = f"Dataset_{idx}" if chemdata_list[idx].get_name() == "" else chemdata_list[idx].get_name()
                 plt.suptitle(name,

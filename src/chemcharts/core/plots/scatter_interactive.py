@@ -22,10 +22,10 @@ class ScatterInteractivePlot(BasePlot):
         super(ScatterInteractivePlot, self).plot(chemdata_list, parameters, settings)
 
         # checks whether there is a score input
-        score_input_result = _check_value_input(chemdata_list, "Scatter_interactive")
+        value_input_result = _check_value_input(chemdata_list, "Scatter_interactive")
 
         # checks whether there are multiple input objects
-        if score_input_result:      # checks whether _check_score_input function returns 'True'
+        if value_input_result:      # checks whether _check_value_input function returns 'True'
             if isinstance(chemdata_list, list):
                 print("Scatter interactive function does not support multiple input objects. "
                       "Proceeding with first object.")
@@ -36,16 +36,22 @@ class ScatterInteractivePlot(BasePlot):
             path = settings.get(_PE.SETTINGS_PATH, None)
             scorelim = parameters.get(_PE.PARAMETERS_VALUELIM, None)
 
+            value_input = chemdata_list.get_values()
+            value_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
+            value_column = value_input[value_name]
+            if value_name is None or value_name not in list(value_input):
+                raise ValueError("Warning: No values available so plotting is not possible.")
+
             self._prepare_folder(path=path)
 
             scatter_df = pd.DataFrame({_PLE.UMAP_1: chemdata_list.get_embedding().np_array[:, 0],
                                        _PLE.UMAP_2: chemdata_list.get_embedding().np_array[:, 1],
-                                       _PLE.VALUES: chemdata_list.get_scores()
+                                       value_name: value_column
                                        })
 
             fig = px.scatter_3d(scatter_df,
-                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=_PLE.VALUES,
-                                color='Scores',
+                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=value_name,
+                                color=value_name,
                                 color_discrete_sequence=px.colors.qualitative.Plotly,
                                 range_color=scorelim,
                                 title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Interactive ChemCharts Plot")

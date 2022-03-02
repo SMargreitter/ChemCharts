@@ -2,6 +2,7 @@ import unittest
 import os
 import numpy as np
 import shutil
+import pandas as pd
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.container.embedding import Embedding
@@ -94,13 +95,13 @@ class TestHexagonalPlot(unittest.TestCase):
                                                  [1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
                                                  [1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
                                                  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-        scores = [1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1]
+        values = pd.DataFrame([1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1], columns=["test_value"])
         epochs = [0, 1, 1, 0, 2, 2, 0, 1, 0, 2, 3, 2, 3, 1, 0, 0, 3, 2, 1, 1]
 
         test_data_set = ChemData(smiles)
         test_data_set.set_embedding(embedding_list)
         test_data_set.set_fingerprints(fingerprint_list)
-        test_data_set.set_scores(scores)
+        test_data_set.set_values(values)
         test_data_set.set_epochs(epochs)
         cls.test_chemdata = test_data_set
 
@@ -113,7 +114,10 @@ class TestHexagonalPlot(unittest.TestCase):
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
                       _PE.PARAMETERS_VALUELIM: None,
-                      _PE.PARAMETERS_PLOT_COLOR: "#4CB391"}
+                      _PE.PARAMETERS_PLOT_COLOR: "#4CB391",
+                      _PE.PARAMETERS_VALUECOLUMN: "test_value",
+                      _PE.PARAMETERS_VALUENAME: "Value"
+                      }
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(60000 <= file_size <= 120000)
@@ -124,7 +128,10 @@ class TestHexagonalPlot(unittest.TestCase):
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
                       _PE.PARAMETERS_VALUELIM: None,
-                      _PE.PARAMETERS_PLOT_COLOR: ["#FFFFFF", "#cc0000", "#003ba3", "#006600"]}
+                      _PE.PARAMETERS_PLOT_COLOR: ["#FFFFFF", "#cc0000", "#003ba3", "#006600"],
+                      _PE.PARAMETERS_VALUECOLUMN: "test_value",
+                      _PE.PARAMETERS_VALUENAME: "Value"
+                      }
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(60000 <= file_size <= 120000)
@@ -134,13 +141,20 @@ class TestHexagonalPlot(unittest.TestCase):
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
-                      _PE.PARAMETERS_VALUELIM: None}
+                      _PE.PARAMETERS_VALUELIM: None,
+                      _PE.PARAMETERS_VALUECOLUMN: "test_value",
+                      _PE.PARAMETERS_VALUENAME: "Value"
+                      }
         test_plot.plot([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST]))
         self.assertTrue(60000 <= file_size <= 140000)
 
     def test_check_movie_size(self):
         test_plot = HexagonalPlot()
-        test_plot.generate_movie([self.test_chemdata], settings={_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_HEXAGONAL_MOVIE, _TPME.MOVIE_UNITTEST])})
+        settings = {_ME.SETTINGS_MOVIE_PATH: '/'.join([_TPE.PATH_HEXAGONAL_MOVIE, _TPME.MOVIE_UNITTEST])}
+        parameters = {_PE.PARAMETERS_VALUECOLUMN: "test_value",
+                      _PE.PARAMETERS_VALUENAME: "Value"
+                      }
+        test_plot.generate_movie([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_MOVIE, _TPME.MOVIE_UNITTEST]))
         self.assertTrue(20000 <= file_size <= 45000)

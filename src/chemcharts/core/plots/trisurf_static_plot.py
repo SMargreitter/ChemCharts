@@ -19,11 +19,11 @@ class TrisurfStaticPlot(BasePlot):
         # base class call
         super(TrisurfStaticPlot, self).plot(chemdata_list, parameters, settings)
 
-        # checks whether there is a score input
-        score_input_result = _check_value_input(chemdata_list, "Trisurf_static")
+        # checks whether there is a value input
+        value_input_result = _check_value_input(chemdata_list, "Trisurf_static")
 
         # checks whether there are multiple input objects
-        if score_input_result:      # checks whether _check_score_input function returns 'True'
+        if value_input_result:      # checks whether _check_value_input function returns 'True'
             # lim setting
             xlim, ylim, valuelim = self._get_lims(chemdata_list=chemdata_list,
                                                   parameters=parameters)
@@ -38,12 +38,17 @@ class TrisurfStaticPlot(BasePlot):
             # loop over ChemData objects and generate plots
             for idx in range(len(chemdata_list)):
 
+                value_input = chemdata_list[idx].get_values()
+                value_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
+                value_column = value_input[value_name]
+                if value_name is None or value_name not in list(value_input):
+                    raise ValueError("Warning: No values available so plotting is not possible.")
+
                 plt.figure(figsize=(settings.get(_PE.SETTINGS_FIG_SIZE, (5, 5))))
                 ax = plt.axes(projection='3d')
-
                 ax.plot_trisurf(chemdata_list[idx].get_embedding().np_array[:, 0],
                                 chemdata_list[idx].get_embedding().np_array[:, 1],
-                                chemdata_list[idx].get_values(),
+                                value_column,
                                 cmap=parameters.get(_PE.PARAMETERS_PLOT_COLOR, plt.get_cmap('twilight_shifted'))
                                 )
 
@@ -51,7 +56,7 @@ class TrisurfStaticPlot(BasePlot):
                 ax.set_title(name)
                 ax.set_xlabel(_PLE.UMAP_1)
                 ax.set_ylabel(_PLE.UMAP_2)
-                ax.set_zlabel(_PLE.VALUES)
+                ax.set_zlabel(value_name)
 
                 # setting axes ranges
                 if xlim is not None:
