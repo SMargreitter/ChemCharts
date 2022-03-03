@@ -19,11 +19,11 @@ class TrisurfInteractivePlot(BasePlot):
         # base class call
         super(TrisurfInteractivePlot, self).plot(chemdata_list, parameters, settings)
 
-        # checks whether there is a score input
-        score_input_result = _check_value_input(chemdata_list, "Trisurf_interactive")
+        # checks whether there is a value input
+        value_input_result = _check_value_input(chemdata_list, "Trisurf_interactive")
 
         # checks whether there are multiple input objects
-        if score_input_result:      # checks whether _check_score_input function returns 'True'
+        if value_input_result:      # checks whether _check_value_input function returns 'True'
             if isinstance(chemdata_list, list):
                 print("Trisurf interactive function does not support multiple input objects. "
                       "Proceeding with first object.")
@@ -34,11 +34,17 @@ class TrisurfInteractivePlot(BasePlot):
             path = settings.get(_PE.SETTINGS_PATH, None)
             scorelim = parameters.get(_PE.PARAMETERS_VALUELIM, None)
 
+            value_input = chemdata_list.get_values()
+            value_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
+            value_column = value_input[value_name]
+            if value_name is None or value_name not in list(value_input):
+                raise ValueError("Warning: No values available so plotting is not possible.")
+
             self._prepare_folder(path=path)
 
             x = chemdata_list.get_embedding().np_array[:, 0]
             y = chemdata_list.get_embedding().np_array[:, 1]
-            z = chemdata_list.get_scores()
+            z = value_column
 
             tri = Delaunay(np.array([x, y]).T)
             simplices = tri.simplices

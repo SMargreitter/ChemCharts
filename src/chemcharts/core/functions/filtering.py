@@ -47,19 +47,22 @@ class Filtering:
         """
 
         chemdata = deepcopy(chemdata)
+
         embedding_df = pd.DataFrame(
             {_PLE.UMAP_1: chemdata.get_embedding().np_array[:, 0],
-             _PLE.UMAP_2: chemdata.get_embedding().np_array[:, 1],
-             _PLE.VALUES: chemdata.get_scores()})
+             _PLE.UMAP_2: chemdata.get_embedding().np_array[:, 1]})
+
+        value_names = list(chemdata.get_values().columns)
+        embedding_df = pd.concat([embedding_df, chemdata.get_values()])
 
         df = embedding_df[embedding_df[_PLE.UMAP_1].between(range_dim1[0], range_dim1[1])]
         df = df[df[_PLE.UMAP_2].between(range_dim2[0], range_dim2[1])]
 
         # set scores in chemdata
-        chemdata.set_scores(list(df[_PLE.VALUES]))
+        chemdata.set_values(pd.DataFrame(df[value_names]))
 
         # delete scores from dataframe
-        df.drop(_PLE.VALUES, axis=1, inplace=True)
+        df.drop(value_names, axis=1, inplace=True)
 
         chemdata.set_embedding(Embedding(df.to_numpy()))
 

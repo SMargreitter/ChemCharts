@@ -74,13 +74,13 @@ def main():
         with open(args.input_data, "rb") as dill_file:
             plot_data = dill.load(dill_file)
     else:
-        smiles, scores, epochs, groups = load_smiles(args.input_data)
+        smiles, values_df, epochs, groups = load_smiles(args.input_data)
 
         # initialize chemdata_list with ONE Chemdata object and add smiles and fps
         ori_data = [ChemData(smiles_obj=smiles, name=args.dataset_name)]
         fps_generator = FingerprintGenerator(ori_data[0].get_smiles())
         fps = fps_generator.generate_fingerprints()
-        ori_data[0].set_scores(scores)
+        ori_data[0].set_values(values_df)
         ori_data[0].set_fingerprints(fps)
         ori_data[0].set_epochs(epochs)
         ori_data[0].set_groups(groups)
@@ -136,7 +136,10 @@ def main():
                                    _PE.PARAMETERS_YLIM: None,
                                    _PE.PARAMETERS_VALUELIM: None,
                                    _PE.PARAMETERS_CURRENT_CHEMDATA: None,
-                                   _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0]},
+                                   _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0],
+                                   _PE.PARAMETERS_VALUECOLUMN: "total_scores",
+                                   _PE.PARAMETERS_VALUENAME: "Scores"}
+    ,
                        settings={_PE.SETTINGS_VIEW: args.view,
                                  _PE.SETTINGS_PATH: args.output_plot,
                                  _PE.SETTINGS_BOXPLOT: True})

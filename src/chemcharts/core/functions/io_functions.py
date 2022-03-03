@@ -50,7 +50,7 @@ def load_smiles(path: str,
                   f"(Caution: No 3D plotting possible!).")
             return pd.DataFrame()
 
-        values_df = pd.DataFrame(columns_for_df)
+        values_df = pd.DataFrame(data_df[columns_for_df])
         return values_df
 
     loaded_data_df = pd.read_csv(path)
@@ -59,4 +59,5 @@ def load_smiles(path: str,
     values = _get_values_df(loaded_data_df, values_columns)
     epoch = [] if epochs_column not in column_names else list(loaded_data_df[epochs_column])
     groups = [] if groups_column not in column_names else list(loaded_data_df[groups_column])
+
     return smiles, values, epoch, groups

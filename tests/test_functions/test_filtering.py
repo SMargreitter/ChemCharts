@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+import pandas as pd
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.container.smiles import Smiles
@@ -31,10 +32,10 @@ class TestFiltering(unittest.TestCase):
                                         [6, 4],
                                         [3, 4],
                                         [7, 8]]))
-        scores = [1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1]
+        values = pd.DataFrame([1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1], columns=["test_value"])
 
         test_chemdata.set_embedding(embedding)
-        test_chemdata.set_scores(scores)
+        test_chemdata.set_values(values)
         cls.test_chemdata = test_chemdata
 
     def setUp(self) -> None:
@@ -45,4 +46,6 @@ class TestFiltering(unittest.TestCase):
         filtered_chemdata = test_filter.filter_range(self.test_chemdata, range_dim1=(2, 12), range_dim2=(2, 12))
         embedding = filtered_chemdata.get_embedding()
         length_embedding = len(embedding)
+        length_values = len(filtered_chemdata.get_values())
         self.assertEqual(length_embedding, 24)
+        self.assertEqual(length_values, 12)

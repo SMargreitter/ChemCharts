@@ -1,5 +1,6 @@
 import statistics
 
+import pandas as pd
 from sklearn.cluster import KMeans
 from copy import deepcopy
 
@@ -44,16 +45,33 @@ class Clustering:
         kmeans = KMeans(n_clusters=k, random_state=0).fit(chemdata.get_embedding().np_array)
         assert kmeans.cluster_centers_.shape[1] == 2
 
-        def generate_score_list(scores):
-            score_list = []
-            for cluster_idx in range(len(kmeans.cluster_centers_)):
-                tmp = []
-                for label_idx in range(len(kmeans.labels_)):
-                    if kmeans.labels_[label_idx] == cluster_idx:
-                        tmp.append(scores[label_idx])
-                score_list.append(statistics.median(tmp))
-            return score_list
+        def generate_value_df(value_df: pd.DataFrame) -> pd.DataFrame:
+            # preparation
+            number_clusters = len(kmeans.cluster_centers_)
+            number_cluster_rows = len(kmeans.labels_)
+            column_names = list(value_df.columns)
 
-        chemdata.set_scores(generate_score_list(chemdata.get_scores()))
+            # initialization of df
+            clustered_value_df = pd.DataFrame(index=range(number_clusters),
+                                              columns=column_names)
+
+            # filling of df
+            # TODO replace by pandas "group by"
+            for cluster_idx in range(number_clusters):
+                current_cluster_indices = []
+                for label_idx in range(number_cluster_rows):
+                    if kmeans.labels_[label_idx] == cluster_idx:
+                        current_cluster_indices.append(label_idx)
+
+                for column in column_names:
+                    cluster_values = list(value_df[column].iloc[current_cluster_indices])
+                    cluster_values = [float(x) for x in cluster_values]
+                    median_value = statistics.median(cluster_values)
+                    clustered_value_df.at[cluster_idx, column] = median_value
+
+            return clustered_value_df
+
+        chemdata.set_values(generate_value_df(chemdata.get_values()))
         chemdata.set_embedding(Embedding(kmeans.cluster_centers_))
+
         return chemdata

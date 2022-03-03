@@ -154,9 +154,10 @@ class BasePlot:
             # https://towardsdatascience.com/beautiful-custom-colormaps-with-matplotlib-5bab3d1f0e72
             cmap = get_continuous_cmap(color_input)
         else:
+            color = "#4CB391"
             print("Warning: Color input needs to be either a seaborn palette, a hex code (recommended) "
                   "or a list of hex codes (you might want to have '#FFFFFF' as first value to allow "
-                  "for a white background).")
+                  "for a white background). Default: '#4CB391' or 'mako_r'")
         return cmap, color
 
     def generate_movie(self,

@@ -30,8 +30,8 @@ class ChemData:
             referring to groups for coloring plots
         active_inactive_list : list
             smiles divided in active and inactive list
-        scores : list of int
-            referring to xxx
+        values : dataframe
+            pandas dataframe containing columns with values e.g. total_scores, raw_dockstream, ...
         fingerprints : FingerprintContainer
             object which contains a name a list of fingerprints
         embedding : Embedding

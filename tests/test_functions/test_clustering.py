@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+import pandas as pd
 
 from chemcharts.core.container.chemdata import ChemData
 
@@ -32,15 +33,15 @@ class TestClustering(unittest.TestCase):
                                        [6, 4],
                                        [3, 4],
                                        [7, 8]]))
-        scores = [1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1]
+        values = pd.DataFrame([1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1], columns=["test_value"])
 
         test_chemdata.set_embedding(embedding)
-        test_chemdata.set_scores(scores)
+        test_chemdata.set_values(values)
         cls.test_chemdata = test_chemdata
 
     def test_clustering(self):
         clustering = Clustering()
         clustered_data = clustering.clustering(self.test_chemdata, 10)
-        score_length = len(clustered_data.get_scores())
+        value_length = len(clustered_data.get_values())
         self.assertListEqual([6, 4], [int(x) for x in list(clustered_data.get_embedding()[0])])
-        self.assertEqual(score_length, 10)
+        self.assertEqual(value_length, 10)
