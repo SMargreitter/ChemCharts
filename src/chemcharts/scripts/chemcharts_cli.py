@@ -100,7 +100,7 @@ def main():
             clustering = Clustering()
             plot_data[0] = clustering.clustering(chemdata=plot_data[0], k=args.k)
 
-        # binning of scores
+        # binning of values
         if args.binning is not None:
             binning = Binning()
             plot_data[0] = binning.binning(chemdata=plot_data[0], num_bins=args.binning)

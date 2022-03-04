@@ -29,7 +29,7 @@
        "type": "KMmeans",
        "parameters":  {"k": 50}
       },
-      {"task":  "binning_scores",
+      {"task":  "binning_values",
        "type": "binning",
        "parameters":  {"num_bins": 10}
       },

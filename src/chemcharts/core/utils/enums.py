@@ -64,7 +64,7 @@ class JsonStepsEnum:
     DIMENSIONAL_REDUCTION = "dimensional_reduction"
     FILTERING_DATA = "filtering_data"
     CLUSTERING_DATA = "clustering_data"
-    BINNING_VALUE = "binning_value"
+    BINNING_VALUE = "binning_values"
     WRITE_OUT = "write_out"
     GENERATE_PLOT = "generate_plot"
     GENERATE_MOVIE = "generate_movie"
