@@ -29,9 +29,9 @@
        "parameters":  {"title": "Scatter Boxplot ChemCharts Plot",
                        "fontsize": 14,
                        "top": 0.9,
-                       "color": "red",
+                       "color": "mako",
                        "group_legend_name": "Molecule_groups",
-                       "mode": "plain",
+                       "mode": "value",
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
                        "valuelim": [0, 1],
@@ -51,7 +51,9 @@
                        "bins": 20,
                        "fontsize": 14,
                        "top": 0.9,
-                       "color": "#d11d80"
+                       "color": "#d11d80",
+                       "value_column": "total_score",
+                       "value_name": "Scores"
 
        },
        "settings": {"path": "output/plots/histogram_plot.png",
@@ -65,7 +67,9 @@
        "parameters":  {"title": "Scatter Interactive ChemCharts Plot",
                        "marker_size": 1,
                        "xlim": [-6.5, 14],
-                       "ylim": [-9, 12]
+                       "ylim": [-9, 12],
+                       "value_column": "total_score",
+                       "value_name": "Scores"
        },
        "settings": {"path": "output/plots/scatter_interactive_plot.png",
                     "view": false,
@@ -81,7 +85,8 @@
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
                        "valuelim": [0, 1],
-                       "value_column": "total_score"
+                       "value_column": "total_score",
+                       "value_name": "Scores"
        },
         "settings": {"path": "output/plots/scatter_static_plot.png",
                      "format": "png",
@@ -94,7 +99,9 @@
        "parameters":  {"title": "Trisurf Interactive ChemCharts Plot",
                        "color": "Portland",
                        "xlim": [-6.5, 14],
-                       "ylim": [-9, 12]
+                       "ylim": [-9, 12],
+                       "value_column": "total_score",
+                       "value_name": "Scores"
        },
        "settings": {"path": "output/plots/trisurf_interactive_plot.png",
                     "view": false,

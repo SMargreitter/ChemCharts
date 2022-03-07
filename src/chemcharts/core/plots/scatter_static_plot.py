@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot, _check_value_input
+from chemcharts.core.utils.value_functions import generate_value
 
 from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import PlotLabellingEnum
@@ -38,11 +39,9 @@ class ScatterStaticPlot(BasePlot):
             # loop over ChemData objects and generate plots
             for idx in range(len(chemdata_list)):
 
-                value_input = chemdata_list[idx].get_values()
-                value_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
-                value_column = value_input[value_name]
-                if value_name is None or value_name not in list(value_input):
-                    raise ValueError("Warning: No values available so plotting is not possible.")
+                value_column, value_name = generate_value(chemdata_list=chemdata_list,
+                                                          parameters=parameters,
+                                                          idx=idx)
 
                 plt.figure(figsize=(settings.get(_PE.SETTINGS_FIG_SIZE, (5, 5))))
                 ax = plt.axes(projection='3d')

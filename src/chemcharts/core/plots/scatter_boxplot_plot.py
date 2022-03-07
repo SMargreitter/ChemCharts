@@ -34,12 +34,16 @@ class ScatterBoxplotPlot(BasePlot):
 
     @staticmethod
     def _make_value_plot(scatter_df, xlim, ylim, parameters: dict, vmin: float, vmax: float):
+        value_name = parameters.get(_PE.PARAMETERS_VALUENAME)
+        hue = value_name if value_name is not None else print("Warning: Value name needs to be set for the"
+                                                              "value plot type.")
+
         g = sns.JointGrid(data=scatter_df,
                           x=_PLE.UMAP_1,
                           y=_PLE.UMAP_2,
                           xlim=xlim,
                           ylim=ylim,
-                          hue="Value", #TODO expose
+                          hue=hue,
                           hue_norm=None if vmin is None or vmax is None else (vmin, vmax),
                           palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako")
                           )

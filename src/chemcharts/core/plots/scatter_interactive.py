@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot, _check_value_input
+from chemcharts.core.utils.value_functions import generate_value
 
 from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import PlotLabellingEnum
@@ -36,11 +37,9 @@ class ScatterInteractivePlot(BasePlot):
             path = settings.get(_PE.SETTINGS_PATH, None)
             scorelim = parameters.get(_PE.PARAMETERS_VALUELIM, None)
 
-            value_input = chemdata_list.get_values()
-            value_name = parameters.get(_PE.PARAMETERS_VALUECOLUMN, None)
-            value_column = value_input[value_name]
-            if value_name is None or value_name not in list(value_input):
-                raise ValueError("Warning: No values available so plotting is not possible.")
+            value_column, value_name = generate_value(chemdata_list=chemdata_list,
+                                                      parameters=parameters,
+                                                      idx=None)
 
             self._prepare_folder(path=path)
 
@@ -50,8 +49,8 @@ class ScatterInteractivePlot(BasePlot):
                                        })
 
             fig = px.scatter_3d(scatter_df,
-                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=value_name,
-                                color=value_name,
+                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=value_column,
+                                color=value_column,
                                 color_discrete_sequence=px.colors.qualitative.Plotly,
                                 range_color=scorelim,
                                 title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Interactive ChemCharts Plot")
