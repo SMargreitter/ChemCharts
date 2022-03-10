@@ -9,7 +9,9 @@ from chemcharts.core.plots.base_plot import BasePlot, _check_value_input
 from chemcharts.core.utils.value_functions import generate_value
 
 from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import PlotLabellingEnum
 _PE = PlottingEnum
+_PLE = PlotLabellingEnum
 
 
 class TrisurfInteractivePlot(BasePlot):
@@ -63,6 +65,11 @@ class TrisurfInteractivePlot(BasePlot):
                 height=settings.get(_PE.SETTINGS_FIG_SIZE[1], 900),
                 margin=dict(r=50, l=50, b=50, t=100)
             )
+
+            # update axis title
+            fig.layout.scene.xaxis.title = _PLE.UMAP_1
+            fig.layout.scene.yaxis.title = _PLE.UMAP_2
+            fig.layout.scene.zaxis.title = value_name
 
             if settings.get(_PE.SETTINGS_VIEW) is True:
                 fig.show()

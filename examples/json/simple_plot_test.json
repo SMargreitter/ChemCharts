@@ -15,8 +15,7 @@
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
                        "color": ["#FFFFFF", "#cc0000", "#003ba3", "#006600"],
-                       "cross_object_normalize": false,
-                       "value_column": "total_score"
+                       "cross_object_normalize": false
        },
         "settings": {"path": "output/plots/hexagonal_plot.png",
                      "format": "png",

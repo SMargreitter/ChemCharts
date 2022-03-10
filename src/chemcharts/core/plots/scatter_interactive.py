@@ -35,7 +35,7 @@ class ScatterInteractivePlot(BasePlot):
             xlim = parameters.get(_PE.PARAMETERS_XLIM, None)
             ylim = parameters.get(_PE.PARAMETERS_YLIM, None)
             path = settings.get(_PE.SETTINGS_PATH, None)
-            scorelim = parameters.get(_PE.PARAMETERS_VALUELIM, None)
+            valuelim = parameters.get(_PE.PARAMETERS_VALUELIM, None)
 
             value_column, value_name = generate_value(chemdata_list=chemdata_list,
                                                       parameters=parameters,
@@ -49,10 +49,10 @@ class ScatterInteractivePlot(BasePlot):
                                        })
 
             fig = px.scatter_3d(scatter_df,
-                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=value_column,
+                                x=_PLE.UMAP_1, y=_PLE.UMAP_2, z=value_name,
                                 color=value_column,
                                 color_discrete_sequence=px.colors.qualitative.Plotly,
-                                range_color=scorelim,
+                                range_color=valuelim,
                                 title=parameters.get(_PE.PARAMETERS_PLOT_TITLE, "Scatter Interactive ChemCharts Plot")
                                 )
             fig.update_traces(marker_size=parameters.get(_PE.PARAMETERS_PLOT_MARKER_SIZE, 1))
@@ -61,10 +61,14 @@ class ScatterInteractivePlot(BasePlot):
                 scene=dict(
                     xaxis={} if xlim is None else dict(nticks=6, range=xlim),
                     yaxis={} if ylim is None else dict(nticks=6, range=ylim),
-                    zaxis={} if scorelim is None else dict(nticks=6, range=scorelim)),
+                    zaxis={} if valuelim is None else dict(nticks=6, range=valuelim)),
                 width=settings.get(_PE.SETTINGS_FIG_SIZE[0], 900),
                 height=settings.get(_PE.SETTINGS_FIG_SIZE[1], 900),
-                margin=dict(r=20, l=10, b=30, t=70))
+                margin=dict(r=20, l=10, b=30, t=70),
+                )
+
+            # set colorbar title
+            fig.layout.coloraxis.colorbar.title = value_name
 
             if settings.get(_PE.SETTINGS_VIEW) is True:
                 fig.show()

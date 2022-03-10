@@ -98,7 +98,7 @@ class HistogramPlot(BasePlot):
 
                 plt.gcf().set_size_inches(settings.get(_PE.SETTINGS_FIG_SIZE, (7, 7)))
                 plt.subplots_adjust(top=parameters.get(_PE.PARAMETERS_PLOT_ADJUST_TOP, 0.9))
-                plt.xlabel(parameters.get(_PE.PARAMETERS_VALUECOLUMN, "Value"), fontsize=10)
+                plt.xlabel(parameters.get(_PE.PARAMETERS_VALUENAME, "Value"), fontsize=10)
 
                 name = f"Dataset_{idx}" if chemdata_list[idx].get_name() == "" else chemdata_list[idx].get_name()
                 plt.suptitle(name,

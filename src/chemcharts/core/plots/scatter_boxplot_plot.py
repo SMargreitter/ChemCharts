@@ -1,14 +1,14 @@
 from typing import List
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-import matplotlib.pyplot as plt
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
-
-from chemcharts.core.utils.enums import PlottingEnum
 from chemcharts.core.utils.enums import PlotLabellingEnum
+from chemcharts.core.utils.enums import PlottingEnum
+
 _PE = PlottingEnum
 _PLE = PlotLabellingEnum
 
@@ -45,7 +45,7 @@ class ScatterBoxplotPlot(BasePlot):
                           ylim=ylim,
                           hue=hue,
                           hue_norm=None if vmin is None or vmax is None else (vmin, vmax),
-                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "mako")
+                          palette=parameters.get(_PE.PARAMETERS_PLOT_COLOR, "flare")
                           )
 
         # Make space for the colorbar
