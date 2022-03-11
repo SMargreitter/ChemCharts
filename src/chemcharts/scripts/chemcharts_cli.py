@@ -13,6 +13,7 @@ from chemcharts.core.functions.dimensional_reduction import DimensionalReduction
 from chemcharts.core.functions.clustering import Clustering
 from chemcharts.core.functions.filtering import Filtering
 
+from chemcharts.core.plots.contour_plot import ContourPlot
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 from chemcharts.core.plots.histogram_plot import HistogramPlot
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
@@ -49,6 +50,7 @@ def main():
                         help="Number of clusters for KMeans.")
     parser.add_argument("-plot", type=str, required=False, default="hexagonal_plot",
                         help="Choose a plot: "
+                             "contour_plot" "|"
                              "scatter_static_plot" "|"
                              "scatter_boxplot_plot" "|"
                              "scatter_interactive_plot" "|"
@@ -110,7 +112,9 @@ def main():
             dill.dump(plot_data, dill_file)
 
     # generate plots
-    if args.plot == _GPE.HEXAGONAL_PLOT:
+    if args.plot == _GPE.CONTOUR_PLOT:
+        plot_instance = ContourPlot()
+    elif args.plot == _GPE.HEXAGONAL_PLOT:
         plot_instance = HexagonalPlot()
     elif args.plot == _GPE.HISTOGRAM_PLOT:
         plot_instance = HistogramPlot()
@@ -125,7 +129,7 @@ def main():
     elif args.plot == _GPE.TRISURF_STATIC_PLOT:
         plot_instance = TrisurfStaticPlot()
     else:
-        raise ValueError("Expected keyword (scatter_static_plot/ scatter_boxplot_plot/ "
+        raise ValueError("Expected keyword (contour_plot/ scatter_static_plot/ scatter_boxplot_plot/ "
                          "scatter_interactive_plot/ histogram_plot/ trisurf_static_plot/ "
                          "trisurf_interactive_plot/ hexagonal_plot) but none was given! Not supported: "
                          f"{args.plot}")

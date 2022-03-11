@@ -19,6 +19,7 @@ class FingerprintEnum:
 
 
 class GeneratePlotsEnum:
+    CONTOUR_PLOT = "contour_plot"
     HEXAGONAL_PLOT = "hexagonal_plot"
     HISTOGRAM_PLOT = "histogram_plot"
     SCATTER_BOXPLOT_PLOT = "scatter_boxplot_plot"
@@ -92,6 +93,10 @@ class PlottingEnum:
     PARAMETERS_PLOT_COLOR = "color"
     PARAMETERS_PLOT_S = "s"                      #3d scatter plot ball size
     PARAMETERS_PLOT_MARKER_SIZE = "marker_size"
+    PARAMETERS_BW_ADJUST = "bw_adjust"
+    PARAMETERS_SHADE = "shade"
+    PARAMETERS_THRESH = "thresh"
+    PARAMETERS_MESH_CLOSENESS = "mesh_closeness"
 
     PARAMETERS_VALUECOLUMN = "value_column"
     PARAMETERS_VALUENAME = "value_name"
@@ -128,7 +133,7 @@ class PlotLabellingEnum:
 
 class ReinventEnum:
     SMILES = "SMILES"
-    TOTAL_SCORE = "values"
+    TOTAL_SCORE = "total_score"
     EPOCHS_COLUMN = "Step"
     GROUPS_COLUMN = "groups"
 
@@ -136,6 +141,9 @@ class ReinventEnum:
 class TestPathsEnum:
     PATH_HEXAGONAL_TEST = attach_root_path("tests/junk/hexagonal_plot")
     PATH_HEXAGONAL_MOVIE = attach_root_path("tests/junk/hexagonal_movie")
+
+    PATH_CONTOUR_TEST = attach_root_path("tests/junk/contour_plot")
+    PATH_CONTOUR_MOVIE = attach_root_path("tests/junk/contour_movie")
 
     PATH_HISTOGRAM_TEST = attach_root_path("tests/junk/histogram_plot")
     PATH_HISTOGRAM_MOVIE = attach_root_path("tests/junk/histogram_movie")

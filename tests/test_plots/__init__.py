@@ -1,4 +1,5 @@
 from tests.test_plots.test_base_plot import TestBasePlot
+from tests.test_plots.test_contour_plot import TestContourPlot
 from tests.test_plots.test_hexagonal_plot import TestHexagonalPlot
 from tests.test_plots.test_histogram_plot import TestHistogramPlot
 from tests.test_plots.test_scatter_boxplot_plot import TestScatterBoxplotPlot

@@ -16,6 +16,7 @@ from chemcharts.core.functions.clustering import Clustering
 from chemcharts.core.functions.filtering import Filtering
 
 from chemcharts.core.plots.base_plot import BasePlot
+from chemcharts.core.plots.contour_plot import ContourPlot
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 from chemcharts.core.plots.histogram_plot import HistogramPlot
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
@@ -42,7 +43,9 @@ _RE = ReinventEnum
 
 
 def initialize_plot(plot_type: str) -> BasePlot:
-    if plot_type == _GPE.HEXAGONAL_PLOT:
+    if plot_type == _GPE.CONTOUR_PLOT:
+        plot_instance = ContourPlot()
+    elif plot_type == _GPE.HEXAGONAL_PLOT:
         plot_instance = HexagonalPlot()
     elif plot_type == _GPE.HISTOGRAM_PLOT:
         plot_instance = HistogramPlot()
@@ -57,7 +60,7 @@ def initialize_plot(plot_type: str) -> BasePlot:
     elif plot_type == _GPE.TRISURF_STATIC_PLOT:
         plot_instance = TrisurfStaticPlot()
     else:
-        raise ValueError("Expected keyword (scatter_static_plot/ scatter_boxplot_plot/ "
+        raise ValueError("Expected keyword (contour_plot/ scatter_static_plot/ scatter_boxplot_plot/ "
                          "scatter_interactive_plot/ histogram_plot/ trisurf_static_plot/ "
                          "trisurf_interactive_plot/ hexagonal_plot) but none was given! "
                          "Not supported: "

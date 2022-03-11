@@ -1,5 +1,6 @@
 import unittest
 import numpy as np
+import pandas as pd
 
 from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.container.embedding import Embedding
@@ -71,13 +72,13 @@ class TestChemData(unittest.TestCase):
                                                  [1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
                                                  [1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
                                                  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]])
-        scores = [1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1]
+        values = pd.DataFrame([1, 3, 4, 5, 2, 1, 6, 3, 5, 0, 2, 1, 3, 4, 1, 2, 8, 6, 1, 1], columns=["test_value"])
         epochs = [0, 1, 1, 0, 2, 2, 0, 1, 0, 2, 3, 2, 3, 1, 0, 0, 3, 2, 1, 1]
 
         test_data_set = ChemData(smiles)
         test_data_set.set_embedding(embedding_list)
         test_data_set.set_fingerprints(fingerprint_list)
-        test_data_set.set_scores(scores)
+        test_data_set.set_values(values)
         test_data_set.set_epochs(epochs)
         cls.test_chemdata = test_data_set
 
@@ -125,4 +126,5 @@ class TestChemData(unittest.TestCase):
         test_epoch_0_chemdata = self.test_chemdata.filter_epoch(0)
         self.assertListEqual([0, 0, 0, 0, 0, 0], list(test_epoch_0_chemdata.get_epochs()))
 
-        self.assertListEqual([2, 3, 8], list(test_epoch_3_chemdata.get_scores()))
+        test_df = test_epoch_3_chemdata.get_values()["test_value"]
+        self.assertListEqual([2, 3, 8], test_df.values.tolist())
