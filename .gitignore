@@ -2,6 +2,7 @@
 node_modules/
 dist/
 *.egg*
+build
 
 # Compiled Java class files
 *.class
