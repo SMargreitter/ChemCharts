@@ -12,6 +12,8 @@ from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
 from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.print_dataframe import print_dataframe
+
 _PE = PlottingEnum
 
 
@@ -192,7 +194,7 @@ class HexagonalPlot(BasePlot):
             plt.close("all")
 
         df_stats = _generate_stats(list_occup_arrays, [c.get_name() for c in chemdata_list])
-        #print_dataframe(df_stats)
+        print_dataframe(df_stats)
 
         self._merge_multiple_plots(subplot_paths=temp_plots_path_list,
                                    merged_path=final_path,
