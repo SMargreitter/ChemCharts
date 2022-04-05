@@ -1,6 +1,7 @@
 from typing import List
 
-import matplotlib
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,6 +13,19 @@ from chemcharts.core.plots.base_plot import BasePlot
 
 from chemcharts.core.utils.enums import PlottingEnum
 _PE = PlottingEnum
+
+
+def _generate_stats(arrays: List[np.array], names: List[str]) -> pd.DataFrame:
+    df = None
+    if len(arrays) > 1:
+        df = pd.DataFrame({
+            "comparison": [None for _ in range(len(arrays))],
+            "cosine": [np.NaN for _ in range(len(arrays))]})
+        for idx in range(len(arrays)):
+            for idy in range(idx + 1, len(arrays)):
+                df.at[idx+idy-1, "comparison"] = '_'.join([names[idx], names[idy]])
+                df.at[idx+idy-1, "cosine"] = cosine_similarity([arrays[idx]], [arrays[idy]])
+    return df
 
 
 class HexagonalPlot(BasePlot):
@@ -69,7 +83,7 @@ class HexagonalPlot(BasePlot):
             colors = [utils_sb.set_hls_values(color_rgb, l=l)  # noqa
                       for l in np.linspace(1, 0, 12)]
             cmap = blend_palette(colors, as_cmap=True)
-        sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
+        x = sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
                       y=chemdata_list_idx.get_embedding().np_array[:, 1],
                       xlim=xlim,
                       ylim=ylim,
@@ -112,6 +126,7 @@ class HexagonalPlot(BasePlot):
         temp_folder_path, temp_plots_path_list = self._generate_temp_paths(number_paths=len(chemdata_list))
 
         # loop over ChemData objects and generate plots
+        list_occup_arrays = []
         for idx in range(len(chemdata_list)):
             # if current contours are to be plotted we need to generate the appropriate counts (for hexbin
             # identification) here, in order to not override the plotting settings later
@@ -120,6 +135,12 @@ class HexagonalPlot(BasePlot):
                                         y=current_chemdata.get_embedding().np_array[:, 1],
                                         gridsize=gridsize,
                                         extent=extent)
+
+            # TODO: clean this ugly hack that obtains the array
+            list_occup_arrays.append(plt.hexbin(x=chemdata_list[idx].get_embedding().np_array[:, 0],
+                                                y=chemdata_list[idx].get_embedding().np_array[:, 1],
+                                                gridsize=gridsize,
+                                                extent=extent).get_array())
 
             # generate the counts for the actual plotting
             hb = plt.hexbin(x=total_chemdata.get_embedding().np_array[:, 0],
@@ -169,6 +190,9 @@ class HexagonalPlot(BasePlot):
                         dpi=settings.get(_PE.SETTINGS_FIG_DPI, _PE.SETTINGS_FIG_DPI_DEFAULT))
 
             plt.close("all")
+
+        df_stats = _generate_stats(list_occup_arrays, [c.get_name() for c in chemdata_list])
+        #print_dataframe(df_stats)
 
         self._merge_multiple_plots(subplot_paths=temp_plots_path_list,
                                    merged_path=final_path,
