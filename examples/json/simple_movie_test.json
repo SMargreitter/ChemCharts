@@ -8,7 +8,8 @@
       },
       {"task": "generate_movie",
        "type": "hexagonal_plot",
-       "parameters":  {"use_current_epoch": false
+       "parameters":  {"use_current_epoch": false,
+                       "data_set_index": 1
        },
         "settings": {"movie_path": "output/hexagonal_movie_mp4/hexagonal_movie.mp4"}
       },

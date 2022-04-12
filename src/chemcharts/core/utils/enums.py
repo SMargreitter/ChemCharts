@@ -80,6 +80,7 @@ class MovieEnum:
 
     ENDING_GIF = ".gif"
     ENDING_MP4 = ".mp4"
+    DATA_SET_INDEX = "data_set_index"
 
 
 class PlottingEnum:
