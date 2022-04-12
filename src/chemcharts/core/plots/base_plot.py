@@ -147,17 +147,17 @@ class BasePlot:
             # set color_input_list to default if input_list is empty
             if len(color_input) == 0:
                 color_input = ["#FFFFFF", "#cc0000", "#003ba3", "#006600"]
-                print("Warning: The color_input list is empty, therefore the default is set to "
-                      "['#FFFFFF', '#cc0000', '#003ba3', '#006600'].")
+                #print("Warning: The color_input list is empty, therefore the default is set to "
+                #      "['#FFFFFF', '#cc0000', '#003ba3', '#006600'].")
 
             # generate custom continuous cmpa/ inspired by solution from here:
             # https://towardsdatascience.com/beautiful-custom-colormaps-with-matplotlib-5bab3d1f0e72
             cmap = get_continuous_cmap(color_input)
         else:
             color = "#4CB391"
-            print("Warning: Color input needs to be either a seaborn palette, a hex code (recommended) "
-                  "or a list of hex codes (you might want to have '#FFFFFF' as first value to allow "
-                  "for a white background). Default: '#4CB391' or 'mako_r'")
+            #print("Warning: Color input needs to be either a seaborn palette, a hex code (recommended) "
+            #      "or a list of hex codes (you might want to have '#FFFFFF' as first value to allow "
+            #      "for a white background). Default: '#4CB391' or 'mako_r'")
         return cmap, color
 
     def generate_movie(self,
@@ -173,8 +173,8 @@ class BasePlot:
             # movie function does not (yet) support multiple dataset input
             if isinstance(chemdata_list, list):
                 print("Movie function does not (yet) support multiple input objects. "
-                      "Proceeding with first object.")
-                chemdata_list = chemdata_list[0]
+                      "Proceeding with first object (default) or data_set_index (JSON).")
+                chemdata_list = chemdata_list[parameters.get(_ME.DATA_SET_INDEX, 0)]
 
             # error message
             len_epochs = len(chemdata_list.get_epochs())
