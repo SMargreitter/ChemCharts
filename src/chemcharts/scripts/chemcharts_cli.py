@@ -17,7 +17,8 @@ from chemcharts.core.plots.contour_plot import ContourPlot
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 from chemcharts.core.plots.histogram_plot import HistogramPlot
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
-from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
+from chemcharts.core.plots.scatter_interactive_mol_plot import ScatterInteractiveMolPlot
+from chemcharts.core.plots.scatter_interactive_plot import ScatterInteractivePlot
 from chemcharts.core.plots.scatter_static_plot import ScatterStaticPlot
 from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlot
 from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
@@ -53,6 +54,7 @@ def main():
                              "contour_plot" "|"
                              "scatter_static_plot" "|"
                              "scatter_boxplot_plot" "|"
+                             "scatter_interactive_mol_plot" "|"
                              "scatter_interactive_plot" "|"
                              "histogram_plot (no movie function possible)" "|"
                              "trisurf_static_plot" "|"
@@ -120,6 +122,8 @@ def main():
         plot_instance = HistogramPlot()
     elif args.plot == _GPE.SCATTER_BOXPLOT_PLOT:
         plot_instance = ScatterBoxplotPlot()
+    elif args.plot == _GPE.SCATTER_INTERACTIVE_MOL_PLOT:
+        plot_instance = ScatterInteractiveMolPlot()
     elif args.plot == _GPE.SCATTER_INTERACTIVE_PLOT:
         plot_instance = ScatterInteractivePlot()
     elif args.plot == _GPE.SCATTER_STATIC_PLOT:
@@ -130,7 +134,7 @@ def main():
         plot_instance = TrisurfStaticPlot()
     else:
         raise ValueError("Expected keyword (contour_plot/ scatter_static_plot/ scatter_boxplot_plot/ "
-                         "scatter_interactive_plot/ histogram_plot/ trisurf_static_plot/ "
+                         "scatter_interactive_mol_plot/ scatter_interactive_plot/ histogram_plot/ trisurf_static_plot/ "
                          "trisurf_interactive_plot/ hexagonal_plot) but none was given! Not supported: "
                          f"{args.plot}")
 

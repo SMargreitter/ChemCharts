@@ -1,0 +1,26 @@
+{
+  "chemcharts": {
+    "header": {},
+    "execution": [
+      {"task":  "data_loading",
+       "input":  ["tests/junk/simple_test.pkl"],
+       "input_type":  "pkl"
+      },
+      {"task": "generate_plot",
+       "type": "scatter_interactive_mol_plot",
+       "parameters":  {"title": "Scatter Interactive Mol ChemCharts Plot",
+                       "marker_size": 1,
+                       "xlim": [-6.5, 14],
+                       "ylim": [-9, 12],
+                       "value_column": "total_score",
+                       "value_name": "Scores"
+       },
+       "settings": {"path": "output/plots/scatter_interactive_mol_plot.png",
+                    "view": true,
+                    "format": "png",
+                    "figsize": [900,900]
+       }
+      }
+    ]
+  }
+}

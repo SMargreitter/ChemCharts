@@ -12,9 +12,11 @@ from chemcharts.core.container.chemdata import ChemData
 from chemcharts.core.plots.base_plot import BasePlot
 
 from chemcharts.core.utils.enums import PlottingEnum
+from chemcharts.core.utils.enums import MovieEnum
 from chemcharts.core.utils.print_dataframe import print_dataframe
 
 _PE = PlottingEnum
+_ME = MovieEnum
 
 
 def _generate_stats(arrays: List[np.array], names: List[str]) -> pd.DataFrame:
@@ -148,7 +150,9 @@ class HexagonalPlot(BasePlot):
             hb = plt.hexbin(x=total_chemdata.get_embedding().np_array[:, 0],
                             y=total_chemdata.get_embedding().np_array[:, 1],
                             gridsize=gridsize,
-                            extent=extent)
+                            extent=extent,
+                            C=total_chemdata.get_values()["total_score"],
+                            reduce_C_function=np.median)
 
             # inspired by 2nd solution from here:
             # https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin

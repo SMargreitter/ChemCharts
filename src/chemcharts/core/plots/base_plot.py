@@ -174,7 +174,7 @@ class BasePlot:
             if isinstance(chemdata_list, list):
                 print("Movie function does not (yet) support multiple input objects. "
                       "Proceeding with first object (default) or data_set_index (JSON).")
-                chemdata_list = chemdata_list[parameters.get(_ME.DATA_SET_INDEX, 0)]
+                chemdata_list = chemdata_list[parameters.get(_ME.PARAMETERS_DATA_SET_INDEX, 0)]
 
             # error message
             len_epochs = len(chemdata_list.get_epochs())

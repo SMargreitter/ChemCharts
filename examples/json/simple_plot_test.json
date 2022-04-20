@@ -88,7 +88,7 @@
                        "value_name": "Scores"
        },
        "settings": {"path": "output/plots/scatter_interactive_plot.png",
-                    "view": false,
+                    "view": true,
                     "format": "png",
                     "figsize": [900, 900]
        }
