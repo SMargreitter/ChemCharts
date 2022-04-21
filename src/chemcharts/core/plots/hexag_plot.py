@@ -78,7 +78,8 @@ class HexagonalPlot(BasePlot):
         return gridsize
 
     @staticmethod
-    def _generate_jointplot(chemdata_list_idx, xlim, ylim, gridsize, vmin, vmax, cmap, color, extent):
+    def _generate_jointplot(chemdata_list_idx, xlim, ylim, gridsize, vmin, vmax, cmap, color, extent,
+                            C, reduce_C_function):
         # if cmap is None, initialize the seaborn default over the matplotlib one
         if cmap is None:
             import matplotlib as mpl
@@ -88,18 +89,20 @@ class HexagonalPlot(BasePlot):
                       for l in np.linspace(1, 0, 12)]
             cmap = blend_palette(colors, as_cmap=True)
         x = sns.jointplot(x=chemdata_list_idx.get_embedding().np_array[:, 0],
-                      y=chemdata_list_idx.get_embedding().np_array[:, 1],
-                      xlim=xlim,
-                      ylim=ylim,
-                      joint_kws={"gridsize": gridsize,
-                                 "vmin": vmin,
-                                 "vmax": vmax,
-                                 "lw": 1,
-                                 "cmap": cmap},
-                      kind="hex",
-                      color=color,
-                      extent=extent
-                      )
+                          y=chemdata_list_idx.get_embedding().np_array[:, 1],
+                          xlim=xlim,
+                          ylim=ylim,
+                          joint_kws={"gridsize": gridsize,
+                                     "vmin": vmin,
+                                     "vmax": vmax,
+                                     "lw": 1,
+                                     "cmap": cmap,
+                                     "C": C,
+                                     "reduce_C_function": reduce_C_function},
+                          kind="hex",
+                          color=color,
+                          extent=extent
+                          )
 
     def plot(self, chemdata_list: List[ChemData], parameters: dict, settings: dict):
         # base class call
@@ -150,9 +153,8 @@ class HexagonalPlot(BasePlot):
             hb = plt.hexbin(x=total_chemdata.get_embedding().np_array[:, 0],
                             y=total_chemdata.get_embedding().np_array[:, 1],
                             gridsize=gridsize,
-                            extent=extent,
-                            C=total_chemdata.get_values()["total_score"],
-                            reduce_C_function=np.median)
+                            extent=extent
+                            )
 
             # inspired by 2nd solution from here:
             # https://stackoverflow.com/questions/65469173/matplotlib-add-border-around-group-of-bins-with-most-frequent-values-in-hexbin
@@ -160,10 +162,17 @@ class HexagonalPlot(BasePlot):
             # vmin and vmax
             vmin = 0
             vmax = None
-            if parameters.get(_PE.PARMETERS_CROSS_OBJECT_NORMALIZE, True):
+            if parameters.get(_PE.PARAMETERS_CROSS_OBJECT_NORMALIZE, True):
                 vmax = hb.get_array().max()
 
             # generates jointplot with hexbin background colors
+            if parameters.get(_PE.PARAMETERS_VALUEINPUT) is None:
+                C = None
+                reduce_C_function = np.mean
+            else:
+                C = total_chemdata.get_values()[parameters.get(_PE.PARAMETERS_VALUEINPUT)]
+                reduce_C_function = np.median
+
             self._generate_jointplot(chemdata_list_idx=chemdata_list[idx],
                                      xlim=xlim,
                                      ylim=ylim,
@@ -172,7 +181,9 @@ class HexagonalPlot(BasePlot):
                                      vmax=vmax,
                                      cmap=cmap,
                                      color=color,
-                                     extent=extent)
+                                     extent=extent,
+                                     C=C,
+                                     reduce_C_function=reduce_C_function)
 
             # if selected generate contours for current hexbins
             if current_chemdata is not None:

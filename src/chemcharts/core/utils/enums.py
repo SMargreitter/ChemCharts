@@ -88,7 +88,7 @@ class MovieEnum:
 class PlottingEnum:
     PARAMETERS_GRIDSIZE = "gridsize"
     PARAMETERS_BINS = "bins"
-    PARMETERS_CROSS_OBJECT_NORMALIZE = "cross_object_normalize"
+    PARAMETERS_CROSS_OBJECT_NORMALIZE = "cross_object_normalize"
 
     PARAMETERS_PLOT_TITLE = "title"
     PARAMETERS_PLOT_TITLE_FONTSIZE = "fontsize"
@@ -101,6 +101,7 @@ class PlottingEnum:
     PARAMETERS_THRESH = "thresh"
     PARAMETERS_MESH_CLOSENESS = "mesh_closeness"
 
+    PARAMETERS_VALUEINPUT = "value_input"
     PARAMETERS_VALUECOLUMN = "value_column"
     PARAMETERS_VALUENAME = "value_name"
     PARAMETERS_VALUELIM = "valuelim"

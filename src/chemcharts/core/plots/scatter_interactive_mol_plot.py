@@ -29,7 +29,7 @@ class ScatterInteractiveMolPlot(BasePlot):
         # checks whether there are multiple input objects
         if value_input_result:      # checks whether _check_value_input function returns 'True'
             if isinstance(chemdata_list, list):
-                print("Scatter-interactive-mol function does not support multiple input objects. "
+                print("Scatter Interactive Mol function does not support multiple input objects. "
                       "Proceeding with first object.")
                 chemdata_list = chemdata_list[0]
 

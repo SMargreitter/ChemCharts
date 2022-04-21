@@ -70,30 +70,17 @@ def save_df(path, chemdata_list: list):
         updated_path = f'{first_part_path}_{idx:04}.csv'
 
         # generate df
-        if len(chemdata.get_epochs()) >= 1 and not len(chemdata.get_groups()) >= 1:
-            df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
-                               "UMAP_2": chemdata.get_embedding().np_array[:, 1],
-                               "SMILES": list(chemdata.get_smiles()),
-                               "Epochs": chemdata.get_epochs()
-                               })
-        elif len(chemdata.get_groups()) >= 1 and not len(chemdata.get_epochs()) >= 1:
-            df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
-                               "UMAP_2": chemdata.get_embedding().np_array[:, 1],
-                               "SMILES": list(chemdata.get_smiles()),
-                               "Groups": chemdata.get_groups()
-                               })
-        elif len(chemdata.get_epochs()) >= 1 and len(chemdata.get_groups()) >= 1:
-            df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
-                               "UMAP_2": chemdata.get_embedding().np_array[:, 1],
-                               "SMILES": list(chemdata.get_smiles()),
-                               "Epochs": chemdata.get_epochs(),
-                               "Groups": chemdata.get_groups()
-                               })
-        else:
-            df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
-                               "UMAP_2": chemdata.get_embedding().np_array[:, 1],
-                               "SMILES": list(chemdata.get_smiles()),
-                               })
+        df = pd.DataFrame({"UMAP_1": chemdata.get_embedding().np_array[:, 0],
+                           "UMAP_2": chemdata.get_embedding().np_array[:, 1],
+                           "SMILES": list(chemdata.get_smiles()),
+                           })
+
+        if len(chemdata.get_epochs()) >= 1:
+            df["Epochs"] = chemdata.get_epochs()
+
+        if len(chemdata.get_groups()) >= 1:
+            df["Groups"] = chemdata.get_groups()
+
         df_concat = pd.concat([df, chemdata.get_values()], axis=1)
 
         # convert to csv
