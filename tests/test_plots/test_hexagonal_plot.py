@@ -148,7 +148,7 @@ class TestHexagonalPlot(unittest.TestCase):
         settings = {_PE.SETTINGS_PATH: '/'.join([_TPE.PATH_HEXAGONAL_TEST, _TPME.PLOT_UNITTEST])}
         parameters = {_PE.PARAMETERS_XLIM: None,
                       _PE.PARAMETERS_YLIM: None,
-                      _PE.PARAMETERS_VALUELIM: None,
+                      _PE.PARAMETERS_VALUELIM: [0, 1],
                       _PE.PARAMETERS_PLOT_COLOR: "#4CB391",
                       _PE.PARAMETERS_VALUEINPUT: "test_value"
                       }
@@ -163,4 +163,3 @@ class TestHexagonalPlot(unittest.TestCase):
         test_plot.generate_movie([self.test_chemdata], parameters, settings)
         file_size = os.path.getsize('/'.join([_TPE.PATH_HEXAGONAL_MOVIE, _TPME.MOVIE_UNITTEST]))
         self.assertTrue(20000 <= file_size <= 45000)
-

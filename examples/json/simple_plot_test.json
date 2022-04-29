@@ -31,7 +31,7 @@
                        "top": 0.9,
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
-                       "cross_object_normalize": false
+                       "cross_object_normalize": true
        },
         "settings": {"path": "output/plots/hexagonal_plot.png",
                      "format": "png",
@@ -47,7 +47,8 @@
                        "top": 0.9,
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
-                       "cross_object_normalize": false,
+                       "valuelim": [0, 1],
+                       "cross_object_normalize": true,
                        "value_input": "total_score"
        },
         "settings": {"path": "output/plots/hexagonal_total_score_plot.png",

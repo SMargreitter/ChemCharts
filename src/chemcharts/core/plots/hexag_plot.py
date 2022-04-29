@@ -162,16 +162,21 @@ class HexagonalPlot(BasePlot):
             # vmin and vmax
             vmin = 0
             vmax = None
-            if parameters.get(_PE.PARAMETERS_CROSS_OBJECT_NORMALIZE, True):
-                vmax = hb.get_array().max()
 
             # generates jointplot with hexbin background colors
             if parameters.get(_PE.PARAMETERS_VALUEINPUT) is None:
                 C = None
                 reduce_C_function = np.mean
+                if parameters.get(_PE.PARAMETERS_CROSS_OBJECT_NORMALIZE, True):
+                    vmax = hb.get_array().max()
             else:
                 C = total_chemdata.get_values()[parameters.get(_PE.PARAMETERS_VALUEINPUT)]
                 reduce_C_function = np.median
+                if parameters.get(_PE.PARAMETERS_CROSS_OBJECT_NORMALIZE, True):
+                    vmax = parameters.get(_PE.PARAMETERS_VALUELIM, None)
+                    if vmax is None:
+                        raise ValueError("Cross-object normalize without setting valuelim is currently not supported.")
+                    vmax = vmax[1]
 
             self._generate_jointplot(chemdata_list_idx=chemdata_list[idx],
                                      xlim=xlim,

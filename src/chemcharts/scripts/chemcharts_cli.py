@@ -51,7 +51,6 @@ def main():
                         help="Number of clusters for KMeans.")
     parser.add_argument("-plot", type=str, required=False, default="hexagonal_plot",
                         help="Choose a plot: "
-                             "contour_plot" "|"
                              "scatter_static_plot" "|"
                              "scatter_boxplot_plot" "|"
                              "scatter_interactive_mol_plot" "|"
@@ -124,6 +123,7 @@ def main():
         plot_instance = ScatterBoxplotPlot()
     elif args.plot == _GPE.SCATTER_INTERACTIVE_MOL_PLOT:
         plot_instance = ScatterInteractiveMolPlot()
+        print("NOTE: OPEN THE LINK FOLLOWING 'Dash is running on ...'")
     elif args.plot == _GPE.SCATTER_INTERACTIVE_PLOT:
         plot_instance = ScatterInteractivePlot()
     elif args.plot == _GPE.SCATTER_STATIC_PLOT:
@@ -145,7 +145,7 @@ def main():
                                    _PE.PARAMETERS_VALUELIM: None,
                                    _PE.PARAMETERS_CURRENT_CHEMDATA: None,
                                    _PE.PARAMETERS_TOTAL_CHEMDATA: plot_data[0],
-                                   _PE.PARAMETERS_VALUECOLUMN: "total_scores",
+                                   _PE.PARAMETERS_VALUECOLUMN: "total_score",
                                    _PE.PARAMETERS_VALUENAME: "Scores"}
     ,
                        settings={_PE.SETTINGS_VIEW: args.view,
