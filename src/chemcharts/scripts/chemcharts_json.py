@@ -20,12 +20,14 @@ from chemcharts.core.plots.contour_plot import ContourPlot
 from chemcharts.core.plots.hexag_plot import HexagonalPlot
 from chemcharts.core.plots.histogram_plot import HistogramPlot
 from chemcharts.core.plots.scatter_boxplot_plot import ScatterBoxplotPlot
-from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
+from chemcharts.core.plots.scatter_interactive_mol_plot import ScatterInteractiveMolPlot
+from chemcharts.core.plots.scatter_interactive_plot import ScatterInteractivePlot
 from chemcharts.core.plots.scatter_static_plot import ScatterStaticPlot
 from chemcharts.core.plots.trisurf_interactive_plot import TrisurfInteractivePlot
 from chemcharts.core.plots.trisurf_static_plot import TrisurfStaticPlot
 
 from chemcharts.core.functions.io_functions import load_smiles
+from chemcharts.core.functions.io_functions import save_df
 
 from chemcharts.core.utils.enums import GeneratePlotsEnum, MovieEnum
 from chemcharts.core.utils.enums import DataFittingEnum
@@ -51,6 +53,8 @@ def initialize_plot(plot_type: str) -> BasePlot:
         plot_instance = HistogramPlot()
     elif plot_type == _GPE.SCATTER_BOXPLOT_PLOT:
         plot_instance = ScatterBoxplotPlot()
+    elif plot_type == _GPE.SCATTER_INTERACTIVE_MOL_PLOT:
+        plot_instance = ScatterInteractiveMolPlot()
     elif plot_type == _GPE.SCATTER_INTERACTIVE_PLOT:
         plot_instance = ScatterInteractivePlot()
     elif plot_type == _GPE.SCATTER_STATIC_PLOT:
@@ -61,9 +65,9 @@ def initialize_plot(plot_type: str) -> BasePlot:
         plot_instance = TrisurfStaticPlot()
     else:
         raise ValueError("Expected keyword (contour_plot/ scatter_static_plot/ scatter_boxplot_plot/ "
-                         "scatter_interactive_plot/ histogram_plot/ trisurf_static_plot/ "
-                         "trisurf_interactive_plot/ hexagonal_plot) but none was given! "
-                         "Not supported: "
+                         "scatter_interactive_mol_plot/ scatter_interactive_plot/ histogram_plot/ "
+                         "trisurf_static_plot/ trisurf_interactive_plot/ hexagonal_plot) "
+                         "but none was given! Not supported: "
                          f"{plot_type}")
     return plot_instance
 
@@ -146,8 +150,11 @@ def main():
                 chemdata = binning.binning(chemdata=chemdata, num_bins=task[_JE.PARAMETERS][_JE.NUM_BINS])
 
         elif task[_JE.TASK] == _JSE.WRITE_OUT:
-            with open(task[_JE.PATH], "wb") as dill_file:
-                dill.dump(chemdata_list, dill_file)
+            if task[_JE.F_TYPE].lower() == "pkl":
+                with open(task[_JE.PATH], "wb") as dill_file:
+                    dill.dump(chemdata_list, dill_file)
+            elif task[_JE.F_TYPE].lower() == "csv":
+                save_df(task[_JE.PATH], chemdata_list=chemdata_list)
 
         elif task[_JE.TASK] == _JSE.GENERATE_PLOT:
             plot_type = task[_JE.TYPE].lower()

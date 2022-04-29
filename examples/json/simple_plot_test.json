@@ -31,10 +31,27 @@
                        "top": 0.9,
                        "xlim": [-6.5, 14],
                        "ylim": [-9, 12],
-                       "color": ["#FFFFFF", "#cc0000", "#003ba3", "#006600"],
-                       "cross_object_normalize": false
+                       "cross_object_normalize": true
        },
         "settings": {"path": "output/plots/hexagonal_plot.png",
+                     "format": "png",
+                     "dpi": 150,
+                     "figsize": [8, 8]
+        }
+      },
+            {"task": "generate_plot",
+       "type": "hexagonal_plot",
+       "parameters":  {"title": "Hexagonal ChemCharts Plot",
+                       "gridsize": 20,
+                       "fontsize": 14,
+                       "top": 0.9,
+                       "xlim": [-6.5, 14],
+                       "ylim": [-9, 12],
+                       "valuelim": [0, 1],
+                       "cross_object_normalize": true,
+                       "value_input": "total_score"
+       },
+        "settings": {"path": "output/plots/hexagonal_total_score_plot.png",
                      "format": "png",
                      "dpi": 150,
                      "figsize": [8, 8]
@@ -88,7 +105,7 @@
                        "value_name": "Scores"
        },
        "settings": {"path": "output/plots/scatter_interactive_plot.png",
-                    "view": false,
+                    "view": true,
                     "format": "png",
                     "figsize": [900, 900]
        }

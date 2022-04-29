@@ -35,8 +35,13 @@
       },
       {
         "task": "write_out",
-        "format": "pkl",
+        "f_type": "pkl",
         "path": "tests/junk/simple_test.pkl"
+      },
+      {
+        "task": "write_out",
+        "f_type": "csv",
+        "path": "tests/junk/df.csv"
       }
     ]
   }

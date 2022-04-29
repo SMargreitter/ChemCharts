@@ -9,7 +9,7 @@ from chemcharts.core.container.embedding import Embedding
 from chemcharts.core.container.fingerprint import *
 from chemcharts.core.container.smiles import Smiles
 
-from chemcharts.core.plots.scatter_interactive import ScatterInteractivePlot
+from chemcharts.core.plots.scatter_interactive_plot import ScatterInteractivePlot
 
 from chemcharts.core.utils.enums import PlottingEnum, MovieEnum
 from chemcharts.core.utils.enums import TestPathsEnum

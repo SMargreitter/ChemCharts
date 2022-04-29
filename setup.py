@@ -3,7 +3,7 @@ from setuptools import setup, find_namespace_packages
 setup(
     name="chemcharts",
     maintainer="Sophie Margreitter, Christian Margreitter",
-    version="0.5.2",
+    version="0.6.0",
     url="https://github.com/SMargreitter/ChemCharts",
     packages=find_namespace_packages(where="src"),
     package_dir={"": "src"},

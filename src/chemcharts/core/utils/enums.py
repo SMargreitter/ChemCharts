@@ -23,6 +23,7 @@ class GeneratePlotsEnum:
     HEXAGONAL_PLOT = "hexagonal_plot"
     HISTOGRAM_PLOT = "histogram_plot"
     SCATTER_BOXPLOT_PLOT = "scatter_boxplot_plot"
+    SCATTER_INTERACTIVE_MOL_PLOT = "scatter_interactive_mol_plot"
     SCATTER_INTERACTIVE_PLOT = "scatter_interactive_plot"
     SCATTER_STATIC_PLOT = "scatter_static_plot"
     TRISURF_INTERACTIVE_PLOT = "trisurf_interactive_plot"
@@ -36,6 +37,7 @@ class JsonEnum:
     TASK = "task"
     INPUT = "input"
     INPUT_TYPE = "input_type"
+    F_TYPE = "f_type"
 
     COLUMNS = "columns"
     SMILES_COLUMN = "smiles_column"
@@ -74,19 +76,19 @@ class JsonStepsEnum:
 class MovieEnum:
     PARAMETERS = "parameters"
     PARAMETERS_USE_CURRENT_EPOCH = "use_current_epoch"
+    PARAMETERS_DATA_SET_INDEX = "data_set_index"
 
     SETTINGS = "settings"
     SETTINGS_MOVIE_PATH = "movie_path"
 
     ENDING_GIF = ".gif"
     ENDING_MP4 = ".mp4"
-    DATA_SET_INDEX = "data_set_index"
 
 
 class PlottingEnum:
     PARAMETERS_GRIDSIZE = "gridsize"
     PARAMETERS_BINS = "bins"
-    PARMETERS_CROSS_OBJECT_NORMALIZE = "cross_object_normalize"
+    PARAMETERS_CROSS_OBJECT_NORMALIZE = "cross_object_normalize"
 
     PARAMETERS_PLOT_TITLE = "title"
     PARAMETERS_PLOT_TITLE_FONTSIZE = "fontsize"
@@ -99,6 +101,7 @@ class PlottingEnum:
     PARAMETERS_THRESH = "thresh"
     PARAMETERS_MESH_CLOSENESS = "mesh_closeness"
 
+    PARAMETERS_VALUEINPUT = "value_input"
     PARAMETERS_VALUECOLUMN = "value_column"
     PARAMETERS_VALUENAME = "value_name"
     PARAMETERS_VALUELIM = "valuelim"
@@ -151,6 +154,9 @@ class TestPathsEnum:
 
     PATH_SCATTER_BOXPLOT_TEST = attach_root_path("tests/junk/scatter_boxplot_plot")
     PATH_SCATTER_BOXPLOT_MOVIE = attach_root_path("tests/junk/scatter_boxplot_movie")
+
+    PATH_SCATTER_INTERACTIVE_MOL_TEST = attach_root_path("tests/junk/scatter_interactive_mol_plot")
+    PATH_SCATTER_INTERACTIVE_MOL_MOVIE = attach_root_path("tests/junk/scatter_interactive_mol_movie")
 
     PATH_SCATTER_INTERACTIVE_TEST = attach_root_path("tests/junk/scatter_interactive_plot")
     PATH_SCATTER_INTERACTIVE_MOVIE = attach_root_path("tests/junk/scatter_interactive_movie")
