@@ -31,6 +31,8 @@ COc1cccc(-c2c3c(cc4ccccc24)C(=O)NC3=O)c1 ⮕ [1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0
     * [scatter static plot](img/scatter_static_plot.png)
     * [scatter boxplot plot (colour grouping)](img/scatter_boxplot_plot.png)
     * [scatter interactive plot (only static preview available)](img/scatter_interactive_plot.png)
+    * [scatter interactive mol plot (only static preview available)](img/scatter_interactive_mol_plot.png)
+    * [contour plot](img/contour_plot.png)
     * [histogram plot (scores)](img/histogram_plot.png)
     * [trisurf static plot](img/trisurf_static_plot.png)
     * [trisurf interactive plot (only static preview available)](img/trisurf_interactive_plot.png)
