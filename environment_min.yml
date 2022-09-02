@@ -12,6 +12,7 @@ dependencies:
   - rdkit>=2020.09
   - seaborn>=0.11
   - pip:
+    - molplotly
     - ffmpeg-python>=0.2.0
     - scikit-learn>=0.24
     - umap-learn

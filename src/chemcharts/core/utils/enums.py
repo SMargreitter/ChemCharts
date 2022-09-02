@@ -89,6 +89,7 @@ class PlottingEnum:
     PARAMETERS_GRIDSIZE = "gridsize"
     PARAMETERS_BINS = "bins"
     PARAMETERS_CROSS_OBJECT_NORMALIZE = "cross_object_normalize"
+    PARAMETERS_MULTIPLOT_COLUMNS = "multiplot_columns"
 
     PARAMETERS_PLOT_TITLE = "title"
     PARAMETERS_PLOT_TITLE_FONTSIZE = "fontsize"
