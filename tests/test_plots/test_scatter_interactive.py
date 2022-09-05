@@ -28,11 +28,11 @@ class TestScatterInteractivePlot(unittest.TestCase):
     def setUpClass(cls) -> None:
         if os.path.isdir(_TPE.PATH_SCATTER_INTERACTIVE_TEST):
             shutil.rmtree(_TPE.PATH_SCATTER_INTERACTIVE_TEST)
-        os.mkdir(_TPE.PATH_SCATTER_INTERACTIVE_TEST)
+        os.makedirs(_TPE.PATH_SCATTER_INTERACTIVE_TEST)
 
         if os.path.isdir(_TPE.PATH_SCATTER_INTERACTIVE_MOVIE):
             shutil.rmtree(_TPE.PATH_SCATTER_INTERACTIVE_MOVIE)
-        os.mkdir(_TPE.PATH_SCATTER_INTERACTIVE_MOVIE)
+        os.makedirs(_TPE.PATH_SCATTER_INTERACTIVE_MOVIE)
 
         smiles = Smiles(["COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)[nH]c3ccccc23)cc1",
                          "COc1ccc(-c2c(-c3ccc(S(N)(=O)=O)cc3)oc3ccccc23)cc1F",
