@@ -102,3 +102,4 @@ Please don't hesitate to let us know (open an issue) if you find a bug, want to 
 ## Contributors
 - Sophie Margreitter [@smargreitter](https://github.com/SMargreitter)
 - Christian Margreitter [@cmargreitter](https://github.com/CMargreitter)
+- Esben Jannik Bjerrum [@EBjerrum](https://github.com/EBjerrum) 
