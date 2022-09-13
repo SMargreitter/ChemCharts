@@ -17,4 +17,5 @@ dependencies:
     - scikit-learn>=0.24
     - umap-learn
     - kaleido
+    - molplotly
 
