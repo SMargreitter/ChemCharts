@@ -94,7 +94,7 @@ chemcharts -conf examples/json/simple_plot_test.json
 ```python main_test.py```
 
 ## Instructions and tutorials
-For detailed guides on how to use `JSON` for generating `ChemCharts` plots, see notebook templates for plot [Learning Demo Chemcharts Json Plot](notebooks/Learning_Demo_Chemcharts_JSON_Plot.ipynb) or movie generation [Learning Demo Chemcharts Json Movie](notebooks/Learning_Demo_Chemcharts_JSON_Movie.ipynb). For in-depth explanations of the `ChemCharts` entry points, please see: [Learning Demo Chemcharts Entry Point](notebooks/Learning_Demo_Chemcharts_Entry_Point.ipynb).
+For detailed guides on how to use `JSON` for generating `ChemCharts` plots or movies, see the notebook templates [Learning Demo Chemcharts Json Plot](notebooks/Learning_Demo_Chemcharts_JSON_Plot.ipynb) or [Learning Demo Chemcharts Json Movie](notebooks/Learning_Demo_Chemcharts_JSON_Movie.ipynb). For in-depth explanations of the `ChemCharts` entry points, please see: [Learning Demo Chemcharts Entry Point](notebooks/Learning_Demo_Chemcharts_Entry_Point.ipynb).
 
 ## Bugs and feature requests
 Please don't hesitate to let us know (open an issue) if you find a bug, want to request a feature or to make a pull request.
