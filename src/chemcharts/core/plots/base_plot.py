@@ -52,7 +52,7 @@ class BasePlot:
         # generate folder if not yet available
         path, _ = os.path.split(os.path.abspath(path))
         if not os.path.isdir(path):
-            os.mkdir(path)
+            os.makedirs(path)
 
     @staticmethod
     def _merge_chemdata_list(chemdata_list: List[ChemData]) -> ChemData:
@@ -95,26 +95,45 @@ class BasePlot:
             shutil.rmtree(path)
 
     @staticmethod
-    def _merge_multiple_plots(subplot_paths: List[str], merged_path: str, title: str):
+    def _merge_multiple_plots(subplot_paths: List[str], merged_path: str, title: str, columns=None):
         # get list of image, widths and heights
         image_list = [Image.open(x) for x in subplot_paths]
         widths_list, heights_list = zip(*(i.size for i in image_list))
         width, _ = image_list[0].size
         number_plots = len(subplot_paths)
 
-        total_width = sum(widths_list)
-        max_height = max(heights_list)+200
+        if columns:
+            image_sub_lists =  [image_list[x:x+columns] for x in range(0, len(image_list), columns)]
+            
+            total_width = 0
+            total_height = 200
+            for sublist in image_sub_lists:
+                total_width = max(sum([image.size[0] for image in sublist]), total_width)
+                total_height = total_height + max([image.size[1] for image in sublist])
+            max_height = total_height
+        else:
+            total_width = sum(widths_list)
+            max_height = max(heights_list)+200
 
         # create new image
         new_im = Image.new('RGB', size=(total_width, max_height), color="white")
 
         # add images to new image
-        x_offset = 0
-        for im in image_list:
-            # x dimension changes with every image,y dimension always stays 0
-            new_im.paste(im, (x_offset, 150))
-            # update x dimension
-            x_offset += im.size[0]
+        if columns:
+            y_offset = 150
+            for sublist in image_sub_lists:
+                x_offset = 0
+                for im in sublist:
+                    new_im.paste(im, (x_offset, y_offset))
+                    x_offset += im.size[0]
+                y_offset = y_offset + max([image.size[1] for image in sublist])
+        else:
+            x_offset = 0
+            for im in image_list:
+                # x dimension changes with every image,y dimension always stays 0
+                new_im.paste(im, (x_offset, 150))
+                # update x dimension
+                x_offset += im.size[0]
 
         font_file = "/usr/share/fonts/truetype/freefont/FreeSerif.ttf"
         if os.path.isfile(font_file):
