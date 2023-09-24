@@ -49,22 +49,20 @@ COc1cccc(-c2c3c(cc4ccccc24)C(=O)NC3=O)c1 ⮕ [1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0
 
 
 ## Requirements
-* Anaconda or Miniconda with Python > 3.7
-* Installation of the environment:
+* You might want to put `ChemCharts` into a bespoke environment, e.g. `conda`:
 
-```conda env create -f environment_min.yml```
-
-* Install `ChemCharts` from `pip`:
 ```
+conda create -n chemcharts "python==3.9.16" pip
 conda activate chemcharts
-pip install chemcharts
 ```
 
-* Or install the latest version from source:
-```
-conda activate chemcharts
-pip install -e .
-```
+* Installation the package:
+
+```pip install chemcharts```
+
+* Install local copy:
+
+```pip install .```
 
 * Note, that you need `ffmpeg` installed on your computer in case you want to generate movies. On Ubuntu it will look something like:
 
@@ -74,9 +72,6 @@ sudo apt install ffmpeg
 ```
 
 ## Usage
-* Activate environment:
-
-```conda activate chemcharts```
 
 * Execution of command-line interface (CLI) / entry point:
 
